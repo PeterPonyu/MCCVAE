@@ -632,7 +632,7 @@ class envMixin:
             - P_C: Pearson Correlation (disentanglement measure)
         """
         # Select appropriate ground truth labels
-        true_labels = self.labels if ifall else self.labels[self.idx]
+        true_labels = self.labels if ifall else self.labels[self.current_batch_indices]
         
         # Clustering accuracy metrics
         ari_score = adjusted_mutual_info_score(true_labels, cluster_labels)
