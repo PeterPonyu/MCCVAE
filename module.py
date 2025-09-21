@@ -1,59 +1,80 @@
+
+"""
+Variational Autoencoder Implementation with ODE Integration and Momentum Contrast
+
+This module provides a comprehensive VAE implementation supporting:
+- Multiple loss functions (MSE, Negative Binomial, Zero-Inflated Negative Binomial)
+- Neural ODE integration for latent dynamics
+- Momentum Contrast (MoCo) for contrastive learning
+- Information bottleneck regularization
+"""
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.distributions import Normal
-from typing import Tuple, Union, Literal
-from .mixin import NODEMixin
+from typing import Tuple, Union, Literal, Optional
 import numpy as np
+
+from .mixin import NODEMixin
+
 
 class Encoder(nn.Module):
     """
-    变分编码器网络，将输入状态映射到潜在分布。
+    Variational encoder network that maps input states to latent distributions.
 
-    参数
+    This encoder supports both standard VAE encoding and ODE-enhanced encoding
+    with time prediction for temporal dynamics modeling.
+
+    Parameters
     ----------
     state_dim : int
-        输入状态的维度
+        Dimension of the input state space
     hidden_dim : int
-        隐藏层的维度
+        Dimension of hidden layers in the network
     action_dim : int
-        潜在空间的维度
-    use_ode : bool
-        是否使用ODE模式，若为True则会额外输出时间参数
+        Dimension of the latent space (action space)
+    use_ode : bool, default=False
+        Whether to use ODE mode with time parameter prediction
     """
 
     def __init__(
-        self, state_dim: int, hidden_dim: int, action_dim: int, use_ode: bool = False
+        self, 
+        state_dim: int, 
+        hidden_dim: int, 
+        action_dim: int, 
+        use_ode: bool = False
     ):
         super().__init__()
         self.use_ode = use_ode
 
-        # 基础网络部分
-        self.base_network = nn.Sequential(
+        # Shared feature extraction network
+        self.feature_network = nn.Sequential(
             nn.Linear(state_dim, hidden_dim),
             nn.ReLU(),
             nn.Linear(hidden_dim, hidden_dim),
             nn.ReLU(),
         )
 
-        # 潜在空间参数（均值和对数方差）
+        # Latent distribution parameters (mean and log variance)
         self.latent_params = nn.Linear(hidden_dim, action_dim * 2)
 
-        # 时间编码器（仅在ODE模式下使用）
+        # Time encoder for ODE dynamics (only used in ODE mode)
         if use_ode:
             self.time_encoder = nn.Sequential(
                 nn.Linear(hidden_dim, 1),
-                nn.Sigmoid(),  # 使用Sigmoid确保时间值在0-1范围内
+                nn.Sigmoid(),  # Ensures time values are in [0, 1] range
             )
 
+        # Initialize network weights
         self.apply(self._init_weights)
 
     @staticmethod
-    def _init_weights(m: nn.Module) -> None:
-        """初始化网络权重"""
-        if isinstance(m, nn.Linear):
-            nn.init.xavier_normal_(m.weight)
-            nn.init.constant_(m.bias, 0.01)
+    def _init_weights(module: nn.Module) -> None:
+        """Initialize network weights using Xavier normal initialization."""
+        if isinstance(module, nn.Linear):
+            nn.init.xavier_normal_(module.weight)
+            nn.init.constant_(module.bias, 0.01)
 
     def forward(
         self, x: torch.Tensor
@@ -62,74 +83,74 @@ class Encoder(nn.Module):
         Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor],
     ]:
         """
-        编码器的前向传播
+        Forward pass through the encoder.
 
-        参数
+        Parameters
         ----------
         x : torch.Tensor
-            形状为(batch_size, state_dim)的输入张量
+            Input tensor of shape (batch_size, state_dim)
 
-        返回
+        Returns
         -------
-        如果use_ode=False:
+        If use_ode=False:
             Tuple[torch.Tensor, torch.Tensor, torch.Tensor]
-                - 采样的潜在向量
-                - 潜在分布的均值
-                - 潜在分布的对数方差
+                - sampled_latent: Sampled latent vectors
+                - latent_mean: Mean of the latent distribution
+                - latent_log_var: Log variance of the latent distribution
 
-        如果use_ode=True:
+        If use_ode=True:
             Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]
-                - 采样的潜在向量
-                - 潜在分布的均值
-                - 潜在分布的对数方差
-                - 预测的时间参数 (0-1范围内)
+                - sampled_latent: Sampled latent vectors
+                - latent_mean: Mean of the latent distribution
+                - latent_log_var: Log variance of the latent distribution
+                - time_param: Predicted time parameter in [0, 1] range
         """
-        # Log-transform input for numerical stability
-        x = torch.log1p(x)
+        # Apply log1p transformation for numerical stability
+        x_transformed = torch.log1p(x)
 
-        # 通过基础网络获取特征
-        hidden = self.base_network(x)
+        # Extract features through the base network
+        hidden_features = self.feature_network(x_transformed)
 
-        # 计算潜在空间参数
-        latent_output = self.latent_params(hidden)
-        q_m, q_s = torch.split(latent_output, latent_output.size(-1) // 2, dim=-1)
+        # Compute latent distribution parameters
+        latent_output = self.latent_params(hidden_features)
+        latent_mean, latent_log_var = torch.split(
+            latent_output, latent_output.size(-1) // 2, dim=-1
+        )
 
-        # 使用softplus确保方差为正
-        std = F.softplus(q_s)
+        # Ensure positive variance using softplus
+        latent_std = F.softplus(latent_log_var)
 
-        # 从分布中采样
-        dist = Normal(q_m, std)
-        q_z = dist.rsample()
+        # Sample from the latent distribution
+        latent_distribution = Normal(latent_mean, latent_std)
+        sampled_latent = latent_distribution.rsample()
 
-        # 如果使用ODE模式，额外输出时间参数
+        # Return time parameter if in ODE mode
         if self.use_ode:
-            t = self.time_encoder(hidden).squeeze(
-                -1
-            )  # 移除最后一个维度使t为(batch_size,)
-            return q_z, q_m, q_s, t
+            time_param = self.time_encoder(hidden_features).squeeze(-1)
+            return sampled_latent, latent_mean, latent_log_var, time_param
 
-        return q_z, q_m, q_s
+        return sampled_latent, latent_mean, latent_log_var
 
 
 class Decoder(nn.Module):
     """
-    解码器网络，将潜在向量映射回原始空间
+    Decoder network that maps latent vectors back to the original space.
 
-    支持三种损失模式：
-    - 'mse': 均方误差损失，适用于连续数据
-    - 'nb': 负二项分布损失，适用于离散计数数据
-    - 'zinb': 零膨胀负二项分布损失，适用于有大量零值的计数数据
+    Supports three loss modes for different data types:
+    - 'mse': Mean Squared Error for continuous data
+    - 'nb': Negative Binomial for discrete count data
+    - 'zinb': Zero-Inflated Negative Binomial for sparse count data
 
-    参数
+    Parameters
     ----------
     state_dim : int
-        原始空间的维度
+        Dimension of the original data space
     hidden_dim : int
-        隐藏层的维度
+        Dimension of hidden layers in the network
     action_dim : int
-        潜在空间的维度
-    loss_mode : Literal['mse', 'nb', 'zinb']
-        损失函数的模式，默认为'nb'
+        Dimension of the latent space
+    loss_mode : Literal['mse', 'nb', 'zinb'], default='nb'
+        Loss function mode determining output structure
     """
 
     def __init__(
@@ -142,191 +163,275 @@ class Decoder(nn.Module):
         super().__init__()
         self.loss_mode = loss_mode
 
-        # 共享基础网络部分
-        self.base_network = nn.Sequential(
+        # Shared feature extraction network
+        self.feature_network = nn.Sequential(
             nn.Linear(action_dim, hidden_dim),
             nn.ReLU(),
             nn.Linear(hidden_dim, hidden_dim),
             nn.ReLU(),
         )
 
-        # 根据损失模式配置输出层
+        # Configure output layers based on loss mode
         if loss_mode in ["nb", "zinb"]:
-            # 负二项分布参数：过离散参数
-            self.disp = nn.Parameter(torch.randn(state_dim))
-            # 均值参数：使用Softmax确保归一化
+            # Negative binomial parameters
+            self.dispersion_param = nn.Parameter(torch.randn(state_dim))
+            # Mean parameters with softmax normalization
             self.mean_decoder = nn.Sequential(
-                nn.Linear(hidden_dim, state_dim), nn.Softmax(dim=-1)
+                nn.Linear(hidden_dim, state_dim), 
+                nn.Softmax(dim=-1)
             )
-        else:  # 'mse'模式
-            # 直接线性输出
+        else:  # MSE mode
+            # Direct linear output for continuous data
             self.mean_decoder = nn.Linear(hidden_dim, state_dim)
 
-        # 零膨胀参数 (仅用于'zinb'模式)
+        # Zero-inflation parameters (only for ZINB mode)
         if loss_mode == "zinb":
             self.dropout_decoder = nn.Linear(hidden_dim, state_dim)
 
-        # 应用权重初始化
+        # Initialize weights
         self.apply(self._init_weights)
 
     @staticmethod
-    def _init_weights(m: nn.Module) -> None:
-        """初始化网络权重"""
-        if isinstance(m, nn.Linear):
-            nn.init.xavier_normal_(m.weight)
-            nn.init.constant_(m.bias, 0.01)
+    def _init_weights(module: nn.Module) -> None:
+        """Initialize network weights using Xavier normal initialization."""
+        if isinstance(module, nn.Linear):
+            nn.init.xavier_normal_(module.weight)
+            nn.init.constant_(module.bias, 0.01)
 
-    def forward(self, x: torch.Tensor):
+    def forward(self, x: torch.Tensor) -> Union[torch.Tensor, Tuple[torch.Tensor, torch.Tensor]]:
         """
-        前向传播
+        Forward pass through the decoder.
 
-        参数
+        Parameters
         ----------
         x : torch.Tensor
-            形状为(batch_size, action_dim)的潜在向量
+            Latent vectors of shape (batch_size, action_dim)
 
-        返回
-        ----------
-        对于'mse'和'nb'模式：
-            torch.Tensor: 重构的输出
-        对于'zinb'模式：
-            Tuple[torch.Tensor, torch.Tensor]: (重构均值, 零膨胀参数的logits)
+        Returns
+        -------
+        For 'mse' and 'nb' modes:
+            torch.Tensor: Reconstructed output
+
+        For 'zinb' mode:
+            Tuple[torch.Tensor, torch.Tensor]: (reconstructed_mean, dropout_logits)
         """
-        # 通过基础网络
-        hidden = self.base_network(x)
+        # Extract features
+        hidden_features = self.feature_network(x)
 
-        # 计算均值输出
-        mean = self.mean_decoder(hidden)
+        # Compute mean output
+        reconstructed_mean = self.mean_decoder(hidden_features)
 
-        # 对于'zinb'模式，还需计算零膨胀参数
+        # Return additional zero-inflation parameters for ZINB mode
         if self.loss_mode == "zinb":
-            dropout_logits = self.dropout_decoder(hidden)
-            return mean, dropout_logits
+            dropout_logits = self.dropout_decoder(hidden_features)
+            return reconstructed_mean, dropout_logits
 
-        # 对于'mse'和'nb'模式，只返回均值
-        return mean
+        return reconstructed_mean
 
 
-class LatentODEfunc(nn.Module):
+class LatentODEFunction(nn.Module):
     """
-    潜在空间ODE函数模型
+    Neural ODE function for modeling latent space dynamics.
 
-    参数:
-    n_latent: 潜在空间维度
-    n_hidden: 隐藏层维度
+    This module defines the continuous-time dynamics in the latent space,
+    allowing the model to learn temporal evolution patterns.
+
+    Parameters
+    ----------
+    n_latent : int, default=10
+        Dimension of the latent space
+    n_hidden : int, default=25
+        Dimension of the hidden layer
     """
 
-    def __init__(
-        self,
-        n_latent: int = 10,
-        n_hidden: int = 25,
-    ):
+    def __init__(self, n_latent: int = 10, n_hidden: int = 25):
         super().__init__()
-        self.elu = nn.ELU()
-        self.fc1 = nn.Linear(n_latent, n_hidden)
-        self.fc2 = nn.Linear(n_hidden, n_latent)
+        self.activation = nn.ELU()
+        self.input_layer = nn.Linear(n_latent, n_hidden)
+        self.output_layer = nn.Linear(n_hidden, n_latent)
 
     def forward(self, t: torch.Tensor, x: torch.Tensor) -> torch.Tensor:
         """
-        计算在时间t和状态x下的梯度
+        Compute the derivative at time t and state x.
 
-        参数:
-        t: 时间点
-        x: 潜在状态
+        Parameters
+        ----------
+        t : torch.Tensor
+            Time point(s)
+        x : torch.Tensor
+            Latent state(s)
 
-        返回:
-        梯度值
+        Returns
+        -------
+        torch.Tensor
+            Computed gradients/derivatives
         """
-        out = self.fc1(x)
-        out = self.elu(out)
-        out = self.fc2(out)
-        return out
+        hidden = self.activation(self.input_layer(x))
+        gradient = self.output_layer(hidden)
+        return gradient
 
 
-class MoCo(nn.Module):
+class MomentumContrast(nn.Module):
     """
-    Momentum Contrast for Unsupervised Visual Representation Learning
+    Momentum Contrast (MoCo) for unsupervised representation learning.
+
+    Implements the MoCo framework for learning representations through
+    contrastive learning with a momentum-updated key encoder.
+
+    Parameters
+    ----------
+    encoder_query : nn.Module
+        Query encoder network
+    encoder_key : nn.Module
+        Key encoder network (momentum-updated)
+    state_dim : int
+        Dimension of input state
+    embedding_dim : int, default=128
+        Dimension of output embeddings
+    queue_size : int, default=65536
+        Size of the negative sample queue
+    momentum : float, default=0.999
+        Momentum coefficient for key encoder updates
+    temperature : float, default=0.2
+        Temperature parameter for contrastive loss
+    device : torch.device
+        Device for computation
     """
+
     def __init__(
         self,
-        encoder_q,
-        encoder_k,
-        state_dim,
-        dim=128,
-        K=65536,
-        m=0.999,
-        T=0.2,
-        device=torch.device("cuda"),
+        encoder_query: nn.Module,
+        encoder_key: nn.Module,
+        state_dim: int,
+        embedding_dim: int = 128,
+        queue_size: int = 65536,
+        momentum: float = 0.999,
+        temperature: float = 0.2,
+        device: torch.device = torch.device("cuda"),
     ):
-        super(MoCo, self).__init__()
-        self.K = K
-        self.m = m
-        self.T = T
+        super().__init__()
+        self.queue_size = queue_size
+        self.momentum = momentum
+        self.temperature = temperature
         self.device = device
-        self.encoder_q = encoder_q
-        self.encoder_k = encoder_k
-        self.aug_prob = 0.5
+        self.encoder_query = encoder_query
+        self.encoder_key = encoder_key
+        self.augmentation_prob = 0.5
         self.n_genes = state_dim
-        
-        for param_q, param_k in zip(
-            self.encoder_q.parameters(), self.encoder_k.parameters()
-        ):
-            param_k.data.copy_(param_q.data)
-            param_k.requires_grad = False
 
-        self.register_buffer("queue", torch.randn(dim, K, device=device))
-        self.queue = nn.functional.normalize(self.queue, dim=0)
-        self.register_buffer("queue_ptr", torch.zeros(1, dtype=torch.long, device=device))
+        # Initialize key encoder parameters with query encoder values
+        for param_query, param_key in zip(
+            self.encoder_query.parameters(), self.encoder_key.parameters()
+        ):
+            param_key.data.copy_(param_query.data)
+            param_key.requires_grad = False  # Key encoder is not trained directly
+
+        # Initialize queue for negative samples
+        self.register_buffer(
+            "queue", torch.randn(embedding_dim, queue_size, device=device)
+        )
+        self.queue = F.normalize(self.queue, dim=0)
+        self.register_buffer(
+            "queue_ptr", torch.zeros(1, dtype=torch.long, device=device)
+        )
 
     @torch.no_grad()
-    def _momentum_update_key_encoder(self):
-        for param_q, param_k in zip(
-            self.encoder_q.parameters(), self.encoder_k.parameters()
+    def _momentum_update_key_encoder(self) -> None:
+        """Update key encoder parameters using momentum."""
+        for param_query, param_key in zip(
+            self.encoder_query.parameters(), self.encoder_key.parameters()
         ):
-            param_k.data = param_k.data * self.m + param_q.data * (1.0 - self.m)
+            param_key.data = (
+                param_key.data * self.momentum + 
+                param_query.data * (1.0 - self.momentum)
+            )
 
     @torch.no_grad()
-    def _dequeue_and_enqueue(self, keys):
+    def _dequeue_and_enqueue(self, keys: torch.Tensor) -> None:
+        """
+        Update the queue with new key vectors.
+
+        Parameters
+        ----------
+        keys : torch.Tensor
+            New key vectors to add to the queue
+        """
         batch_size = keys.shape[0]
         ptr = int(self.queue_ptr)
-        
-        # It handles the case where the batch would "wrap around" the queue.
-        if ptr + batch_size <= self.K:
-            # The common case: the batch fits without wrapping.
+
+        # Handle queue updates with potential wrap-around
+        if ptr + batch_size <= self.queue_size:
+            # Standard case: batch fits without wrapping
             self.queue[:, ptr : ptr + batch_size] = keys.T
         else:
-            # The wrap-around case: split the batch into two parts.
-            part1_size = self.K - ptr
+            # Wrap-around case: split batch into two parts
+            part1_size = self.queue_size - ptr
             self.queue[:, ptr:] = keys[:part1_size].T
-            
+
             part2_size = batch_size - part1_size
             self.queue[:, :part2_size] = keys[part1_size:].T
 
-        # Move the pointer for the next batch.
-        ptr = (ptr + batch_size) % self.K
+        # Update pointer for next batch
+        ptr = (ptr + batch_size) % self.queue_size
         self.queue_ptr[0] = ptr
 
-    def forward(self, exp_q, exp_k):
-        q = self.encoder_q(exp_q)[1]
-        q = nn.functional.normalize(q, dim=1)
+    def forward(
+        self, query_data: torch.Tensor, key_data: torch.Tensor
+    ) -> Tuple[torch.Tensor, torch.Tensor]:
+        """
+        Forward pass for contrastive learning.
 
+        Parameters
+        ----------
+        query_data : torch.Tensor
+            Query samples
+        key_data : torch.Tensor
+            Key samples
+
+        Returns
+        -------
+        Tuple[torch.Tensor, torch.Tensor]
+            - logits: Contrastive logits
+            - labels: Target labels (zeros for positive pairs)
+        """
+        # Encode queries
+        query_features = self.encoder_query(query_data)[1]  # Use mean features
+        query_features = F.normalize(query_features, dim=1)
+
+        # Encode keys with momentum update
         with torch.no_grad():
             self._momentum_update_key_encoder()
-            k = self.encoder_k(exp_k)[1]
-            k = nn.functional.normalize(k, dim=1)
+            key_features = self.encoder_key(key_data)[1]
+            key_features = F.normalize(key_features, dim=1)
 
-        l_pos = torch.einsum("nc,nc->n", [q, k]).unsqueeze(-1)
-        l_neg = torch.einsum("nc,ck->nk", [q, self.queue.clone().detach()])
-        logits = torch.cat([l_pos, l_neg], dim=1)
-        logits /= self.T
+        # Compute positive logits
+        positive_logits = torch.einsum("nc,nc->n", [query_features, key_features]).unsqueeze(-1)
+
+        # Compute negative logits
+        negative_logits = torch.einsum("nc,ck->nk", [query_features, self.queue.clone().detach()])
+
+        # Combine logits and apply temperature scaling
+        logits = torch.cat([positive_logits, negative_logits], dim=1)
+        logits /= self.temperature
+
+        # Create labels (positive pairs have label 0)
         labels = torch.zeros(logits.shape[0], dtype=torch.long).to(self.device)
-        self._dequeue_and_enqueue(k)
+
+        # Update queue
+        self._dequeue_and_enqueue(key_features)
+
         return logits, labels
-            
+
 
 class VAE(nn.Module, NODEMixin):
     """
-    Variational Autoencoder with support for both linear.
+    Variational Autoencoder with Neural ODE and Momentum Contrast support.
+
+    This implementation combines several advanced techniques:
+    - Standard VAE with multiple loss functions
+    - Neural ODE integration for temporal dynamics
+    - Momentum Contrast for representation learning
+    - Information bottleneck regularization
 
     Parameters
     ----------
@@ -335,10 +440,19 @@ class VAE(nn.Module, NODEMixin):
     hidden_dim : int
         Dimension of hidden layers
     action_dim : int
-        Dimension of action/latent space
+        Dimension of latent/action space
     i_dim : int
         Dimension of information bottleneck
-
+    use_ode : bool
+        Whether to enable Neural ODE integration
+    use_moco : bool
+        Whether to enable Momentum Contrast
+    loss_mode : Literal["mse", "nb", "zinb"], default="nb"
+        Loss function mode for reconstruction
+    moco_temperature : float, default=0.2
+        Temperature parameter for MoCo contrastive loss
+    device : torch.device
+        Computation device
     """
 
     def __init__(
@@ -350,205 +464,209 @@ class VAE(nn.Module, NODEMixin):
         use_ode: bool,
         use_moco: bool,
         loss_mode: Literal["mse", "nb", "zinb"] = "nb",
-        moco_T: float = 0.2,
-        device=torch.device("cuda")
-        if torch.cuda.is_available()
-        else torch.device("cpu"),
+        moco_temperature: float = 0.2,
+        device: torch.device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu"),
     ):
         super().__init__()
         self.use_moco = use_moco
-        # Initialize encoder
+        self.device = device
+
+        # Initialize core VAE components
         self.encoder = Encoder(state_dim, hidden_dim, action_dim, use_ode).to(device)
         self.decoder = Decoder(state_dim, hidden_dim, action_dim, loss_mode).to(device)
 
+        # Initialize Neural ODE solver if enabled
         if use_ode:
-            self.ode_solver = LatentODEfunc(action_dim)
+            self.ode_function = LatentODEFunction(action_dim)
+
+        # Initialize Momentum Contrast if enabled
         if self.use_moco:
-            self.encoder_k = Encoder(state_dim, hidden_dim, action_dim, use_ode).to(
-                device
-            )
-            self.moco = MoCo(
+            self.encoder_key = Encoder(state_dim, hidden_dim, action_dim, use_ode).to(device)
+            self.momentum_contrast = MomentumContrast(
                 self.encoder,
-                self.encoder_k,
+                self.encoder_key,
                 state_dim,
-                dim=action_dim,
-                T=moco_T,
+                embedding_dim=action_dim,
+                temperature=moco_temperature,
                 device=device,
             )
-        # Information bottleneck layers
-        self.latent_encoder = nn.Linear(action_dim, i_dim).to(device)
-        self.latent_decoder = nn.Linear(i_dim, action_dim).to(device)
 
-    def forward(self, x: torch.Tensor, x_q: torch.Tensor = None, x_k: torch.Tensor = None) -> Tuple[torch.Tensor, ...]:
+        # Information bottleneck components
+        self.bottleneck_encoder = nn.Linear(action_dim, i_dim).to(device)
+        self.bottleneck_decoder = nn.Linear(i_dim, action_dim).to(device)
+
+    def forward(
+        self,
+        x: torch.Tensor,
+        x_query: Optional[torch.Tensor] = None,
+        x_key: Optional[torch.Tensor] = None,
+    ) -> Tuple[torch.Tensor, ...]:
         """
         Forward pass through the VAE.
 
         Parameters
         ----------
         x : torch.Tensor
-            Input tensor
+            Primary input tensor
+        x_query : torch.Tensor, optional
+            Query samples for contrastive learning (required if use_moco=True)
+        x_key : torch.Tensor, optional
+            Key samples for contrastive learning (required if use_moco=True)
 
         Returns
         -------
         Tuple[torch.Tensor, ...]
-            - q_z: sampled latent vector
-            - q_m: mean of encoding distribution
-            - q_s: log variance of encoding distribution
-            - pred_x: reconstructed input (direct path)
-            - le: encoded information bottleneck
-            - ld: decoded information bottleneck
-            - pred_xl: reconstructed input (bottleneck path)
+            Variable-length tuple containing:
+            - Latent samples, means, log variances
+            - Reconstructions (direct and bottleneck paths)
+            - ODE-based results (if use_ode=True)
+            - Contrastive learning outputs (if use_moco=True)
         """
-        # Encode
+        # Encode input
         if self.encoder.use_ode:
-            q_z, q_m, q_s, t = self.encoder(x)
-
-            idxs = torch.argsort(t)
-            t = t[idxs]
-            q_z = q_z[idxs]
-            q_m = q_m[idxs]
-            q_s = q_s[idxs]
-            x = x[idxs]
-
-            unique_mask = torch.ones_like(t, dtype=torch.bool)
-            unique_mask[1:] = t[1:] != t[:-1]
-
-            t = t[unique_mask]
-            q_z = q_z[unique_mask]
-            q_m = q_m[unique_mask]
-            q_s = q_s[unique_mask]
-            x = x[unique_mask]
-
-            z0 = q_z[0]
-            q_z_ode = self.solve_ode(self.ode_solver, z0, t)
-            # Information bottleneck
-            le = self.latent_encoder(q_z)
-            ld = self.latent_decoder(le)
-
-            le_ode = self.latent_encoder(q_z_ode)
-            ld_ode = self.latent_decoder(le_ode)
-
-            if self.decoder.loss_mode == "zinb":
-                pred_x, dropout_logits = self.decoder(q_z)
-                pred_xl, dropout_logitsl = self.decoder(ld)
-                pred_x_ode, dropout_logits_ode = self.decoder(q_z_ode)
-                pred_xl_ode, dropout_logitsl_ode = self.decoder(ld_ode)
-                if self.use_moco:
-                    logits, labels = self.moco(x_q, x_k)
-                    return (
-                        q_z,
-                        q_m,
-                        q_s,
-                        x,
-                        pred_x,
-                        dropout_logits,
-                        le,
-                        le_ode,
-                        pred_xl,
-                        dropout_logitsl,
-                        q_z_ode,
-                        pred_x_ode,
-                        dropout_logits_ode,
-                        pred_xl_ode,
-                        dropout_logitsl_ode,
-                        logits,
-                        labels
-                    )
-                else:
-                    return (
-                        q_z,
-                        q_m,
-                        q_s,
-                        x,
-                        pred_x,
-                        dropout_logits,
-                        le,
-                        le_ode,
-                        pred_xl,
-                        dropout_logitsl,
-                        q_z_ode,
-                        pred_x_ode,
-                        dropout_logits_ode,
-                        pred_xl_ode,
-                        dropout_logitsl_ode,
-                    )
-            else:
-                pred_x = self.decoder(q_z)
-                pred_xl = self.decoder(ld)
-                pred_x_ode = self.decoder(q_z_ode)
-                pred_xl_ode = self.decoder(ld_ode)
-                if self.use_moco:
-                    logits, labels = self.moco(x_q, x_k)
-                    return (
-                        q_z,
-                        q_m,
-                        q_s,
-                        x,
-                        pred_x,
-                        le,
-                        le_ode,
-                        pred_xl,
-                        q_z_ode,
-                        pred_x_ode,
-                        pred_xl_ode,
-                        logits,
-                        labels
-                    )
-                else:
-                    return (
-                        q_z,
-                        q_m,
-                        q_s,
-                        x,
-                        pred_x,
-                        le,
-                        le_ode,
-                        pred_xl,
-                        q_z_ode,
-                        pred_x_ode,
-                        pred_xl_ode,
-                    )
-
+            return self._forward_with_ode(x, x_query, x_key)
         else:
-            q_z, q_m, q_s = self.encoder(x)
-            # Information bottleneck
-            le = self.latent_encoder(q_z)
-            ld = self.latent_decoder(le)
+            return self._forward_standard(x, x_query, x_key)
 
-            if self.decoder.loss_mode == "zinb":
-                pred_x, dropout_logits = self.decoder(q_z)
-                pred_xl, dropout_logitsl = self.decoder(ld)
-                if self.use_moco:
-                    logits, labels = self.moco(x_q, x_k)
-                    return (
-                        q_z,
-                        q_m,
-                        q_s,
-                        pred_x,
-                        dropout_logits,
-                        le,
-                        pred_xl,
-                        dropout_logitsl,
-                        logits,
-                        labels
-                    )
-                else:
-                    return (
-                        q_z,
-                        q_m,
-                        q_s,
-                        pred_x,
-                        dropout_logits,
-                        le,
-                        pred_xl,
-                        dropout_logitsl,
-                    )
-            else:
-                pred_x = self.decoder(q_z)
-                pred_xl = self.decoder(ld)
-                if self.use_moco:
-                    logits, labels = self.moco(x_q, x_k)
-                    return (q_z, q_m, q_s, pred_x, le, pred_xl, logits, labels)
-                else:
-                    return (q_z, q_m, q_s, pred_x, le, pred_xl)
+    def _forward_standard(
+        self,
+        x: torch.Tensor,
+        x_query: Optional[torch.Tensor] = None,
+        x_key: Optional[torch.Tensor] = None,
+    ) -> Tuple[torch.Tensor, ...]:
+        """Forward pass without ODE integration."""
+        # Standard encoding
+        latent_sample, latent_mean, latent_log_var = self.encoder(x)
 
+        # Information bottleneck processing
+        bottleneck_encoded = self.bottleneck_encoder(latent_sample)
+        bottleneck_decoded = self.bottleneck_decoder(bottleneck_encoded)
+
+        # Decode through both paths
+        if self.decoder.loss_mode == "zinb":
+            # Zero-inflated negative binomial outputs
+            reconstruction_direct, dropout_logits_direct = self.decoder(latent_sample)
+            reconstruction_bottleneck, dropout_logits_bottleneck = self.decoder(bottleneck_decoded)
+
+            outputs = (
+                latent_sample,
+                latent_mean,
+                latent_log_var,
+                reconstruction_direct,
+                dropout_logits_direct,
+                bottleneck_encoded,
+                reconstruction_bottleneck,
+                dropout_logits_bottleneck,
+            )
+        else:
+            # Standard outputs
+            reconstruction_direct = self.decoder(latent_sample)
+            reconstruction_bottleneck = self.decoder(bottleneck_decoded)
+
+            outputs = (
+                latent_sample,
+                latent_mean,
+                latent_log_var,
+                reconstruction_direct,
+                bottleneck_encoded,
+                reconstruction_bottleneck,
+            )
+
+        # Add contrastive learning outputs if enabled
+        if self.use_moco and x_query is not None and x_key is not None:
+            contrastive_logits, contrastive_labels = self.momentum_contrast(x_query, x_key)
+            outputs = outputs + (contrastive_logits, contrastive_labels)
+
+        return outputs
+
+    def _forward_with_ode(
+        self,
+        x: torch.Tensor,
+        x_query: Optional[torch.Tensor] = None,
+        x_key: Optional[torch.Tensor] = None,
+    ) -> Tuple[torch.Tensor, ...]:
+        """Forward pass with ODE integration."""
+        # Encoding with time prediction
+        latent_sample, latent_mean, latent_log_var, time_param = self.encoder(x)
+
+        # Sort by time for ODE integration
+        time_sorted_indices = torch.argsort(time_param)
+        time_sorted = time_param[time_sorted_indices]
+        latent_sorted = latent_sample[time_sorted_indices]
+        latent_mean_sorted = latent_mean[time_sorted_indices]
+        latent_log_var_sorted = latent_log_var[time_sorted_indices]
+        x_sorted = x[time_sorted_indices]
+
+        # Remove duplicate time points
+        unique_mask = torch.ones_like(time_sorted, dtype=torch.bool)
+        unique_mask[1:] = time_sorted[1:] != time_sorted[:-1]
+
+        time_unique = time_sorted[unique_mask]
+        latent_unique = latent_sorted[unique_mask]
+        latent_mean_unique = latent_mean_sorted[unique_mask]
+        latent_log_var_unique = latent_log_var_sorted[unique_mask]
+        x_unique = x_sorted[unique_mask]
+
+        # Solve ODE from initial condition
+        initial_state = latent_unique[0]
+        ode_solution = self.solve_ode(self.ode_function, initial_state, time_unique)
+
+        # Information bottleneck processing
+        bottleneck_encoded = self.bottleneck_encoder(latent_unique)
+        bottleneck_decoded = self.bottleneck_decoder(bottleneck_encoded)
+
+        bottleneck_encoded_ode = self.bottleneck_encoder(ode_solution)
+        bottleneck_decoded_ode = self.bottleneck_decoder(bottleneck_encoded_ode)
+
+        # Generate reconstructions
+        if self.decoder.loss_mode == "zinb":
+            # ZINB outputs
+            reconstruction_direct, dropout_direct = self.decoder(latent_unique)
+            reconstruction_bottleneck, dropout_bottleneck = self.decoder(bottleneck_decoded)
+            reconstruction_ode, dropout_ode = self.decoder(ode_solution)
+            reconstruction_bottleneck_ode, dropout_bottleneck_ode = self.decoder(bottleneck_decoded_ode)
+
+            outputs = (
+                latent_unique,
+                latent_mean_unique,
+                latent_log_var_unique,
+                x_unique,
+                reconstruction_direct,
+                dropout_direct,
+                bottleneck_encoded,
+                bottleneck_encoded_ode,
+                reconstruction_bottleneck,
+                dropout_bottleneck,
+                ode_solution,
+                reconstruction_ode,
+                dropout_ode,
+                reconstruction_bottleneck_ode,
+                dropout_bottleneck_ode,
+            )
+        else:
+            # Standard outputs
+            reconstruction_direct = self.decoder(latent_unique)
+            reconstruction_bottleneck = self.decoder(bottleneck_decoded)
+            reconstruction_ode = self.decoder(ode_solution)
+            reconstruction_bottleneck_ode = self.decoder(bottleneck_decoded_ode)
+
+            outputs = (
+                latent_unique,
+                latent_mean_unique,
+                latent_log_var_unique,
+                x_unique,
+                reconstruction_direct,
+                bottleneck_encoded,
+                bottleneck_encoded_ode,
+                reconstruction_bottleneck,
+                ode_solution,
+                reconstruction_ode,
+                reconstruction_bottleneck_ode,
+            )
+
+        # Add contrastive learning outputs if enabled
+        if self.use_moco and x_query is not None and x_key is not None:
+            contrastive_logits, contrastive_labels = self.momentum_contrast(x_query, x_key)
+            outputs = outputs + (contrastive_logits, contrastive_labels)
+
+        return outputs
