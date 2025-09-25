@@ -23,6 +23,14 @@ MCC is a sophisticated deep learning framework for single-cell genomics analysis
     pip install -r requirements.txt
     ```
 
+## UI
+
+Visualization training
+
+```bash
+python start_servers.py
+```
+
 ## Usage
 
 The primary interface for using MCC is the `Agent` class. Here's a basic example of how to train a model and extract latent representations:
