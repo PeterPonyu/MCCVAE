@@ -614,7 +614,7 @@ class envMixin:
         n_off_diagonal = n_dims * n_dims - n_dims
         mean_correlation = off_diagonal_sum / n_off_diagonal if n_off_diagonal > 0 else 0.0
         
-        return float(mean_correlation)
+        return mean_correlation
 
     def _compute_metrics(
         self, 

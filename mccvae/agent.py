@@ -16,6 +16,7 @@ import torch
 import tqdm
 from typing import Literal
 import numpy as np
+import warnings
 
 
 
@@ -293,7 +294,6 @@ class Agent(Env):
         """
         # TODO: Implement true refined representation extraction (l_d = f_dec(l_e))
         # For now, return bottleneck as proxy
-        import warnings
         warnings.warn(
             "get_refined() currently returns bottleneck embeddings (l_e) as a placeholder. "
             "True refined representations (l_d) are not yet implemented. "
