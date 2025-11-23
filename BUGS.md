@@ -122,13 +122,19 @@ if 'counts' not in adata.layers:
 
 **Solution**: Added wrapper methods that provide the documented API:
 - `get_bottleneck()`: Returns bottleneck embeddings (l_e) - alias for `get_iembed()`
-- `get_refined()`: Returns refined representations (l_d) - currently returns bottleneck as proxy
+- `get_refined()`: Placeholder that returns bottleneck embeddings with a warning
 
-**Note**: The `get_refined()` method currently returns bottleneck embeddings as a proxy since the true refined representations (after bottleneck decoder) are not explicitly extracted in the current implementation. A TODO comment has been added for future enhancement.
+**Note**: The `get_refined()` method is currently a PLACEHOLDER that returns bottleneck 
+embeddings (l_e) and emits a FutureWarning. In the true MCCVAE architecture, refined 
+representations (l_d) would be obtained by decoding the bottleneck (l_d = f_dec(l_e)). 
+The implementation needs to be extended to explicitly extract and return these representations.
 
-**Severity**: MEDIUM - API completeness
+**API Naming Inconsistency**: The API endpoint uses "interpretable" while the Python code 
+uses "bottleneck"/"get_iembed()". Both refer to the same embeddings (l_e).
 
-**Status**: FIXED with proxy implementation and TODO for full implementation
+**Severity**: MEDIUM - API completeness and clarity
+
+**Status**: FIXED with placeholder implementation and FutureWarning
 
 ---
 

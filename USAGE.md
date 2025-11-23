@@ -134,10 +134,16 @@ latent = agent.get_latent()
 print(f"Latent representations: {latent.shape}")
 
 # 2. Information bottleneck embeddings (l_e)
-bottleneck = agent.get_iembed()
+# Two equivalent methods are available:
+bottleneck = agent.get_iembed()      # Original method name
+bottleneck = agent.get_bottleneck()  # Alias for consistency with README
 print(f"Bottleneck embeddings: {bottleneck.shape}")
 
-# 3. Both can be used for downstream analysis
+# Note: get_refined() is currently a placeholder that returns bottleneck embeddings
+# Future versions will implement true refined representations (l_d)
+refined = agent.get_refined()  # Currently returns same as get_iembed()
+
+# All can be used for downstream analysis
 # Add to AnnData object for visualization
 adata.obsm['X_mccvae'] = latent
 adata.obsm['X_mccvae_bottleneck'] = bottleneck
@@ -351,9 +357,12 @@ GET /download/embeddings/{embedding_type}
 # Download latent embeddings
 curl "http://localhost:8000/download/embeddings/latent" -o latent.csv
 
-# Download bottleneck embeddings
+# Download bottleneck embeddings (also called 'interpretable' in the API)
 curl "http://localhost:8000/download/embeddings/interpretable" -o bottleneck.csv
 ```
+
+**Note**: The API endpoint uses the term "interpretable" for the bottleneck embeddings,
+while the Python code uses `get_bottleneck()` or `get_iembed()`. These refer to the same embeddings.
 
 #### 6. Application Status
 ```bash
