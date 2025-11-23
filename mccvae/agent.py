@@ -239,3 +239,44 @@ class Agent(Env):
         """
         latent_representations = self.take_latent(self.dataset)
         return latent_representations
+
+    def get_bottleneck(self) -> np.ndarray:
+        """
+        Extract the compressed bottleneck embeddings (l_e) from the full dataset.
+        
+        This is an alias for get_iembed() provided for consistency with the README
+        documentation. The bottleneck embeddings represent the compressed information
+        bottleneck layer that captures biological correlations.
+        
+        Returns
+        -------
+        np.ndarray
+            Bottleneck embeddings with shape (n_cells, i_dim)
+        """
+        return self.get_iembed()
+
+    def get_refined(self) -> np.ndarray:
+        """
+        Extract the refined latent representations (l_d) from the full dataset.
+        
+        Note: In the current implementation, the refined representations are
+        computed internally during training but not directly exposed. This method
+        returns the bottleneck embeddings as a proxy, since they represent the
+        refined compressed representations.
+        
+        For true refined representations after bottleneck decoding, the internal
+        implementation would need to be extended to store and return l_d explicitly.
+        
+        Returns
+        -------
+        np.ndarray
+            Refined embeddings with shape (n_cells, i_dim) (currently returns bottleneck)
+        
+        Warning
+        -------
+        This method currently returns bottleneck embeddings. To get true refined
+        representations (l_d = f_dec(l_e)), the implementation needs to be extended.
+        """
+        # TODO: Implement true refined representation extraction
+        # Currently returns bottleneck as proxy
+        return self.get_iembed()

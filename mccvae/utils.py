@@ -127,6 +127,8 @@ def fetch_score(
     """
     # Subsample for computational efficiency if dataset is large
     if adata1.shape[0] > 3000:
+        # NOTE: Same redundancy as in environment.py - permutation then choice is redundant
+        # Could be simplified to: subsample_indices = np.random.permutation(adata1.shape[0])[:3000]
         subsample_indices = np.random.choice(
             np.random.permutation(adata1.shape[0]), 3000, replace=False
         )
