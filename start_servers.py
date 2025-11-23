@@ -81,9 +81,11 @@ def start_frontend_server(frontend_dir="./out", port=3000):
         return False
     except KeyboardInterrupt:
         log("🛑 Frontend server stopped")
-        os.chdir(original_dir)
+        # NOTE: Directory restoration is handled in finally block
         return True
     finally:
+        # Restore original directory regardless of how we exit
+        # This ensures we don't leave the process in the wrong directory
         os.chdir(original_dir)
 
 def start_backend_server(api_module="api", port=8000):

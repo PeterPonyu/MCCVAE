@@ -334,7 +334,8 @@ class MCCVAE(scviMixin, dipMixin, betatcMixin, infoMixin):
             ).sum(-1).mean()
             
             if self.irecon_weight:
-                reconstruction_bottleneck_normalized = reconstruction_bottleneck * normalization_factor
+                # BUG FIX: Add numerical stability epsilon to prevent log(0) errors
+                reconstruction_bottleneck_normalized = reconstruction_bottleneck * normalization_factor + self.NUMERICAL_STABILITY_EPS
                 info_reconstruction_loss = -self.irecon_weight * self._log_nb(
                     states_query, reconstruction_bottleneck_normalized, dispersion
                 ).sum(-1).mean()

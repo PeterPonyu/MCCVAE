@@ -16,6 +16,7 @@ import torch
 import tqdm
 from typing import Literal
 import numpy as np
+import warnings
 
 
 
@@ -239,3 +240,64 @@ class Agent(Env):
         """
         latent_representations = self.take_latent(self.dataset)
         return latent_representations
+
+    def get_bottleneck(self) -> np.ndarray:
+        """
+        Extract the compressed bottleneck embeddings (l_e) from the full dataset.
+        
+        This is an alias for get_iembed() provided for consistency with the README
+        documentation. The bottleneck embeddings represent the compressed information
+        bottleneck layer that captures biological correlations.
+        
+        Returns
+        -------
+        np.ndarray
+            Bottleneck embeddings with shape (n_cells, i_dim)
+        """
+        return self.get_iembed()
+
+    def get_refined(self) -> np.ndarray:
+        """
+        Extract the refined latent representations (l_d) from the full dataset.
+        
+        **IMPORTANT**: This method is currently a PLACEHOLDER implementation.
+        It returns the bottleneck embeddings (l_e) as a proxy for refined representations.
+        
+        In the full MCCVAE architecture, refined representations (l_d) are obtained by:
+        1. Encoding data to latent space (z)
+        2. Compressing through bottleneck encoder to get l_e
+        3. Expanding through bottleneck decoder to get l_d
+        4. Using l_d for secondary reconstruction
+        
+        The current implementation only returns step 2 (l_e). To get true refined
+        representations (step 3), the implementation needs to be extended to explicitly
+        extract and return the bottleneck-decoded representations.
+        
+        **Use get_iembed() or get_bottleneck() for bottleneck embeddings instead.**
+        
+        Returns
+        -------
+        np.ndarray
+            Currently returns bottleneck embeddings (l_e) with shape (n_cells, i_dim)
+            Future versions will return refined representations (l_d) with shape (n_cells, latent_dim)
+        
+        Warning
+        -------
+        This method does NOT currently return true refined representations (l_d).
+        It returns bottleneck embeddings (l_e) as a placeholder.
+        
+        See Also
+        --------
+        get_iembed : Get information bottleneck embeddings (l_e)
+        get_bottleneck : Alias for get_iembed()
+        get_latent : Get primary latent representations (z)
+        """
+        # TODO: Implement true refined representation extraction (l_d = f_dec(l_e))
+        # For now, return bottleneck as proxy
+        warnings.warn(
+            "get_refined() currently returns bottleneck embeddings (l_e) as a placeholder. "
+            "True refined representations (l_d) are not yet implemented. "
+            "Use get_bottleneck() or get_iembed() for explicit bottleneck access.",
+            FutureWarning
+        )
+        return self.get_iembed()

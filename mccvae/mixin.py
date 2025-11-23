@@ -598,7 +598,21 @@ class envMixin:
         correlation_matrix = abs(np.corrcoef(latent_representation.T))
         
         # Average correlation excluding diagonal (subtract 1 for self-correlation)
-        mean_correlation = correlation_matrix.sum(axis=1).mean().item() - 1
+        # BUG FIX: The original implementation incorrectly computed the mean
+        # It should properly exclude the diagonal elements (which are always 1)
+        # Original: correlation_matrix.sum(axis=1).mean().item() - 1
+        # Corrected: Explicitly exclude diagonal
+        n_dims = correlation_matrix.shape[0]
+        if n_dims <= 1:
+            # Edge case: only one dimension, no off-diagonal correlations
+            return 0.0
+        
+        # Sum all correlations and subtract diagonal, then divide by number of off-diagonal elements
+        total_correlation = correlation_matrix.sum()
+        diagonal_sum = np.trace(correlation_matrix)
+        off_diagonal_sum = total_correlation - diagonal_sum
+        n_off_diagonal = n_dims * n_dims - n_dims
+        mean_correlation = off_diagonal_sum / n_off_diagonal if n_off_diagonal > 0 else 0.0
         
         return mean_correlation
 

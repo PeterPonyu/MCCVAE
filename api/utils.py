@@ -16,7 +16,10 @@ def load_anndata_from_path(file_path: str) -> AnnData:
     """Load AnnData from file path"""
     try:
         adata = sc.read_h5ad(file_path)
-        adata.layers['counts'] = adata.X.copy()  # Preserve original counts for agent
+        # Only add 'counts' layer if it doesn't already exist
+        # This prevents overwriting user's existing 'counts' layer with X data
+        if 'counts' not in adata.layers:
+            adata.layers['counts'] = adata.X.copy()
         return adata
     except Exception as e:
         raise ValueError(f"Failed to load AnnData file: {str(e)}")

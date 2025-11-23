@@ -232,6 +232,9 @@ class Env(MCCVAE, envMixin):
         shuffled_indices = np.random.permutation(self.n_observations)
         
         # Select batch_size indices randomly
+        # NOTE: This is redundant since we're already shuffling above
+        # Could be simplified to: selected_indices = shuffled_indices[:self.batch_size]
+        # However, keeping for backward compatibility and explicit randomness
         selected_indices = np.random.choice(shuffled_indices, self.batch_size, replace=False)
         
         # Extract the corresponding cell expression data
@@ -293,6 +296,8 @@ class Env(MCCVAE, envMixin):
             
             # Gaussian noise injection: add noise to randomly selected genes
             # This simulates technical noise in single-cell measurements
+            # NOTE: Noise is applied AFTER masking, so masked genes remain zero
+            # and only non-masked genes receive noise
             noise_pattern = np.random.choice(
                 [True, False], 
                 size=self.n_variables, 
@@ -308,6 +313,8 @@ class Env(MCCVAE, envMixin):
                 profile_array[:, noise_pattern] += noise_values
         
         # Ensure non-negative values for count data compatibility
+        # NOTE: This clipping is important because Gaussian noise can produce negative values
+        # which would be invalid for count-based loss functions (NB, ZINB)
         profile_array = np.clip(profile_array, 0, None)
         
         # Return in the same format as input
