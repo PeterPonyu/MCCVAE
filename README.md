@@ -55,14 +55,22 @@ agent = Agent(
 agent.fit(epochs=1000)
 
 # Extract the primary latent representations (z)
+# Shape: (n_cells, latent_dim) - captures overall biological structure
 latent_representations = agent.get_latent()
 
 # Extract the compressed bottleneck embeddings (l_e)
+# Shape: (n_cells, i_dim) - low-dimensional coupled representations
 bottleneck_embeddings = agent.get_bottleneck()
 
 # Extract the refined latent representations (l_d)
+# Shape: (n_cells, latent_dim) - bottleneck-refined representations
 refined_embeddings = agent.get_refined()
 ```
+
+**Note on Embeddings:**
+- **z (via `get_latent()`)**: Primary latent space representations with dimension `latent_dim`
+- **l_e (via `get_bottleneck()` or `get_iembed()`)**: Compressed bottleneck with dimension `i_dim` (typically 2)
+- **l_d (via `get_refined()`)**: Refined representations obtained by decoding l_e back to `latent_dim`
 
 ## Architecture Overview
 
@@ -81,8 +89,11 @@ The MCC framework integrates three key components:
 
 ### 3. Coupling Component
 - **Information Bottleneck**: Compresses z → l_e → l_d pathway
-- **Latent Encoder/Decoder**: f_enc and f_dec functions for bottleneck
+  - **l_e (bottleneck_encoded)**: Compressed representation via `bottleneck_encoder`, dimension `i_dim`
+  - **l_d (bottleneck_decoded)**: Refined representation via `bottleneck_decoder`, dimension `latent_dim`
+- **Latent Encoder/Decoder**: Linear transformations `f_enc: latent_dim → i_dim` and `f_dec: i_dim → latent_dim`
 - **Coupling Reconstruction**: Secondary reconstruction path through refined latent l_d
+- **Accessible via**: `get_bottleneck()` for l_e, `get_refined()` for l_d
 
 ## Loss Function
 
