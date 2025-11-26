@@ -211,6 +211,10 @@ class MCCVAE(scviMixin, dipMixin, betatcMixin, infoMixin):
         bottleneck, capturing essential biological correlations while filtering
         out noise.
         
+        Note: This method requires the VAE model to have bottleneck_encoder and
+        bottleneck_decoder components, which are always present in the MCCVAE
+        architecture as defined in module.py.
+        
         Parameters
         ----------
         state : np.ndarray
@@ -231,6 +235,7 @@ class MCCVAE(scviMixin, dipMixin, betatcMixin, infoMixin):
         latent_repr = latent_means if self.use_qm else latent_samples
         
         # Apply bottleneck encoding then decoding to get refined representation
+        # These components are guaranteed to exist in the MCCVAE architecture
         bottleneck_encoded = self.vae_model.bottleneck_encoder(latent_repr)
         bottleneck_decoded = self.vae_model.bottleneck_decoder(bottleneck_encoded)
         

@@ -283,5 +283,4 @@ class Agent(Env):
         get_bottleneck : Alias for get_iembed()
         get_latent : Get primary latent representations (z)
         """
-        refined_representations = self.take_refined(self.dataset)
-        return refined_representations
+        return self.take_refined(self.dataset)
