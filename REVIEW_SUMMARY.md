@@ -122,3 +122,17 @@ All fixes have been validated with comprehensive tests:
 ## Conclusion
 
 All critical discrepancies between documentation and source code have been resolved. The MCCVAE package now functions exactly as described in its documentation, with proper implementation of all three embedding extraction methods.
+
+## Validation
+
+A comprehensive validation script (`validate_installation.py`) is included to verify:
+- Package installation and imports
+- All required dependencies
+- Agent creation and training
+- All embedding extraction methods (get_latent, get_bottleneck, get_refined)
+- Correct dimensions and architecture
+
+Run validation:
+```bash
+python validate_installation.py
+```
