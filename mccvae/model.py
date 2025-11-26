@@ -196,6 +196,51 @@ class MCCVAE(scviMixin, dipMixin, betatcMixin, infoMixin):
                 
         return bottleneck_encoded.cpu().numpy()
 
+    @torch.no_grad()
+    def take_refined(self, state: np.ndarray) -> np.ndarray:
+        """
+        Extract refined latent representations (l_d) from input states.
+        
+        The refined representations are obtained by:
+        1. Encoding input to latent space (z)
+        2. Compressing through bottleneck encoder to get l_e
+        3. Expanding through bottleneck decoder to get l_d
+        
+        These l_d representations have the same dimensionality as the original
+        latent space (latent_dim) but have been refined through the information
+        bottleneck, capturing essential biological correlations while filtering
+        out noise.
+        
+        Note: This method requires the VAE model to have bottleneck_encoder and
+        bottleneck_decoder components, which are always present in the MCCVAE
+        architecture as defined in module.py.
+        
+        Parameters
+        ----------
+        state : np.ndarray
+            Input states to encode
+            
+        Returns
+        -------
+        np.ndarray
+            Refined latent representations (l_d) with shape (n_cells, latent_dim)
+        """
+        state_tensor = torch.tensor(state, dtype=torch.float).to(self.device)
+        
+        # Get latent representation
+        encoder_outputs = self.vae_model.encoder(state_tensor)
+        latent_samples, latent_means, latent_log_vars = encoder_outputs
+        
+        # Use mean or sample based on use_qm flag
+        latent_repr = latent_means if self.use_qm else latent_samples
+        
+        # Apply bottleneck encoding then decoding to get refined representation
+        # These components are guaranteed to exist in the MCCVAE architecture
+        bottleneck_encoded = self.vae_model.bottleneck_encoder(latent_repr)
+        bottleneck_decoded = self.vae_model.bottleneck_decoder(bottleneck_encoded)
+        
+        return bottleneck_decoded.cpu().numpy()
+
     def update(self, *states: tuple) -> None:
         """
         Perform one training step with the given states.

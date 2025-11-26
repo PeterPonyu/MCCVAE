@@ -3,3 +3,6 @@ torch
 tqdm
 uvicorn
 fastapi
+torchdiffeq
+python-igraph
+leidenalg
