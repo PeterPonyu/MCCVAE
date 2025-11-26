@@ -139,14 +139,16 @@ bottleneck = agent.get_iembed()      # Original method name
 bottleneck = agent.get_bottleneck()  # Alias for consistency with README
 print(f"Bottleneck embeddings: {bottleneck.shape}")
 
-# Note: get_refined() is currently a placeholder that returns bottleneck embeddings
-# Future versions will implement true refined representations (l_d)
-refined = agent.get_refined()  # Currently returns same as get_iembed()
+# 3. Refined latent representations (l_d)
+# These are obtained by decoding the bottleneck embeddings back to latent dimension
+refined = agent.get_refined()  # Returns l_d with shape (n_cells, latent_dim)
+print(f"Refined representations: {refined.shape}")
 
 # All can be used for downstream analysis
 # Add to AnnData object for visualization
 adata.obsm['X_mccvae'] = latent
 adata.obsm['X_mccvae_bottleneck'] = bottleneck
+adata.obsm['X_mccvae_refined'] = refined
 ```
 
 ### Visualization with Scanpy
