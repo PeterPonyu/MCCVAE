@@ -193,6 +193,13 @@ def build_knn_graph(features: np.ndarray, num_clusters: int) -> Tuple[np.ndarray
     neighbor_num = max(5, min(15, average_num // 10))
 
     dis_matrix = squareform(pdist(features, metric='correlation'))
+    
+    # Handle NaN values that can occur with correlation distance
+    # Replace NaN with maximum finite distance or 2.0 (max correlation distance)
+    if np.isnan(dis_matrix).any():
+        max_dist = np.nanmax(dis_matrix) if not np.isnan(dis_matrix).all() else 2.0
+        dis_matrix = np.nan_to_num(dis_matrix, nan=max_dist)
+ 
     nbrs = NearestNeighbors(n_neighbors=neighbor_num, metric='precomputed').fit(dis_matrix)
     _, indices = nbrs.kneighbors(dis_matrix)
 
