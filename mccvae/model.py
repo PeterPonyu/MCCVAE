@@ -89,18 +89,20 @@ class MCCVAE(scviMixin, dipMixin, betatcMixin, infoMixin):
         latent_dim: int,
         i_dim: int,
         use_moco: bool,
-        loss_mode: str,
-        lr: float,
-        vae_reg: float,
-        moco_weight: float,
-        use_qm: bool,
-        moco_T: float,
-        device: torch.device,
+        use_bn: bool = True,
+        loss_mode: str = "nb",
+        lr: float = 1e-4,
+        vae_reg: float = 0.5,
+        moco_weight: float = 1.0,
+        use_qm: bool = True,
+        moco_T: float = 0.2,
+        device: torch.device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu"),
         *args,
         **kwargs,
     ):
         # Store configuration parameters
         self.use_moco = use_moco
+        self.use_bn = use_bn
         self.use_qm = use_qm
         self.loss_mode = loss_mode
         
@@ -124,6 +126,7 @@ class MCCVAE(scviMixin, dipMixin, betatcMixin, infoMixin):
             action_dim=latent_dim,
             i_dim=i_dim,
             use_moco=use_moco,
+            use_bn=use_bn,
             loss_mode=loss_mode,
             moco_temperature=moco_T,
             device=device,
@@ -177,8 +180,12 @@ class MCCVAE(scviMixin, dipMixin, betatcMixin, infoMixin):
         Returns
         -------
         np.ndarray
-            Information bottleneck embeddings
+            Information bottleneck embeddings (or latent if use_bn=False)
         """
+        if not self.use_bn:
+            # When bottleneck is disabled, return latent representations instead
+            return self.take_latent(state)
+        
         state_tensor = torch.tensor(state, dtype=torch.float).to(self.device)
         model_outputs = self.vae_model(state_tensor)
         
@@ -224,7 +231,12 @@ class MCCVAE(scviMixin, dipMixin, betatcMixin, infoMixin):
         -------
         np.ndarray
             Refined latent representations (l_d) with shape (n_cells, latent_dim)
+            If use_bn=False, returns the same as take_latent (no refinement)
         """
+        if not self.use_bn:
+            # When bottleneck is disabled, return latent representations instead
+            return self.take_latent(state)
+        
         state_tensor = torch.tensor(state, dtype=torch.float).to(self.device)
         
         # Get latent representation
@@ -316,17 +328,27 @@ class MCCVAE(scviMixin, dipMixin, betatcMixin, infoMixin):
 
     def _compute_zinb_losses(self, outputs: tuple, states_query: torch.Tensor) -> Tuple[torch.Tensor, ...]:
         """Compute loss components for ZINB loss mode."""
-        # Parse outputs
-        if self.use_moco:
-            (latent_samples, latent_means, latent_log_vars, reconstruction_direct,
-             dropout_logits_direct, bottleneck_encoded, reconstruction_bottleneck,
-             dropout_logits_bottleneck, contrastive_logits, contrastive_labels) = outputs
-            contrastive_loss = self.contrastive_criterion(contrastive_logits, contrastive_labels)
+        # Parse outputs based on use_bn and use_moco
+        if self.use_bn:
+            if self.use_moco:
+                (latent_samples, latent_means, latent_log_vars, reconstruction_direct,
+                 dropout_logits_direct, bottleneck_encoded, reconstruction_bottleneck,
+                 dropout_logits_bottleneck, contrastive_logits, contrastive_labels) = outputs
+                contrastive_loss = self.contrastive_criterion(contrastive_logits, contrastive_labels)
+            else:
+                (latent_samples, latent_means, latent_log_vars, reconstruction_direct,
+                 dropout_logits_direct, bottleneck_encoded, reconstruction_bottleneck,
+                 dropout_logits_bottleneck) = outputs
+                contrastive_loss = torch.zeros(1).to(self.device)
         else:
-            (latent_samples, latent_means, latent_log_vars, reconstruction_direct,
-             dropout_logits_direct, bottleneck_encoded, reconstruction_bottleneck,
-             dropout_logits_bottleneck) = outputs
-            contrastive_loss = torch.zeros(1).to(self.device)
+            if self.use_moco:
+                (latent_samples, latent_means, latent_log_vars, reconstruction_direct,
+                 dropout_logits_direct, contrastive_logits, contrastive_labels) = outputs
+                contrastive_loss = self.contrastive_criterion(contrastive_logits, contrastive_labels)
+            else:
+                (latent_samples, latent_means, latent_log_vars, reconstruction_direct,
+                 dropout_logits_direct) = outputs
+                contrastive_loss = torch.zeros(1).to(self.device)
         
         # Prepare normalization and dispersion
         normalization_factor = states_query.sum(-1).view(-1, 1)
@@ -338,8 +360,8 @@ class MCCVAE(scviMixin, dipMixin, betatcMixin, infoMixin):
             states_query, reconstruction_normalized, dispersion, dropout_logits_direct
         ).sum(-1).mean()
         
-        # Information reconstruction loss
-        if self.irecon_weight:
+        # Information reconstruction loss (only when bottleneck is enabled)
+        if self.use_bn and self.irecon_weight:
             reconstruction_bottleneck_normalized = reconstruction_bottleneck * normalization_factor + self.NUMERICAL_STABILITY_EPS
             info_reconstruction_loss = -self.irecon_weight * self._log_zinb(
                 states_query, reconstruction_bottleneck_normalized, dispersion, dropout_logits_bottleneck
@@ -357,16 +379,25 @@ class MCCVAE(scviMixin, dipMixin, betatcMixin, infoMixin):
 
     def _compute_standard_losses(self, outputs: tuple, states_query: torch.Tensor) -> Tuple[torch.Tensor, ...]:
         """Compute loss components for NB or MSE loss modes."""
-        # Parse outputs
-        if self.use_moco:
-            (latent_samples, latent_means, latent_log_vars, reconstruction_direct,
-             bottleneck_encoded, reconstruction_bottleneck,
-             contrastive_logits, contrastive_labels) = outputs
-            contrastive_loss = self.contrastive_criterion(contrastive_logits, contrastive_labels)
+        # Parse outputs based on use_bn and use_moco
+        if self.use_bn:
+            if self.use_moco:
+                (latent_samples, latent_means, latent_log_vars, reconstruction_direct,
+                 bottleneck_encoded, reconstruction_bottleneck,
+                 contrastive_logits, contrastive_labels) = outputs
+                contrastive_loss = self.contrastive_criterion(contrastive_logits, contrastive_labels)
+            else:
+                (latent_samples, latent_means, latent_log_vars, reconstruction_direct,
+                 bottleneck_encoded, reconstruction_bottleneck) = outputs
+                contrastive_loss = torch.zeros(1).to(self.device)
         else:
-            (latent_samples, latent_means, latent_log_vars, reconstruction_direct,
-             bottleneck_encoded, reconstruction_bottleneck) = outputs
-            contrastive_loss = torch.zeros(1).to(self.device)
+            if self.use_moco:
+                (latent_samples, latent_means, latent_log_vars, reconstruction_direct,
+                 contrastive_logits, contrastive_labels) = outputs
+                contrastive_loss = self.contrastive_criterion(contrastive_logits, contrastive_labels)
+            else:
+                (latent_samples, latent_means, latent_log_vars, reconstruction_direct) = outputs
+                contrastive_loss = torch.zeros(1).to(self.device)
         
         # Compute reconstruction losses based on mode
         if self.loss_mode == "nb":
@@ -378,7 +409,8 @@ class MCCVAE(scviMixin, dipMixin, betatcMixin, infoMixin):
                 states_query, reconstruction_normalized, dispersion
             ).sum(-1).mean()
             
-            if self.irecon_weight:
+            # Information reconstruction loss (only when bottleneck is enabled)
+            if self.use_bn and self.irecon_weight:
                 # BUG FIX: Add numerical stability epsilon to prevent log(0) errors
                 reconstruction_bottleneck_normalized = reconstruction_bottleneck * normalization_factor + self.NUMERICAL_STABILITY_EPS
                 info_reconstruction_loss = -self.irecon_weight * self._log_nb(
@@ -391,7 +423,8 @@ class MCCVAE(scviMixin, dipMixin, betatcMixin, infoMixin):
                 states_query, reconstruction_direct, reduction="none"
             ).sum(-1).mean()
             
-            if self.irecon_weight:
+            # Information reconstruction loss (only when bottleneck is enabled)
+            if self.use_bn and self.irecon_weight:
                 info_reconstruction_loss = self.irecon_weight * F.mse_loss(
                     states_query, reconstruction_bottleneck, reduction="none"
                 ).sum(-1).mean()

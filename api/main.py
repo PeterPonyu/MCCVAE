@@ -170,6 +170,7 @@ async def start_training(
             latent_dim=parameters.latent_dim,
             i_dim=parameters.i_dim,
             use_moco=parameters.use_moco,
+            use_bn=parameters.use_bn,
             loss_mode=parameters.loss_mode,
             lr=parameters.lr,
             vae_reg=parameters.vae_reg,

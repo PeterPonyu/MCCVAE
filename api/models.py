@@ -104,6 +104,7 @@ class AgentParameters(BaseModel):
     hidden_dim: int = Field(default=128, gt=0, description="Hidden layer dimension")
     latent_dim: int = Field(default=10, gt=0, description="Primary latent dimension")
     i_dim: int = Field(default=2, gt=0, description="Information bottleneck latent dimension")
+    use_bn: bool = Field(default=True, description="Use batch normalization in encoder/decoder")
     
     # Training parameters
     lr: float = Field(default=1e-4, gt=0.0, description="Learning rate")

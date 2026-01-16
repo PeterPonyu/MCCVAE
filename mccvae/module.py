@@ -396,12 +396,14 @@ class VAE(nn.Module):
         action_dim: int,
         i_dim: int,
         use_moco: bool,
+        use_bn: bool = True,
         loss_mode: Literal["mse", "nb", "zinb"] = "nb",
         moco_temperature: float = 0.2,
         device: torch.device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu"),
     ):
         super().__init__()
         self.use_moco = use_moco
+        self.use_bn = use_bn
         self.device = device
 
         # Initialize core VAE components
@@ -456,40 +458,58 @@ class VAE(nn.Module):
         # Standard encoding
         latent_sample, latent_mean, latent_log_var = self.encoder(x)
 
-        # Information bottleneck processing for coupled biological representations
-        # This learns compressed representations that maintain biological correlations
-        bottleneck_encoded = self.bottleneck_encoder(latent_sample)
-        bottleneck_decoded = self.bottleneck_decoder(bottleneck_encoded)
-
-        # Decode through both paths
+        # Decode through direct path
         if self.decoder.loss_mode == "zinb":
-            # Zero-inflated negative binomial outputs for sparse count data
             reconstruction_direct, dropout_logits_direct = self.decoder(latent_sample)
-            reconstruction_bottleneck, dropout_logits_bottleneck = self.decoder(bottleneck_decoded)
-
-            outputs = (
-                latent_sample,
-                latent_mean,
-                latent_log_var,
-                reconstruction_direct,
-                dropout_logits_direct,
-                bottleneck_encoded,
-                reconstruction_bottleneck,
-                dropout_logits_bottleneck,
-            )
         else:
-            # Standard outputs for MSE or NB modes
             reconstruction_direct = self.decoder(latent_sample)
-            reconstruction_bottleneck = self.decoder(bottleneck_decoded)
 
-            outputs = (
-                latent_sample,
-                latent_mean,
-                latent_log_var,
-                reconstruction_direct,
-                bottleneck_encoded,
-                reconstruction_bottleneck,
-            )
+        # Information bottleneck processing (only when enabled)
+        if self.use_bn:
+            # This learns compressed representations that maintain biological correlations
+            bottleneck_encoded = self.bottleneck_encoder(latent_sample)
+            bottleneck_decoded = self.bottleneck_decoder(bottleneck_encoded)
+            
+            # Decode through bottleneck path
+            if self.decoder.loss_mode == "zinb":
+                reconstruction_bottleneck, dropout_logits_bottleneck = self.decoder(bottleneck_decoded)
+                outputs = (
+                    latent_sample,
+                    latent_mean,
+                    latent_log_var,
+                    reconstruction_direct,
+                    dropout_logits_direct,
+                    bottleneck_encoded,
+                    reconstruction_bottleneck,
+                    dropout_logits_bottleneck,
+                )
+            else:
+                reconstruction_bottleneck = self.decoder(bottleneck_decoded)
+                outputs = (
+                    latent_sample,
+                    latent_mean,
+                    latent_log_var,
+                    reconstruction_direct,
+                    bottleneck_encoded,
+                    reconstruction_bottleneck,
+                )
+        else:
+            # Skip bottleneck computation entirely when use_bn=False
+            if self.decoder.loss_mode == "zinb":
+                outputs = (
+                    latent_sample,
+                    latent_mean,
+                    latent_log_var,
+                    reconstruction_direct,
+                    dropout_logits_direct,
+                )
+            else:
+                outputs = (
+                    latent_sample,
+                    latent_mean,
+                    latent_log_var,
+                    reconstruction_direct,
+                )
 
         # Add contrastive learning outputs if enabled
         if self.use_moco and x_query is not None and x_key is not None:
