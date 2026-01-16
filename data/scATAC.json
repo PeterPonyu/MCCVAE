@@ -1,0 +1,455 @@
+{
+  "datasets": [
+    {
+      "id": 1,
+      "title": "Single-nucleus chromatin accessibility and transcriptomic characterization of Alzheimer’s Disease",
+      "species": "Homo sapiens",
+      "author": "Morabito S, Miyoshi E, Swarup V",
+      "source": "Control brain",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE174367",
+      "description": "A multi-omics analysis of Alzheimer's Disease in human postmortem brain tissue using single-nucleus ATAC-seq and RNA-seq (bulk and single-nucleus)."
+    },
+    {
+      "id": 2,
+      "title": "Transcriptomics, Regulatory Syntax, and Enhancer Identification in Heterogenous Populations of Mesoderm-Induced ESCs at Single-Cell Resolution",
+      "species": "Mus musculus",
+      "author": "Khateb M, Perovanovic J, Ko KD, Jiang K, Feng X, Luna Na, Chal J, Ciuffoli V, Genzor P, Haase A, Simone J, Pourquie O, Dell'Orso S, Sartorelli V",
+      "source": "Naïve ESC",
+      "platform": "Illumina HiSeq 2500",
+      "accession": "GSE198730",
+      "description": "To catalogue gene expression, histone modifications, chromatin conformation and accessibility transitions in ESC populations and individual cells undergoing lineage specification. we induced ESCs differentiation and characterized their transcriptome and epigenome at specific developmental junctures. we examined genome wide , chromatin accessibilty and gene expression in both bulk and single cell in Naive ESC (Naive) (three replicates) and instructed ESC (Instructed), (two replicates). We characterized regulatory regions with active (H3K4me1 and H3K27ac, two replicates) epigenetic marks in Naive and instructed ESC. To gain insite on how chromatin accessibility remodelled and the transcriptionally heterogeneity of differntiated ESCs, we performed scATAC-seq and scRNAseq in ES-derived aPSM (aPSM) and multiomics in ES-derived HIFLR (HIFLR) . We then leveraged these datasets and, by combining chromatin accessibility, in situ Hi-C chromatin conformation in aPSM and HIFLR cells, genome editing, and reporter assays have identified regulatory regions directing initial Pax7 expression and activation of the myogenic and neurogenic programs."
+    },
+    {
+      "id": 3,
+      "title": "Chemical-based external stimulation reprograms BJs into FiNs (scATAC-seq)",
+      "species": "Homo sapiens",
+      "author": "Wang G, Zhang D, Qin L, Huang B",
+      "source": "BJ cells, FiN cells",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE206767",
+      "description": "Cells at the end of 0 day,3 day were analyzed by ATAC-seq."
+    },
+    {
+      "id": 4,
+      "title": "Enhancer reactivation mediates adaptive resistance to FGFR inhibitors in triple-negative breast cancer [scATAC_seq]",
+      "species": "Homo sapiens",
+      "author": "Qiu X, Li Y, Brown M",
+      "source": "breast cancer",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE168026",
+      "description": "scATAC-seq in breast cancer PDX tumors treated with control or infigratininb for 28 days"
+    },
+    {
+      "id": 5,
+      "title": "Cell-specific chromatin landscape in human coronary artery resolves regulatory mechanisms of disease risk",
+      "species": "Homo sapiens",
+      "author": "Turner A, Shengen H, Zang C, Miller C",
+      "source": "Coronary artery",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE175621",
+      "description": "We profiled genome-wide chromatin accessibility at single cell resolution (scATAC from 10x Genomics) in coronary arteries from 41 patients across a range of atherosclerosis stages."
+    },
+    {
+      "id": 6,
+      "title": "Transcriptional programs dictating Schwann cell transformation in MPNST [scATACseq]",
+      "species": "Homo sapiens, Mus musculus",
+      "author": "Wu LM, Lu QR",
+      "source": "Peripheral nerve tumor",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE178988",
+      "description": "We used single-cell RNAseq to profile early and advanced mouse MPNST tumors, as well as human neurofibroma and MPNST. Our work defines the stage-specific kinetics of transcriptomics, cellular heterogeneity, and tumor cell fate decisions in murine and human MPNSTs."
+    },
+    {
+      "id": 7,
+      "title": "Single-cell ATAC-seq analysis of hESCs undergoing neuronal differentiation [scATAC-seq]",
+      "species": "Homo sapiens",
+      "author": "Spildrejorde M, Samara A, Sharma A, Falck M, Leithaug M, Modafferi S, Bjørnstad PM, Gervin K, Lyle R, Eskeland R",
+      "source": "Homo sapiens",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE192856",
+      "description": "Genome wide gene expression profiling of (n= 19) samples from human embryonic stem cells (hESCs) at day 0 (n=5), and day 7(n = 6), 13 (n= 4) and 20 (n=4) of neuronal differentiation."
+    },
+    {
+      "id": 8,
+      "title": "A regulatory network of Sox and Six transcription factors initiate a cell fate transformation during hearing regeneration in adult zebrafish",
+      "species": "Danio rerio",
+      "author": "Jimenez E, Burgess SM, Slevin C, Wu W, Elkahloun AG",
+      "source": "wild-type/Day4/5/7 WT/DTR Saccule/Utricle",
+      "platform": "NextSeq 550",
+      "accession": "GSE192947",
+      "description": "Using adult zebrafish inner ears as a model for sensorineural regeneration, we performed a targeted ablation of the mechanosensory receptors in the saccule and utricle and characterized the single-cell epigenome and transcriptome at consecutive time-points following hair cell death."
+    },
+    {
+      "id": 9,
+      "title": "Longitudinal single cell transcriptional and epigenetic mapping of effector, memory, and exhausted CD8 T cells reveals shared biological circuits across distinct cell fates [scATAC-Seq 1]",
+      "species": "Mus musculus",
+      "author": "Giles J, Wherry EJ",
+      "source": "P14 CD8 T cells from LCMV Armstrong infection 60/200 days post infection",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE199556",
+      "description": "LCMV-specific P14 cells were sorted from mice infected with LCMV-Arm days 60 or 200 post infection. scATAC-seq libraries were prepared using 10x Genomics kits."
+    },
+    {
+      "id": 10,
+      "title": "Single-cell chromatin accessible state of paired primary and liver metastasis colorectal cancer cells from PDX cells derived mouse model",
+      "species": "Homo sapiens",
+      "author": "Li S, Yang M, Teng S, Wang D",
+      "source": "colorectal cancer cells",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE200813",
+      "description": "We used scATAC-seq to profile 3 paired primary and liver metastasis colorectal cancer cells of PDX cells derived mouse model."
+    },
+    {
+      "id": 11,
+      "title": "Single cell ATAC-seq of mouse hair follicle morphogenesis",
+      "species": "Mus musculus",
+      "author": "Li F, Xu T, Li J, Hao X et al.",
+      "source": "skin",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE201213",
+      "description": "We performed single-cell ATAC sequencing on 23,716 single nuclear samples from induction (embryonic day 13.5), organogenesis (embryonic day 16.5) and cytodifferentiation (postnatal day 0) stage fetus C57BL/6 mouse dorsal skin."
+    },
+    {
+      "id": 12,
+      "title": "Small intestine and colon tissue-resident memory CD8+ T cells exhibit transcriptional, epigenetic, and functional heterogeneity in concert with differential dependence on Eomesodermin [scATAC-seq]",
+      "species": "Mus musculus",
+      "author": "Lin YH, Duong HG, Limary AE, Kim ES, Hsu P, Patel SA, Wong WH, Indralingam CS, Liu YC, Yao P, Chiang NR, Anderson TR, Vandenburgh SA, Olvera JG, Ferry A, Takehara KK, Jin W, Yeo GW, Tsai MS, Goldrath AW, Chang J",
+      "source": "Small intestine intraepithelial lymphocytes",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE205549",
+      "description": "Performed scATAC-seq to unterstand look at heterogeneity."
+    },
+    {
+      "id": 13,
+      "title": "Integrated multiomics profiling identifies the differentiation program of regulatory T cells in human tumors [scATAC-seq]",
+      "species": "Homo sapiens",
+      "author": "Itahashi K, Irie T, Nishikawa H",
+      "source": "SRA",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE211087",
+      "description": "scATAC-seq about Treg cells."
+    },
+    {
+      "id": 14,
+      "title": "Temporal chromatin accessibility changes define transcriptional states essential for osteosarcoma metastasis [scATAC-Seq]",
+      "species": "Homo sapiens",
+      "author": "Peter S, W Dean P",
+      "source": "MG63.3-GFP",
+      "platform": "Illumina HiSeq 4000",
+      "accession": "GSE215758",
+      "description": "MG63.3-GFP cells were profiled in vitro using the 10x chromium system."
+    },
+    {
+      "id": 15,
+      "title": "Single-cell ATAC-seq analysis of hESCs undergoing neuronal differentiation exposed to paracetamol [scATAC-seq]",
+      "species": "Homo sapiens",
+      "author": "Spildrejorde M, Samara A, Sharma A, Leithaug M, Falck M, Modafferi S, Sundaram A, Eskeland R, Gervin K, Lyle R",
+      "source": "HS360, day 20, past stage III maturation, exposed to 100 μM paracetamol",
+      "platform": "Illumina HiSeq 2000",
+      "accession": "GSE220026",
+      "description": "Genome-wide chromatin opening profiling of hESCs undergoing neuronal differentiation at four distinct time-points. hESCs are differentiated using a neuronal protocol, and day 20 were charachterized. Cells exposed to 100 or 200 μM paracetamol from Day 1."
+    },
+    {
+      "id": 16,
+      "title": "Tissue-resident, extravascular Ly6c- monocytes are critical for inflammation in the synovium",
+      "species": "Mus musculus",
+      "author": "Winter DR, Perlman H",
+      "source": "Ankle Joint Synovium",
+      "platform": "Illumina NextSeq 500",
+      "accession": "GSE225801",
+      "description": "CITE-seq and scATAC-seq on CD45+CD11b+Ly6g-SiglecF-Cd64- cells from the joint synovium."
+    },
+    {
+      "id": 17,
+      "title": "scATAC-seq of antigen-specific CD8+ T cells from different time-course of LCMV-Armstrong infected mice",
+      "species": "Mus musculus",
+      "author": "Liu Q, Dong W",
+      "source": "Lymphocytes",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE226067",
+      "description": "LCMV-specific P14 cells were sorted from mice infected with LCMV-Armstrong days 0, 2, 8 and 180 post infection. scATAC-seq libraries were prepared using 10x Genomics kits."
+    },
+    {
+      "id": 18,
+      "title": "A multi-omics atlas of the human retina at single-cell resolution",
+      "species": "Homo sapiens",
+      "author": "Chen R, DeAngelis M, Liang Q, Cheng X, Wang J, Li J",
+      "source": "peripheral region of retina",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE226108",
+      "description": "snRNA-seq and snATAC-seq of peripheral region of retina tissue, fovea centralis tissue, macula lutea proper tissue, macula lutea tissue from 25 human donors. For the macular/foveal region, we directly profiled nuclei without enrichment. In contrast, for the retinal peripheral region, nuclei are fractioned based on the NeuN staining."
+    },
+    {
+      "id": 19,
+      "title": "Multiomic Single Cell Evaluation Reveals Inflammatory Cytokines Affect Innate Lymphoid Cell Fate After Allogeneic Stem Cell Transplantation [scATAC-Seq]",
+      "species": "Homo sapiens",
+      "author": "Laurie SJ, Foster II JP, Bruce DW, Bommiasamy H, Kolupaev OV, Yazdimamaghani M, Pattenden SG, Chao NJ, Sarantopoulos S, Parker JS, Davis IJ, Serody JS",
+      "source": "PBMC",
+      "platform": "NextSeq 2000",
+      "accession": "GSE232002",
+      "description": "Adults receiving allogeneic hematopoietic stem cell transplantations consented to have blood-derived PBMCs biobanked under Duke University IRB study protocol Pro00110250. We requested samples from 3-6 patients after alloHSCT with a diagnosis of acute graft-versus-host disease and 3-6 that were stable. Additionally, we requested a pre-HSCT sample and then one drawn as close as possible to the time of the aGVHD diagnosis, as well as 3 months and 1 year where available. Biobanked buffy coat samples were stored in liquid nitrogen prior to thawing and subsequent isolation of nuclei from viable cells."
+    },
+    {
+      "id": 20,
+      "title": "scATAC-seq of OT-1 CD8+ T cells from different time-course of Lm-OVA infected mice",
+      "species": "Mus musculus",
+      "author": "Liu Q, Dong W",
+      "source": "Lymphocytes",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE241714",
+      "description": "CD45.1+ OT-1 cells were sorted from mice infected with Lm-OVA 0, 2, and 8 post infection. scATAC-seq libraries were prepared using 10x Genomics kits."
+    },
+    {
+      "id": 21,
+      "title": "Single-cell transcription and chromatin accessbility profiles of IDH mutant gliomas",
+      "species": "Homo sapiens",
+      "author": "Wu J, Castro LN, Suva ML, Bernstein BE",
+      "source": "primary tissue",
+      "platform": "Illumina NextSeq 500",
+      "accession": "GSE241745",
+      "description": "Primary IDH mutant glioma samples are collected after surgery and used for the establishment of organoid. Dissociated tumors are used for scRNA-seq and scATA-seq assays from 10x genomics."
+    },
+    {
+      "id": 22,
+      "title": "Metabolic adaptation pilots the differentiation of human hematopoietic cells (scATAC-Seq)",
+      "species": "Homo sapiens",
+      "author": "Racine L, Parmentier R",
+      "source": "umbilical cord blood",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE243004",
+      "description": "Human hematopoietic CD34+ cells were grown in Xvivo medium supplemented with cytokines with or without energy metabolism inhibitor (DON, 2-DG or AOA) during 24h. All samples are derived from an initial pool of six healthy donors."
+    },
+    {
+      "id": 23,
+      "title": "Single-cell multiomics of the human retina reveals hierarchical transcription factor collaboration in mediating cell type-specific effects of genetic variants on gene regulation",
+      "species": "Homo sapiens",
+      "author": "Chen R, DeAngelis MM, Li Y, Wang J, Cheng X, Liang Q, Li J",
+      "source": "macula lutea",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE247157",
+      "description": "snRNA-seq and snATAC-seq of peripheral lobe region of retina tissue, macula lutea tissue from 20 human donors."
+    },
+    {
+      "id": 24,
+      "title": "Increased chromatin accessibility drives transition to androgen receptor splice variant dependence in castration-resistant prostate cancer [scATAC-Seq]",
+      "species": "Homo sapiens",
+      "author": "Poluben L, Balk SP, Russo J, Nouri M",
+      "source": "Prostate",
+      "platform": "NextSeq 550",
+      "accession": "GSE252843",
+      "description": "To study adaptational mechanisms of ENZ-resistance in prostate cancer, VCaP cells were cultured in medium with increasing concentrations of ENZ (up to 16 uM) over ~2 months to select for resistance. A subline resistant to ENZ was generated (VCaP16). We studied chromatin architecture changes on a single-cell level by single-cell ATAC-seq (scATAC) in responce to short 10uM ENZ treatment for 96hrs in VCaP and in ENZ-resistant VCaP16 cells compared to parental VCaP in DMSO."
+    },
+    {
+      "id": 25,
+      "title": "Sex differences in DNMT3A-mutant clonal hematopoiesis and the effects of estrogen [scATAC-Seq]",
+      "species": "Mus musculus",
+      "author": "Stomper J, Niroula A, Belizaire R, McConkey M, Ebert BL",
+      "source": "Bone marrow",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE272265",
+      "description": "Single-cell RNA-sequencing was performed of hematopoietic stem and progenitor (Lineage- Sca-1+ c-kit+ [LSK]) cells from unmanipulated male and female mice with wild-type (WT) or Dnmt3a-mutant backgrounds, and from ovariectomized mice transplanted with WT or Dnmt3a-mutant bone marrow cells and treated with a single dose of estradiol, dihydrotestosterone (DHT), or vehicle. Single-cell ATAC-sequencing was performed of LSK cells from unmanipulated female WT or Dnmt3a-mutant mice."
+    },
+    {
+      "id": 26,
+      "title": "Single-cell multi-omics reveals tumor microenvironment factors underlying poor immunotherapy responses in ALK-positive lung cancer",
+      "species": "Homo sapiens",
+      "author": "Baek S, Sung E, Kim G, Hong MH, Lee CY, Shim HS, Park SY, Kim HR, Lee I",
+      "source": "Lung",
+      "platform": "HiSeq X Ten",
+      "accession": "GSE274934",
+      "description": "Anaplastic lymphoma kinase (ALK) rearrangement is a major oncogenic driver in non-small cell lung cancer (NSCLC). While ALK tyrosine kinase inhibitors have shown promising therapeutic effects, overcoming resistance with immunotherapy becomes necessary when resistance develops. However, various clinical trials have revealed that their efficacies remain limited. To investigate the tumor microenvironment (TME) factors contributing to poor immune checkpoint blockade responses in ALK-positive patients, we performed single-cell RNA and ATAC sequencing on lung adenocarcinoma (LUAD) tumors with and without ALK rearrangements. Integrative analysis with additional public LUAD cohorts revealed distinct immune landscapes in ALK-positive tumors, marked by enriched innate immunity and depleted adaptive immunity. ALK-positive malignant cells exhibit higher stemness and aggressive phenotype. Tumor-associated macrophages (TAMs) in these tumors predominantly maintain pro-tumoral M2-like states, reinforcing immune suppression. B cells show reduced immune reactivity and impaired tertiary lymphoid structure formation, while CD8+ T cells display bystander-like signatures and reduced tumor reactivity. Single-cell chromatin accessibility profiles combined with regulatory network analysis suggest that differences in transcription factor activities, rather than chromatin accessibility, may underlie T cell dysfunction. These findings provide insights into the immunosuppressive TME of ALK-positive LUAD, potentially explaining the failure of recent immunotherapy trials and highlighting targets for improving efficacy."
+    },
+    {
+      "id": 27,
+      "title": "An enhancer-AAV toolbox to target and manipulate distinct interneuron subtypes [P28]",
+      "species": "Mus musculus",
+      "author": "Min Dai",
+      "source": "Cortex - ALM",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE277242",
+      "description": "To identify potential cell type specific enhancers, we took advantage of the single-cell assay for transposase accessible chromatin using sequencing (scATAC-seq) data we have previously generated in the lab. To enrich for GABAergic cells, Dlx6a-Cre::INTACT mice were used. GFP+ nuclei from cortex (anterior lateral motor cortex, ALM) and striatum were isolated by FACS and scATAC-seq data were collected."
+    },
+    {
+      "id": 28,
+      "title": "RUNX2 promotes pulmonary fibrosis through the conversion of alveolar fibroblasts into pathological fibroblasts",
+      "species": "Mus musculus",
+      "author": "Xu L, Korogi Y, Li R, Sun X",
+      "source": "Epcam-CD31-CD45-",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE278419",
+      "description": "Single cell ATAC-seq from sorted adult lung mesenchymal cells (Epcam-CD31-CD45-) of saline control and Bleomycin (BLM) treated mice. Bleomycin sample are from wild type B6 male, single dose bleo (1.0U/kg). Control sample are from wild type B6 male. Lungs are harvested at Day 14 post administration."
+    },
+    {
+      "id": 29,
+      "title": "Decoding Gene Networks Governing Hypothalamic and Prethalamic Neuron Development",
+      "species": "Mus musculus",
+      "author": "Kim D, Blackshaw S",
+      "source": "Hypothalamus and Prethalamus",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE284492",
+      "description": "Purpose: sc/snRNA-Seq and scATAC-Seq were performed to characterize the developing hypothalamus."
+    },
+    {
+      "id": 30,
+      "title": "single-cell ATAC-sequencing of human aortic media that was composed by vascular smooth muscle cells",
+      "species": "Homo sapiens",
+      "author": "Shen W",
+      "source": "aortic media",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE286575",
+      "description": "The isolated human aorta media was isolated, dounced, lysed and washed to retrieve cell nuclei for scATAC-Seq."
+    },
+    {
+      "id": 31,
+      "title": "Patterns of intra- and inter-tumor phenotypic heterogeneity in men with lethal prostate cancer [scATAC-seq]",
+      "species": "Homo sapiens",
+      "author": "Roudier MP, Gulati R, Sayar E, Patel RA, Tratt M, Richards HM, Cejas P, Gomez Munoz M, Qiu X, Xie Y, Hanratty B, Zaidi S, Zhao JL, Adil M, Mittal C, Zhao Y, Dumpit R, Coleman I, Low J, Persse T, Galipeau P, Lee JK, Tretiakova M, Chambers M, Vakar-Lopez F, True LD, Perrone M, Lam H, Kollath LA, Cornelia Ding C, Harmon S, Cheng HH, Yu EY, Montgomery RB, Hawley JE, Lin DW, Corey E, Schweizer MT, Setty M, Ha G, Sawyers CL, Morrissey C, Long H, Nelson PS, Haffner MC",
+      "source": "tumor tissue",
+      "platform": "Illumina NovaSeq X Plus",
+      "accession": "GSE292194",
+      "description": "scATAC-seq of metastatic prostate cancer tissue samples."
+    },
+    {
+      "id": 32,
+      "title": "Integrative Single-Cell RNA and ATAC Sequencing Reveals the Impact of Chronic Cigarette Smoking on Lung Epithelial Responses to Influenza and Hyperoxia",
+      "species": "Mus musculus",
+      "author": "Cha P, Zou Z, Nouws J, Dela Cruz C, Sharma L, Yan X, Sauler M",
+      "source": "lung",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE294221",
+      "description": "Multiome-seq: Single cell data were from AKR/J mice lung tissue. scRNA and scATAC libraries were prepared using the 10x Genomics platform."
+    },
+    {
+      "id": 33,
+      "title": "Gene regulatory programs of NK cells show that NCAM1 (CD56) and KIRs are controlled by genetically polymorphic distal regulatory elements [scATAC-seq]",
+      "species": "Homo sapiens",
+      "author": "Salem MA, Varkey A, Estrada MD, Eisele CD, Freud AG, Mundy-Bosse BL, Collins PL",
+      "source": "Blood",
+      "platform": "Illumina NovaSeq X",
+      "accession": "GSE297712",
+      "description": "Natural killer (NK) cells were isolated from peripheral blood mononuclear cells (PBMCs) using the RosetteSep™ Human NK Cell Enrichment Cocktail (STEMCELL Technologies). Following the addition of the cocktail, density gradient centrifugation was performed using Ficoll-Paque to separate enriched NK cells from the remaining blood components. This was performed on three different blood samples. Nuclei were isolated from NK cells and 10x Genomics snATAC-seq protocol was performed."
+    },
+    {
+      "id": 34,
+      "title": "Dissecting transcriptional and chromatin accessibility heterogeneity of proliferating cone precursors in human retinoblastoma tumours by single cell sequencing [scATAC-seq]",
+      "species": "Homo sapiens",
+      "author": "Collin J, Queen R, Zerti D, Steel DH, Bowen C, Parulekar M, Lako M",
+      "source": "Retina",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE166174",
+      "description": "Two Rb tumours each characterised by two pathogenic RB1 mutations were dissociated to single cells and subjected to scRNA-Seq & scATAC-Seq using the 10x Genomics platform. In addition, nine embryonic and fetal retina samples were dissociated to single cells and subjected to scATAC-Seq analyses."
+    },
+    {
+      "id": 35,
+      "title": "Chromatin accessibility profile at the single cell level of splenic LCMV-specific B cells in acute versus chronic LCMV infection [scATAC-seq]",
+      "species": "Mus musculus",
+      "author": "Good-Jacobson KL, Cooper L, Powell DR",
+      "source": "Spleen",
+      "platform": "MGISEQ-2000RS",
+      "accession": "GSE225932",
+      "description": "Chronic viral infection disrupts memory B cell development. We used single cell ATAC sequencing (scATAC-seq) to analyze chromatin accessibility in antigen-specific B cells responding to acute versus chronic LCMV infection."
+    },
+    {
+      "id": 36,
+      "title": "Differential chromatin binding of the lung lineage transcription factor NKX2-1 resolves opposing murine alveolar cell fates in vivo [scATAC-Seq]",
+      "species": "Mus musculus",
+      "author": "Little D, Chen J",
+      "source": "Lung epithelial, immune, endothelial, and mesenchymal cells",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE158196",
+      "description": "FACS-purified lung epithelial, immune, endothelial, and mesenchymal cells were processed through the Chromium Single Cell Gene Expression Solution Platform (10X Genomics)."
+    },
+    {
+      "id": 37,
+      "title": "Mouse models of neutropenia reveal progenitor-stage-specific defects [scATAC-Seq]",
+      "species": "Mus musculus",
+      "author": "Muench DE, Olsson A, Chetal K, Salomonis N, Grimes HL",
+      "source": "Bone marrow",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE142358",
+      "description": "Single cell ATAC-seq of Gfi1 wild-type and SCN R412X mutant model from combined modified GMP and Ly6g gates."
+    },
+    {
+      "id": 38,
+      "title": "Multi-omics analyses reveal DjTcf4 critical for proper timing of differentiation in planarian regeneration [scATAC_head]",
+      "species": "Dugesia japonica",
+      "author": "Wang H, Lu M, Huang L, Zou X, Liu H, Gao Y, Wang Y, Kan Y",
+      "source": "Head intact",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE305723",
+      "description": "Examine single cell chromatin accessibility profiles of intact and 5 dpa animals by 10X scATAC-Seq platform. The experiment was performed in duplicate, resulting in 4 samples."
+    },
+    {
+      "id": 39,
+      "title": "Myeloid progenitor dysregulation fuels immunosuppressive macrophages in tumors [dataset 3]",
+      "species": "Mus musculus",
+      "author": "Hegde S, Halasz L, Merad M",
+      "source": "Bone marrow",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE289708",
+      "description": "Mouse: Gene expression and chromatin accessibility (scRNA-seq, n = 6"
+    },
+    {
+      "id": 40,
+      "title": "Single-cell lineage capture across genomic modalities with CellTag-multi reveals fate-specific gene regulatory changes [scATAC-seq - LSK]",
+      "species": "Mus musculus",
+      "author": "Jindal K, Adil MT, Yamaguchi N, Wang HC, Yang X, Kamimoto K, Rivera-Gonzalez GC, Morris S",
+      "source": "adult mouse bone marrow",
+      "platform": "Illumina NextSeq 500",
+      "accession": "GSE216506",
+      "description": "scATAC was performed for CellTagged in vitro differentiating mouse LSK cells at multiple time points to allow longitudinal lineage tracing."
+    },
+    {
+      "id": 41,
+      "title": "Chromosome-level organization of the regulatory genome in the Drosophila nervous system [scATAC-seq]",
+      "species": "Drosophila melanogaster",
+      "author": "Mohana G, Dorier J, Li X, Malek H, Leleu M, Rodriguez D, Rosa P, Mouginot M, Cousin P, Iseli C, Restrepo S, Guex N, Levine MS, Jankowski A, Gambetta MC",
+      "source": "central nervous system",
+      "platform": "Illumina HiSeq 4000",
+      "accession": "GSE214705",
+      "description": "Drosophila melanogaster third instar larval central nervous systems (CNS) of wildtype animals were dissected and analyzed by scATAC-seq."
+    },
+    {
+      "id": 42,
+      "title": "MacroH2A histone variants modulate enhancer activity to repress oncogenic programs and cellular reprogramming",
+      "species": "Homo sapiens",
+      "author": "Gaspar-Maia A, Ismail WM, Hasson D, Safgren S, Ordog T, Bernstein E",
+      "source": "MCF-7",
+      "platform": "Illumina HiSeq 4000",
+      "accession": "GSE171599",
+      "description": "To determine the relationship between enhancer activity and macroH2A enrichment, we profiled the epigenomes (using ChIP-seq and ATAC-seq) of several cell lines. We also performed single cell profiling in a estrogen responsive breast cancer cell line with and without macroH2A2."
+    },
+    {
+      "id": 43,
+      "title": "Single Cell sequencing analysis of adult AT1 Yap/Taz KO and wild-type lung epithelium",
+      "species": "Mus musculus",
+      "author": "Penkala IJ, Morley MP, Morrisey EE",
+      "source": "Lung epithelium",
+      "platform": "Illumina NextSeq 500",
+      "accession": "GSE164422",
+      "description": "The goal of this study was to compare wild-type adult homeostatic lung epithelium to Hopx-creERT2-induced Yap/Taz KO in adult AT1 cells. Three adult mice with identical genotypes and either sex were pooled after fluorescence-activated cell sorting and loaded into the 10X Chromium scRNA sequencing library generation pipeline."
+    },
+    {
+      "id": 44,
+      "title": "Dissecting transcriptional and chromatin accessibility heterogeneity of proliferating cone precursors in human retinoblastoma tumours by single cell sequencing [scATAC-seq]",
+      "species": "Homo sapiens",
+      "author": "Collin J, Queen R, Zerti D, Steel DH, Bowen C, Parulekar M, Lako M",
+      "source": "Retina",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE166174",
+      "description": "Two Rb tumours each characterised by two pathogenic RB1 mutations were dissociated to single cells and subjected to scRNA-Seq & scATAC-Seq using the 10x Genomics platform. In addition, nine embryonic and fetal retina samples were dissociated to single cells and subjected to scATAC-Seq analyses."
+    },
+    {
+      "id": 45,
+      "title": "NF-kB Broadly Orchestrates Nucleosome Remodeling during the Primary Response to Toll-Like Receptor 4 Signaling [scATAC-seq]",
+      "species": "Mus musculus",
+      "author": "Purbey PK, Smale ST",
+      "source": "primary macrophages",
+      "platform": "Illumina NovaSeq 6000",
+      "accession": "GSE248713",
+      "description": "Unstimulated or 2 hour Lipid A (100ng/ml, Sigma Aldrich, Cat# L6895-1MG) stimulated bone marrow derived macrophages (BMDM) from Wildtype male mice were harvested from the tissue culture dish (35 mm) to generate single cell suspension. Quality of cells were monitored by microscopic examination and cells viability were more than 95% based of trypan blue exclusion staining and counting in hemocytometer. About 1 million cells were processed for nuclei isolation followed by transposition as per 10X scATAC seq instruction manual, followed by NGS library prep and sequencing in Illumina NovaSees 6000 S1 platform at 100 cycle."
+    }
+  ],
+  "total": 45
+}

@@ -1,0 +1,176 @@
+{
+  "evaluators": [
+    {
+      "id": "LSE",
+      "name": "Latent Space Evaluator",
+      "full_name": "SingleCellLatentSpaceEvaluator",
+      "description": "Evaluates latent space quality for single-cell data, designed for trajectory and steady-state data analysis.",
+      "source_file": "LSE.py",
+      "data_types": ["trajectory", "steady_state"],
+      "metrics": [
+        {
+          "id": "manifold_dimensionality",
+          "name": "Manifold Dimensionality Score",
+          "category": "Core Manifold",
+          "description": "Evaluates how efficiently the latent space captures the intrinsic dimensionality using variance thresholds, Kaiser criterion, elbow method, and spectral decay.",
+          "range": "0-1",
+          "interpretation": "Higher indicates more efficient dimension usage"
+        },
+        {
+          "id": "spectral_decay_rate",
+          "name": "Spectral Decay Rate",
+          "category": "Spectral Analysis",
+          "description": "Measures how quickly eigenvalues decay. Fast decay means information is concentrated in fewer dimensions.",
+          "range": "0-1",
+          "interpretation": "Higher indicates information concentration in primary dimensions"
+        },
+        {
+          "id": "participation_ratio",
+          "name": "Participation Ratio Score",
+          "category": "Spectral Analysis",
+          "description": "Quantifies how many dimensions effectively participate in the variance. Based on the ratio of squared sum to sum of squares of eigenvalues.",
+          "range": "0-1",
+          "interpretation": "Trajectory: low (concentrated). Steady-state: high (distributed)",
+          "data_type_dependent": true
+        },
+        {
+          "id": "anisotropy_score",
+          "name": "Isotropy/Anisotropy Score",
+          "category": "Spectral Analysis",
+          "description": "Measures directional uniformity using log-ellipticity, condition numbers, ratio variance, entropy, primary dominance, and effective dimension.",
+          "range": "0-1",
+          "interpretation": "Trajectory: high anisotropy (strong direction). Steady-state: high isotropy (uniform)",
+          "data_type_dependent": true
+        },
+        {
+          "id": "trajectory_directionality",
+          "name": "Trajectory Directionality Score",
+          "category": "Single-Cell Specific",
+          "description": "Evaluates the dominance of the primary developmental axis by comparing the first principal component's variance to others.",
+          "range": "0-1",
+          "interpretation": "Higher indicates a clear developmental trajectory"
+        },
+        {
+          "id": "noise_resilience",
+          "name": "Noise Resilience Score",
+          "category": "Technical Quality",
+          "description": "Evaluates how well the dimensionality reduction filters technical noise by computing signal-to-noise ratio from principal components.",
+          "range": "0-1",
+          "interpretation": "Higher indicates good noise filtering"
+        }
+      ]
+    },
+    {
+      "id": "DRE",
+      "name": "Dimensionality Reduction Evaluator",
+      "full_name": "DimensionalityReductionEvaluator",
+      "description": "Evaluates dimensionality reduction quality by measuring structure preservation between high and low dimensional spaces.",
+      "source_file": "DRE.py",
+      "metrics": [
+        {
+          "id": "distance_correlation",
+          "name": "Distance Correlation",
+          "category": "Global Structure",
+          "description": "Spearman correlation between pairwise distances in high-dimensional and low-dimensional spaces.",
+          "range": "0-1",
+          "interpretation": "Higher (close to 1) indicates global structure preservation"
+        },
+        {
+          "id": "Q_local",
+          "name": "Local Quality (Q_local)",
+          "category": "Local Structure",
+          "description": "Average quality score for neighborhood preservation up to the optimal K_max threshold, derived from the co-ranking matrix.",
+          "range": "0-1",
+          "interpretation": "Higher indicates local neighborhood structure preservation"
+        },
+        {
+          "id": "Q_global",
+          "name": "Global Quality (Q_global)",
+          "category": "Global Structure",
+          "description": "Average quality score for structure preservation beyond K_max threshold, measuring large-scale structure fidelity.",
+          "range": "0-1",
+          "interpretation": "Higher indicates global structure preservation"
+        },
+        {
+          "id": "K_max",
+          "name": "Local-Global Boundary (K_max)",
+          "category": "Auxiliary",
+          "description": "The neighborhood size at which the Local Continuity Meta-Criterion (LCMC) is maximized.",
+          "range": "1 to N-1",
+          "interpretation": "Larger K_max indicates the embedding preserves larger neighborhoods"
+        }
+      ]
+    },
+    {
+      "id": "Clustering",
+      "name": "Clustering Metrics",
+      "full_name": "Clustering Quality Evaluator",
+      "description": "Clustering quality metrics computed on latent representations. Implemented in mixin.py _compute_metrics method.",
+      "source_file": "mixin.py",
+      "metrics": [
+        {
+          "id": "ASW",
+          "name": "Average Silhouette Width",
+          "category": "Cluster Separation",
+          "description": "Measures how similar each sample is to its own cluster compared to other clusters. Computed using sklearn.metrics.silhouette_score on latent representations.",
+          "range": "-1 to 1",
+          "interpretation": "Higher indicates well-separated clusters. Values near 0 indicate overlapping clusters.",
+          "implementation": "silhouette_score(latent_representation, cluster_labels)"
+        },
+        {
+          "id": "CAL",
+          "name": "Calinski-Harabasz Index",
+          "category": "Cluster Validity",
+          "description": "Ratio of between-cluster dispersion to within-cluster dispersion. Also known as the Variance Ratio Criterion. Computed using sklearn.metrics.calinski_harabasz_score.",
+          "range": "0 to infinity",
+          "interpretation": "Higher indicates denser and well-separated clusters.",
+          "implementation": "calinski_harabasz_score(latent_representation, cluster_labels)"
+        },
+        {
+          "id": "DAV",
+          "name": "Davies-Bouldin Index",
+          "category": "Cluster Compactness",
+          "description": "Average similarity ratio of each cluster with its most similar cluster. Lower values indicate better clustering. Computed using sklearn.metrics.davies_bouldin_score.",
+          "range": "0 to infinity",
+          "interpretation": "Lower indicates more compact and well-separated clusters.",
+          "implementation": "davies_bouldin_score(latent_representation, cluster_labels)"
+        },
+        {
+          "id": "COR",
+          "name": "Correlation Measure",
+          "category": "Disentanglement",
+          "description": "Average absolute off-diagonal correlation between latent dimensions. Measures independence of learned latent factors. Computed via _calc_corr method in mixin.py.",
+          "range": "0-1",
+          "interpretation": "Lower indicates better disentanglement (more independent latent dimensions).",
+          "implementation": "Mean of absolute off-diagonal entries of np.corrcoef(latent_representation.T)"
+        }
+      ]
+    }
+  ],
+  "comparison": {
+    "overview": {
+      "LSE": {
+        "focus": "Intrinsic latent space properties",
+        "input": "Latent space only",
+        "use_case": "Evaluating VAE/autoencoder latent representations"
+      },
+      "DRE": {
+        "focus": "Structure preservation between spaces",
+        "input": "Both high-dim and low-dim data",
+        "use_case": "Evaluating dimensionality reduction quality"
+      },
+      "Clustering": {
+        "focus": "Cluster quality in latent space",
+        "input": "Latent representations + cluster labels",
+        "use_case": "Evaluating clustering performance"
+      }
+    }
+  },
+  "quality_levels": [
+    {"threshold": 0.8, "level": "High", "description": "Strong performance on this metric"},
+    {"threshold": 0.6, "level": "Good", "description": "Acceptable performance"},
+    {"threshold": 0.4, "level": "Moderate", "description": "Room for improvement"},
+    {"threshold": 0.0, "level": "Low", "description": "Needs significant improvement"}
+  ],
+  "total_metrics": 16
+}
