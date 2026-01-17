@@ -2,36 +2,6 @@
   "models": [
     {
       "id": 1,
-      "abbreviation": "scAGCL",
-      "full_name": "Single-cell Adversarial Graph Contrastive Learning",
-      "publication_year": 2025,
-      "authors": "Le Van Vinh, et al.",
-      "brief_description": "A deep learning framework for scRNA-seq clustering that integrates adversarial training with graph contrastive learning on GNNs to learn robust cell representations.",
-      "paper_title": "scAGCL: a graph contrastive learning method with adversarial training to cluster scRNA-seq data",
-      "journal": "Briefings in Bioinformatics",
-      "methodology": ["Graph Contrastive Learning", "Adversarial Training", "GNN"],
-      "github_url": "https://github.com/levinhcntt/scAGCL",
-      "doi": "10.1093/bib/bbaf423",
-      "category": "Contrastive Learning",
-      "features": ["Adversarial perturbations", "Graph structure learning", "Robust representations"]
-    },
-    {
-      "id": 2,
-      "abbreviation": "siVAE",
-      "full_name": "Scalable Interpretable Variational Autoencoder",
-      "publication_year": 2023,
-      "authors": "Yongin Choi, Ruoxin Li, Gerald Quon",
-      "brief_description": "An interpretable VAE that learns feature embeddings to enhance interpretation of latent dimensions, enabling identification of gene modules and hubs without explicit network inference.",
-      "paper_title": "siVAE: interpretable deep generative models for single-cell transcriptomes",
-      "journal": "Genome Biology",
-      "methodology": ["Variational Autoencoder", "Interpretable Feature Embeddings"],
-      "github_url": "https://github.com/quon-titative-biology/siVAE",
-      "doi": "10.1186/s13059-023-02850-y",
-      "category": "Variational Autoencoder",
-      "features": ["Interpretable latent space", "Gene regulatory network inference", "Sparsity constraints"]
-    },
-    {
-      "id": 3,
       "abbreviation": "scGPCL",
       "full_name": "Single-cell Graph Prototypical Contrastive Learning",
       "publication_year": 2023,
@@ -46,7 +16,7 @@
       "features": ["Prototype-based learning", "Instance and prototype contrastive", "ZINB reconstruction"]
     },
     {
-      "id": 4,
+      "id": 2,
       "abbreviation": "scHSC",
       "full_name": "Single-cell Hard Sample Contrastive Learning",
       "publication_year": 2025,
@@ -61,22 +31,7 @@
       "features": ["Hard sample mining", "Pseudo-labeling", "ZINB reconstruction"]
     },
     {
-      "id": 5,
-      "abbreviation": "scSimGCL",
-      "full_name": "Single-cell Simple Graph Contrastive Learning",
-      "publication_year": 2024,
-      "authors": "Zhang et al.",
-      "brief_description": "A simplified graph contrastive learning approach for single-cell clustering that removes complex augmentation strategies.",
-      "paper_title": "scSimGCL: a simple graph contrastive learning method for single-cell RNA-seq clustering",
-      "journal": "Briefings in Bioinformatics",
-      "methodology": ["Simple Graph Contrastive Learning", "GNN", "Noise-based Augmentation"],
-      "github_url": "https://github.com/zhangzh1328/scSimGCL",
-      "doi": "10.1093/bib/bbae558",
-      "category": "Contrastive Learning",
-      "features": ["Simplified augmentation", "Adaptive graph construction", "Attention mechanism"]
-    },
-    {
-      "id": 6,
+      "id": 3,
       "abbreviation": "scDiffusion",
       "full_name": "Single-cell Diffusion Model",
       "publication_year": 2024,
@@ -91,7 +46,7 @@
       "features": ["Data generation", "Conditional generation", "Classifier-free guidance"]
     },
     {
-      "id": 7,
+      "id": 4,
       "abbreviation": "SCALEX",
       "full_name": "Single-cell data integration with Variational Autoencoder",
       "publication_year": 2022,
@@ -106,7 +61,7 @@
       "features": ["Cross-batch integration", "Domain-specific normalization", "Online learning"]
     },
     {
-      "id": 8,
+      "id": 5,
       "abbreviation": "Cell BLAST",
       "full_name": "Cell Basic Local Alignment Search Tool",
       "publication_year": 2020,
@@ -121,7 +76,7 @@
       "features": ["Cell annotation", "Database querying", "ZINB/NB reconstruction"]
     },
     {
-      "id": 9,
+      "id": 6,
       "abbreviation": "GM-VAE",
       "full_name": "Geometric Manifold Variational Autoencoder",
       "publication_year": 2025,
@@ -136,7 +91,7 @@
       "features": ["Geometric distributions", "Poincaré space", "Hyperboloid space"]
     },
     {
-      "id": 10,
+      "id": 7,
       "abbreviation": "scGNN",
       "full_name": "Single-cell Graph Neural Network",
       "publication_year": 2021,
@@ -151,22 +106,7 @@
       "features": ["Cell-cell graph", "Imputation", "Inner product decoder"]
     },
     {
-      "id": 11,
-      "abbreviation": "scDAC",
-      "full_name": "Single-cell Deep Adaptive Clustering",
-      "publication_year": 2024,
-      "authors": "Sijing An, Jinhui Shi, et al.",
-      "brief_description": "A deep learning model that couples Autoencoder with Dirichlet Process Mixture Model for adaptive clustering with automatic cluster number determination.",
-      "paper_title": "scDAC: deep adaptive clustering of single-cell transcriptomic data with coupled autoencoder and Dirichlet process mixture model",
-      "journal": "Bioinformatics",
-      "methodology": ["Autoencoder", "Dirichlet Process Mixture Model", "Bayesian Clustering"],
-      "github_url": "https://github.com/labomics/scDAC",
-      "doi": "10.1093/bioinformatics/btae198",
-      "category": "Clustering",
-      "features": ["Automatic cluster number", "DPMM regularization", "Adaptive clustering"]
-    },
-    {
-      "id": 12,
+      "id": 8,
       "abbreviation": "scDeepCluster",
       "full_name": "Single-cell Deep Clustering",
       "publication_year": 2019,
@@ -181,7 +121,7 @@
       "features": ["DEC-style clustering", "Multi-stage training", "KMeans initialization"]
     },
     {
-      "id": 13,
+      "id": 9,
       "abbreviation": "scDHMap",
       "full_name": "Single-cell Deep Hyperbolic Mapping",
       "publication_year": 2023,
@@ -196,7 +136,7 @@
       "features": ["Hyperbolic space", "Poincaré ball interface", "Hierarchical preservation"]
     },
     {
-      "id": 14,
+      "id": 10,
       "abbreviation": "scGCC",
       "full_name": "Single-cell Graph Contrastive Clustering",
       "publication_year": 2023,
@@ -210,22 +150,7 @@
       "features": ["GAT encoder", "MoCo framework", "Neighborhood augmentation"]
     },
     {
-      "id": 15,
-      "abbreviation": "scSMD",
-      "full_name": "Single-cell Self-supervised Multimodal Denoising",
-      "publication_year": 2025,
-      "authors": "Xiaoxu Cui, Renkai Wu, et al.",
-      "brief_description": "A deep learning method using ResNet-based convolutional autoencoders with attention mechanisms for accurate single-cell clustering.",
-      "paper_title": "scSMD: a deep learning method for accurate clustering of single cells based on auto-encoder",
-      "journal": "BMC Bioinformatics",
-      "methodology": ["Convolutional Autoencoder", "ResNet", "Mutual Information"],
-      "github_url": "https://github.com/xiaoxuc/scSMD",
-      "doi": "10.1186/s12859-025-06047-x",
-      "category": "Clustering",
-      "features": ["2D image reshape", "ResNet blocks", "Mutual information clustering"]
-    },
-    {
-      "id": 16,
+      "id": 11,
       "abbreviation": "CLEAR",
       "full_name": "Contrastive LEArning framework for scRNA-seq",
       "publication_year": 2022,
@@ -238,18 +163,168 @@
       "doi": "10.1093/bib/bbac377",
       "category": "Contrastive Learning",
       "features": ["MoCo-style training", "Batch effect handling", "Dropout robustness"]
+    },
+    {
+      "id": 12,
+      "abbreviation": "PCA",
+      "full_name": "Principal Component Analysis",
+      "publication_year": 1901,
+      "authors": "Karl Pearson",
+      "brief_description": "A linear dimensionality reduction technique that identifies orthogonal principal components maximizing variance in the data. Widely used for preprocessing and visualization in single-cell analysis.",
+      "paper_title": "On Lines and Planes of Closest Fit to Systems of Points in Space",
+      "journal": "Philosophical Magazine",
+      "methodology": ["Linear Transformation", "Eigenvalue Decomposition", "SVD"],
+      "github_url": "https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html",
+      "doi": "10.1080/14786440109462720",
+      "category": "Classical Machine Learning",
+      "features": ["Linear dimensionality reduction", "Variance maximization", "Orthogonal components", "Fast computation"]
+    },
+    {
+      "id": 13,
+      "abbreviation": "ICA",
+      "full_name": "Independent Component Analysis",
+      "publication_year": 1994,
+      "authors": "Pierre Comon",
+      "brief_description": "A computational method for separating multivariate signals into statistically independent non-Gaussian components. Used in single-cell analysis to identify independent sources of variation.",
+      "paper_title": "Independent component analysis, A new concept?",
+      "journal": "Signal Processing",
+      "methodology": ["Blind Source Separation", "Non-Gaussianity Maximization", "FastICA"],
+      "github_url": "https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.FastICA.html",
+      "doi": "10.1016/0165-1684(94)90029-9",
+      "category": "Classical Machine Learning",
+      "features": ["Statistical independence", "Non-Gaussian signal separation", "Blind source separation", "Negentropy optimization"]
+    },
+    {
+      "id": 14,
+      "abbreviation": "FA",
+      "full_name": "Factor Analysis",
+      "publication_year": 1904,
+      "authors": "Charles Spearman",
+      "brief_description": "A statistical method identifying latent factors that explain correlations among observed variables. Models data as linear combinations of latent factors plus noise, useful for identifying gene modules.",
+      "paper_title": "General Intelligence, Objectively Determined and Measured",
+      "journal": "American Journal of Psychology",
+      "methodology": ["Latent Variable Model", "Maximum Likelihood", "EM Algorithm"],
+      "github_url": "https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.FactorAnalysis.html",
+      "doi": "10.2307/1412107",
+      "category": "Classical Machine Learning",
+      "features": ["Latent factor identification", "Noise modeling", "Heteroscedastic variance", "Interpretable loadings"]
+    },
+    {
+      "id": 15,
+      "abbreviation": "NMF",
+      "full_name": "Non-negative Matrix Factorization",
+      "publication_year": 1999,
+      "authors": "Daniel D. Lee, H. Sebastian Seung",
+      "brief_description": "A matrix factorization technique constraining both factors to be non-negative, producing parts-based representations. Ideal for gene expression data where negative values are not meaningful.",
+      "paper_title": "Learning the parts of objects by non-negative matrix factorization",
+      "journal": "Nature",
+      "methodology": ["Matrix Factorization", "Non-negativity Constraints", "Multiplicative Updates"],
+      "github_url": "https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.NMF.html",
+      "doi": "10.1038/44565",
+      "category": "Classical Machine Learning",
+      "features": ["Parts-based representation", "Non-negative constraints", "Additive components", "Interpretable factors"]
+    },
+    {
+      "id": 16,
+      "abbreviation": "KPCA",
+      "full_name": "Kernel Principal Component Analysis",
+      "publication_year": 1997,
+      "authors": "Bernhard Schölkopf, Alexander Smola, Klaus-Robert Müller",
+      "brief_description": "A non-linear extension of PCA using kernel methods to project data into higher-dimensional feature spaces, capturing non-linear relationships in single-cell data.",
+      "paper_title": "Kernel principal component analysis",
+      "journal": "International Conference on Artificial Neural Networks",
+      "methodology": ["Kernel Methods", "Non-linear Mapping", "Eigenvalue Decomposition"],
+      "github_url": "https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.KernelPCA.html",
+      "doi": "10.1007/BFb0020217",
+      "category": "Classical Machine Learning",
+      "features": ["Non-linear dimensionality reduction", "Kernel trick", "RBF/Polynomial kernels", "Manifold learning"]
+    },
+    {
+      "id": 17,
+      "abbreviation": "TSVD",
+      "full_name": "Truncated Singular Value Decomposition",
+      "publication_year": 1965,
+      "authors": "Gene H. Golub, William Kahan",
+      "brief_description": "A matrix decomposition technique computing only the k largest singular values, efficient for large sparse matrices. Forms the basis of LSI/LSA and is commonly used for scRNA-seq preprocessing.",
+      "paper_title": "Calculating the Singular Values and Pseudo-Inverse of a Matrix",
+      "journal": "SIAM Journal on Numerical Analysis",
+      "methodology": ["Matrix Decomposition", "Singular Value Decomposition", "Low-rank Approximation"],
+      "github_url": "https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.TruncatedSVD.html",
+      "doi": "10.1137/0702016",
+      "category": "Classical Machine Learning",
+      "features": ["Sparse matrix support", "Low-rank approximation", "Memory efficient", "No centering required"]
+    },
+    {
+      "id": 18,
+      "abbreviation": "DICL",
+      "full_name": "Dictionary Learning",
+      "publication_year": 2009,
+      "authors": "Julien Mairal, Francis Bach, Jean Ponce, Guillermo Sapiro",
+      "brief_description": "A representation learning method that learns a dictionary of basis elements and sparse codes. Produces interpretable sparse representations of single-cell gene expression patterns.",
+      "paper_title": "Online Dictionary Learning for Sparse Coding",
+      "journal": "International Conference on Machine Learning",
+      "methodology": ["Sparse Coding", "Dictionary Learning", "Online Optimization"],
+      "github_url": "https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.DictionaryLearning.html",
+      "doi": "10.1145/1553374.1553463",
+      "category": "Classical Machine Learning",
+      "features": ["Sparse representations", "Learned dictionary", "Online learning", "Interpretable atoms"]
+    },
+    {
+      "id": 19,
+      "abbreviation": "LSI",
+      "full_name": "Latent Semantic Indexing",
+      "publication_year": 1990,
+      "authors": "Scott Deerwester, Susan Dumais, George Furnas, Thomas Landauer, Richard Harshman",
+      "brief_description": "A dimensionality reduction technique using SVD on TF-IDF weighted matrices. Adapted for scATAC-seq analysis to reduce chromatin accessibility data while preserving biological signal.",
+      "paper_title": "Indexing by Latent Semantic Analysis",
+      "journal": "Journal of the American Society for Information Science",
+      "methodology": ["TF-IDF Weighting", "Singular Value Decomposition", "Low-rank Approximation"],
+      "github_url": "https://satijalab.org/signac/",
+      "doi": "10.1002/(SICI)1097-4571(199009)41:6<391::AID-ASI1>3.0.CO;2-9",
+      "category": "ATAC-specific Methods",
+      "features": ["TF-IDF normalization", "Handles sparse binary data", "Removes batch effects", "Standard scATAC-seq preprocessing"]
+    },
+    {
+      "id": 20,
+      "abbreviation": "PeakVI",
+      "full_name": "Peak Variational Inference",
+      "publication_year": 2021,
+      "authors": "Tal Ashuach, Daniel A. Reidenbach, Nir Yosef",
+      "brief_description": "A deep generative model for scATAC-seq data using variational inference with Bernoulli likelihood. Learns cell embeddings while accounting for cell-specific and region-specific technical effects.",
+      "paper_title": "PeakVI: A Deep Generative Model For Single Cell Chromatin Accessibility Analysis",
+      "journal": "BioRxiv",
+      "methodology": ["Variational Autoencoder", "Bernoulli Likelihood", "Neural Network Decoder"],
+      "github_url": "https://docs.scvi-tools.org/en/stable/user_guide/models/peakvi.html",
+      "doi": "10.1101/2021.04.29.442020",
+      "category": "ATAC-specific Methods",
+      "features": ["Cell and region scaling factors", "Batch correction", "GPU accelerated", "Differential accessibility"]
+    },
+    {
+      "id": 21,
+      "abbreviation": "PoissonVI",
+      "full_name": "Poisson Variational Inference",
+      "publication_year": 2023,
+      "authors": "scvi-tools development team",
+      "brief_description": "A variational autoencoder for scATAC-seq fragment count data using Poisson likelihood. Designed for quantitative chromatin accessibility analysis with proper count-based modeling.",
+      "paper_title": "PoissonVI: Analyzing quantitative scATAC-seq fragment counts",
+      "journal": "scvi-tools",
+      "methodology": ["Variational Autoencoder", "Poisson Likelihood", "Fragment Count Modeling"],
+      "github_url": "https://docs.scvi-tools.org/en/stable/user_guide/models/poissonvi.html",
+      "doi": "N/A",
+      "category": "ATAC-specific Methods",
+      "features": ["Quantitative ATAC analysis", "Fragment count modeling", "Poisson distribution", "scvi-tools integration"]
     }
   ],
   "categories": [
     {
       "name": "Variational Autoencoder",
       "description": "Models based on VAE architecture for learning latent representations",
-      "count": 6
+      "count": 4
     },
     {
       "name": "Contrastive Learning",
       "description": "Models using contrastive learning objectives for representation learning",
-      "count": 6
+      "count": 4
     },
     {
       "name": "Graph Neural Network",
@@ -259,13 +334,23 @@
     {
       "name": "Clustering",
       "description": "Models focused on unsupervised clustering of single cells",
-      "count": 3
+      "count": 1
     },
     {
       "name": "Diffusion Model",
       "description": "Models using diffusion-based generative approaches",
       "count": 1
+    },
+    {
+      "name": "Classical Machine Learning",
+      "description": "Traditional dimensionality reduction and matrix factorization methods",
+      "count": 7
+    },
+    {
+      "name": "ATAC-specific Methods",
+      "description": "Methods specifically designed for scATAC-seq chromatin accessibility data",
+      "count": 3
     }
   ],
-  "total": 16
+  "total": 21
 }
