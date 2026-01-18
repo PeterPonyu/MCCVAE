@@ -81,14 +81,14 @@
       "full_name": "Geometric Manifold Variational Autoencoder",
       "publication_year": 2025,
       "authors": "Mehdi Joodaki, et al.",
-      "brief_description": "A GM-VAE approach supporting multiple geometric distributions (Euclidean, Poincaré, PGM, LearnablePGM, HW) for patient-level analysis of single-cell disease atlases.",
+      "brief_description": "A GM-VAE framework supporting multiple geometric distributions (Euclidean, Poincaré, PGM, LearnablePGM, HW) for patient-level analysis of single-cell disease atlases. See GM-VAE-LPGM, GM-VAE-PGM, GM-VAE-HW, GM-VAE-Poincaré for specific variants.",
       "paper_title": "PILOT-GM-VAE: patient-level analysis of single-cell disease atlas with optimal transport of Gaussian mixture variational autoencoders",
       "journal": "Briefings in Bioinformatics",
       "methodology": ["Gaussian Mixture VAE", "Optimal Transport", "Hyperbolic Geometry"],
       "github_url": "https://github.com/CostaLab/PILOT-GM-VAE",
       "doi": "10.1093/bib/bbaf547",
       "category": "Variational Autoencoder",
-      "features": ["Geometric distributions", "Poincaré space", "Hyperboloid space"]
+      "features": ["Geometric distributions", "Poincaré space", "Hyperboloid space", "4 variants: LPGM, PGM, HW, Poincaré"]
     },
     {
       "id": 7,
@@ -313,12 +313,142 @@
       "doi": "N/A",
       "category": "ATAC-specific Methods",
       "features": ["Quantitative ATAC analysis", "Fragment count modeling", "Poisson distribution", "scvi-tools integration"]
+    },
+    {
+      "id": 22,
+      "abbreviation": "β-VAE",
+      "full_name": "Beta Variational Autoencoder",
+      "publication_year": 2017,
+      "authors": "Irina Higgins, Loic Matthey, Arka Pal, et al.",
+      "brief_description": "A modification of VAE that introduces an adjustable hyperparameter β to balance latent channel capacity and independence constraints with reconstruction accuracy, enabling learning of disentangled representations.",
+      "paper_title": "beta-VAE: Learning Basic Visual Concepts with a Constrained Variational Framework",
+      "journal": "ICLR",
+      "methodology": ["Variational Autoencoder", "KL Divergence Weighting", "Disentanglement"],
+      "github_url": "https://github.com/1Konny/Beta-VAE",
+      "doi": "N/A",
+      "category": "VAE Regularization",
+      "features": ["Disentangled representations", "Adjustable β hyperparameter", "Interpretable latent factors", "Rate-distortion tradeoff"]
+    },
+    {
+      "id": 23,
+      "abbreviation": "DIP-VAE",
+      "full_name": "Disentangled Inferred Prior VAE",
+      "publication_year": 2018,
+      "authors": "Abhishek Kumar, Prasanna Sattigeri, Avinash Balakrishnan",
+      "brief_description": "A VAE variant that encourages disentanglement by regularizing the expectation of the approximate posterior to match a factorized prior, improving upon β-VAE with better reconstruction quality.",
+      "paper_title": "Variational Inference of Disentangled Latent Concepts from Unlabeled Observations",
+      "journal": "ICLR",
+      "methodology": ["Variational Autoencoder", "Covariance Regularization", "Disentanglement"],
+      "github_url": "https://github.com/IBM/AIX360",
+      "doi": "10.48550/arXiv.1711.00848",
+      "category": "VAE Regularization",
+      "features": ["Inferred prior matching", "Covariance matrix regularization", "DIP-I and DIP-II variants", "Improved disentanglement metric"]
+    },
+    {
+      "id": 24,
+      "abbreviation": "InfoVAE",
+      "full_name": "Information Maximizing VAE",
+      "publication_year": 2017,
+      "authors": "Shengjia Zhao, Jiaming Song, Stefano Ermon",
+      "brief_description": "A class of VAE objectives that maximize mutual information between latent variables and data, mitigating posterior collapse and improving latent feature utilization regardless of decoder flexibility.",
+      "paper_title": "InfoVAE: Information Maximizing Variational Autoencoders",
+      "journal": "AAAI",
+      "methodology": ["Variational Autoencoder", "MMD Regularization", "Mutual Information Maximization"],
+      "github_url": "https://github.com/ShengjiaZhao/InfoVAE",
+      "doi": "10.48550/arXiv.1706.02262",
+      "category": "VAE Regularization",
+      "features": ["MMD divergence", "Prevents posterior collapse", "Flexible decoder compatibility", "Information-theoretic objective"]
+    },
+    {
+      "id": 25,
+      "abbreviation": "TC-VAE",
+      "full_name": "Total Correlation VAE (FactorVAE)",
+      "publication_year": 2018,
+      "authors": "Hyunjik Kim, Andriy Mnih",
+      "brief_description": "A VAE that explicitly penalizes the total correlation in the latent distribution, encouraging factorial (statistically independent) representations with a better disentanglement-reconstruction tradeoff than β-VAE.",
+      "paper_title": "Disentangling by Factorising",
+      "journal": "ICML",
+      "methodology": ["Variational Autoencoder", "Total Correlation Penalty", "Density Ratio Estimation"],
+      "github_url": "https://github.com/1Konny/FactorVAE",
+      "doi": "10.48550/arXiv.1802.05983",
+      "category": "VAE Regularization",
+      "features": ["Total correlation decomposition", "Factorial latent distribution", "Discriminator-based estimation", "Improved disentanglement metric"]
+    },
+    {
+      "id": 26,
+      "abbreviation": "GM-VAE-LPGM",
+      "full_name": "Learnable Product of Gaussian Mixture VAE",
+      "publication_year": 2025,
+      "authors": "Mehdi Joodaki, et al. (PILOT-GM-VAE)",
+      "brief_description": "A GM-VAE variant using learnable product of Gaussian mixtures in Euclidean space, allowing adaptive geometric structure learning for patient-level single-cell analysis.",
+      "paper_title": "PILOT-GM-VAE: patient-level analysis with Gaussian mixture VAE",
+      "journal": "Briefings in Bioinformatics",
+      "methodology": ["Gaussian Mixture VAE", "Learnable Geometry", "Optimal Transport"],
+      "github_url": "https://github.com/CostaLab/PILOT-GM-VAE",
+      "doi": "10.1093/bib/bbaf547",
+      "category": "Geometric VAE",
+      "features": ["Learnable product structure", "Euclidean geometry", "Patient-level analysis", "Adaptive manifold learning"]
+    },
+    {
+      "id": 27,
+      "abbreviation": "GM-VAE-PGM",
+      "full_name": "Product of Gaussian Mixture VAE",
+      "publication_year": 2025,
+      "authors": "Mehdi Joodaki, et al. (PILOT-GM-VAE)",
+      "brief_description": "A GM-VAE variant with fixed product of Gaussian mixture structure, providing stable geometric representations for multi-sample single-cell disease atlas analysis.",
+      "paper_title": "PILOT-GM-VAE: patient-level analysis with Gaussian mixture VAE",
+      "journal": "Briefings in Bioinformatics",
+      "methodology": ["Gaussian Mixture VAE", "Fixed Product Structure", "Optimal Transport"],
+      "github_url": "https://github.com/CostaLab/PILOT-GM-VAE",
+      "doi": "10.1093/bib/bbaf547",
+      "category": "Geometric VAE",
+      "features": ["Fixed product structure", "Euclidean geometry", "Disease state comparison", "Stable training"]
+    },
+    {
+      "id": 28,
+      "abbreviation": "GM-VAE-HW",
+      "full_name": "Hyperboloid Wrapped Gaussian Mixture VAE",
+      "publication_year": 2025,
+      "authors": "Mehdi Joodaki, et al. (PILOT-GM-VAE)",
+      "brief_description": "A GM-VAE variant embedding cells in Lorentz hyperboloid space using wrapped Gaussian distributions, naturally capturing hierarchical cell type relationships.",
+      "paper_title": "PILOT-GM-VAE: patient-level analysis with Gaussian mixture VAE",
+      "journal": "Briefings in Bioinformatics",
+      "methodology": ["Gaussian Mixture VAE", "Hyperboloid Geometry", "Wrapped Normal Distribution"],
+      "github_url": "https://github.com/CostaLab/PILOT-GM-VAE",
+      "doi": "10.1093/bib/bbaf547",
+      "category": "Geometric VAE",
+      "features": ["Lorentz hyperboloid space", "Wrapped Gaussian", "Hierarchical preservation", "Non-Euclidean geometry"]
+    },
+    {
+      "id": 29,
+      "abbreviation": "GM-VAE-Poincaré",
+      "full_name": "Poincaré Ball Gaussian Mixture VAE",
+      "publication_year": 2025,
+      "authors": "Mehdi Joodaki, et al. (PILOT-GM-VAE)",
+      "brief_description": "A GM-VAE variant operating in Poincaré ball hyperbolic space, ideal for representing tree-like cell differentiation hierarchies with exponentially growing capacity.",
+      "paper_title": "PILOT-GM-VAE: patient-level analysis with Gaussian mixture VAE",
+      "journal": "Briefings in Bioinformatics",
+      "methodology": ["Gaussian Mixture VAE", "Poincaré Ball", "Hyperbolic Geometry"],
+      "github_url": "https://github.com/CostaLab/PILOT-GM-VAE",
+      "doi": "10.1093/bib/bbaf547",
+      "category": "Geometric VAE",
+      "features": ["Poincaré ball model", "Hyperbolic distance", "Tree-like hierarchy", "Exponential volume growth"]
     }
   ],
   "categories": [
     {
       "name": "Variational Autoencoder",
       "description": "Models based on VAE architecture for learning latent representations",
+      "count": 4
+    },
+    {
+      "name": "VAE Regularization",
+      "description": "VAE variants with specialized regularization for disentanglement (β-VAE, DIP-VAE, InfoVAE, TC-VAE)",
+      "count": 4
+    },
+    {
+      "name": "Geometric VAE",
+      "description": "VAE models using non-Euclidean and geometric manifold representations (GM-VAE variants: LPGM, PGM, HW, Poincaré)",
       "count": 4
     },
     {
@@ -352,5 +482,5 @@
       "count": 3
     }
   ],
-  "total": 21
+  "total": 29
 }

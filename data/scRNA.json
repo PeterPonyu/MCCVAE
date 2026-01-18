@@ -8,20 +8,10 @@
       "source": "Bone marrow",
       "platform": "Illumina HiSeq 3000",
       "accession": "GSE120221",
-      "description": "Using standard operating procedures, mononuclear cells from 20 healthy donors' bone marrow aspirates were isolated using Ficoll density gradient separation and cryopreserved in 90% FBS/ 10% DMSO for storage in 72 liquid nitrogen. scRNAseq was performed using 10X Genomics Single Cell 3’ Solution, version 2 according to manufacturer’s instructions (protocol rev A). Libraries were sequenced on HiSeq3000. Droplet-based scRNAseq of bone marrow mononuclear cells for all donor samples was performed with goal minimum sequencing depth of 50,000 reads/cell and detected a mean of 880 genes/cells (range 575-1,390 gene/cell)."
+      "description": "Using standard operating procedures, mononuclear cells from 20 healthy donors' bone marrow aspirates were isolated using Ficoll density gradient separation and cryopreserved in 90% FBS/ 10% DMSO for storage in 72 liquid nitrogen. scRNAseq was performed using 10X Genomics Single Cell 3\u2019 Solution, version 2 according to manufacturer\u2019s instructions (protocol rev A). Libraries were sequenced on HiSeq3000. Droplet-based scRNAseq of bone marrow mononuclear cells for all donor samples was performed with goal minimum sequencing depth of 50,000 reads/cell and detected a mean of 880 genes/cells (range 575-1,390 gene/cell)."
     },
     {
       "id": 2,
-      "title": "Single-cell transcriptomics reveals distinct microglia signatures under inflammation",
-      "species": "Mus musculus",
-      "author": "Sousa C, Poovathingal SK, Kaoma T, Azuaje F, Skupin A, Michelucci A",
-      "source": "microglia isolated from saline control mice",
-      "platform": "Illumina NextSeq 500",
-      "accession": "GSE115571",
-      "description": "Comparison of sorted microglia (CD11b+CD45int cells) between peripherally LPS-injected mice and saline control mice at single-cell resolution. One sample saline control and one sample LPS 24h (from 2 mice per group"
-    },
-    {
-      "id": 3,
       "title": "Single cell RNA sequencing analysis of fresh resected human lung tissue",
       "species": "Homo sapiens",
       "author": "Simon LM, Schiller HB",
@@ -31,7 +21,7 @@
       "description": "Fresh resected human lung tissue (parenchymal lung and distal airway specimens) was obtained from four patients and profiled using single cell RNA sequencing technology (Drop-seq)."
     },
     {
-      "id": 4,
+      "id": 3,
       "title": "Single-cell Transcriptomics Reveals the Divergent Developmental Lineage Trajectories during Human Pituitary Development",
       "species": "Homo sapiens",
       "author": "Zhang S, Cui Y, Wen L, Qiao J, Tang F",
@@ -41,7 +31,7 @@
       "description": "In this study, we performed single-cell RNA-sequencing (scRNA-seq) of 4,113 individual cells from human fetal pituitaries.Raw data of human fetal pituitary have been deposited in the GSA (Genome Sequence Archive) databases of the National Genomics Data Center (NGDC, https://bigd.big.ac.cn/) under the BioProject accession number PRJCA003249."
     },
     {
-      "id": 5,
+      "id": 4,
       "title": "Single-cell RNA-sequencing of adult mouse prostates",
       "species": "Mus musculus",
       "author": "Strand DW, Henry GH",
@@ -51,7 +41,7 @@
       "description": "Fresh mouse prostate specimens were digested into single-cell suspensions, cells were subject to single-cell RNA-sequencing using the 10x Genomics platform."
     },
     {
-      "id": 6,
+      "id": 5,
       "title": "Single-cell RNA-sequencing of adult mouse urethra",
       "species": "Mus musculus",
       "author": "Strand DW, Henry GH",
@@ -61,7 +51,7 @@
       "description": "Fresh mouse urethral specimens were digested into single-cell suspensions, cells were subject to single-cell RNA-sequencing using the 10x Genomics platform."
     },
     {
-      "id": 7,
+      "id": 6,
       "title": "Single-cell RNA-sequencing reveals the heterogeneity of microglia in fibrous membrane derived from proliferative diabetic retinopathy and proliferative vitreoretinopathy",
       "species": "Mus musculus",
       "author": "Yuan S, Liu Q, Hu Z, Mao X",
@@ -71,7 +61,7 @@
       "description": "Fibrous membrane samples from one paitient with proliferative vitreoretinopathy and three patients with proliferative diabetic retinopathy were surgically incised and and sequenced using the scFTD-seq protocol."
     },
     {
-      "id": 8,
+      "id": 7,
       "title": "Heterogeneity analysis of astrocytes following spinal cord injury at single-cell resolution",
       "species": "Mus musculus",
       "author": "Hou J, Bi H, Jiang Q, Gu X",
@@ -81,7 +71,7 @@
       "description": "Single cell RNA sequencing of uninjured and injured spinal cord at pSCI0.5d, pSCI1d, pSCI3d, pSCI7d, pSCI14d, pSCI60d and pSCI90d."
     },
     {
-      "id": 9,
+      "id": 8,
       "title": "Single-Cell RNA-Seq Analysis Reveals Macrophage Involved in Pathogenesis of Human sporadic type A aortic dissection",
       "species": "Homo sapiens",
       "author": "Zhang B, Zeng K, Guan R, Yang Y",
@@ -91,7 +81,7 @@
       "description": "We performed scRNA sequencing to understand macrophage function in in Pathogenesis of Human sporadic type A aortic dissection. We analyzed and validated by various bioinformatics algorithms and histopathology experiments."
     },
     {
-      "id": 10,
+      "id": 9,
       "title": "A Panoramic View of Cell Population Dynamics in Mammalian Aging",
       "species": "Mus musculus",
       "author": "Zhang Z, Schaefer C, Jiang W, Lu Z, Lee J, Sziraki A, Abdulraouf A, Zhou W, Cao J",
@@ -101,7 +91,7 @@
       "description": "Single nucleus RNA-seq profiling for C57BL/6 mouse cells from lung, heart, liver, kidney, muscle, stomach, duodenum, jejunum, ileum, colon, brown adipose tissue, inguinal adipose tissue, gonadal adipose tissue cells at 3,6,12,16,23 months. Single nucleus RNA-seq profiling for B6.129S7-Rag1tm1Mom/J and B6.Cg-Prkdcscid/SzJ mouse cells from lung, heart, liver, kidney, muscle, stomach, duodenum, jejunum, brown adipose tissue, inguinal adipose tissue, gonadal adipose tissue cells at 3 and 16 months.Single nucleus RNA-seq profiling for C57BL/6 mouse cells from lung, heart, liver, kidney, muscle, stomach, duodenum, jejunum, ileum, colon, brown adipose tissue, inguinal adipose tissue, gonadal adipose tissue cells at 3,6,12,16,23 months. Single nucleus RNA-seq profiling for B6.129S7-Rag1tm1Mom/J and B6.Cg-Prkdcscid/SzJ mouse cells from lung, heart, liver, kidney, muscle, stomach, duodenum, jejunum, brown adipose tissue, inguinal adipose tissue, gonadal adipose tissue cells at 3 and 16 months."
     },
     {
-      "id": 11,
+      "id": 10,
       "title": "Decoding SFRP2hi Fibroblast Progenitors in Sustaining Tooth Growth in Humans and Mice at Single-Cell Resolution",
       "species": "Mus musculus",
       "author": "Zhao T, Sun Z, Zhong Q, Yu X, Sun T, An Z",
@@ -111,27 +101,27 @@
       "description": "Mouse incisors from mandibles were carefully dissected from 15 C57BL/6 mice aged 7 weeks. The incisor pulp, with minimal inclusion of dental epithelium, was isolated and analysed using scRNAseq."
     },
     {
-      "id": 12,
+      "id": 11,
       "title": "Comprehensive single-cell mRNA profiling reveals a detailed roadmap for pancreatic endocrinogenesis",
       "species": "Mus musculus",
-      "author": "Bastidas-Ponce A, Tritschler S, Leander D, Scheibner K, Tarquis-Medina M, Salinno C, Schirge S, Burtscher I, Böttcher A, Theis FJ, Lickert H, Bakhti M",
+      "author": "Bastidas-Ponce A, Tritschler S, Leander D, Scheibner K, Tarquis-Medina M, Salinno C, Schirge S, Burtscher I, B\u00f6ttcher A, Theis FJ, Lickert H, Bakhti M",
       "source": "E12.5",
       "platform": "Illumina HiSeq 4000",
       "accession": "GSE132188",
       "description": "4 single cell RNA seq experiments were performed using 10X Genomics technology to generate single cell transcriptomic profiles of embryonic pancreatic epithelial cells from a Neurogenin3 (Ngn3)-Venus fusion (NVF) reporter mouse line. Cells were sorted and NVF+ and NVF- cells mixed (50:50) to enrich for endocrine Ngn3+ progenitors. Cells were sampled from pancreata of E12.5,E13.5,E14.5 and E15.5 embryos."
     },
     {
-      "id": 13,
+      "id": 12,
       "title": "Mapping the Cellular Biogeography of Human Bone Marrow Niches Using Single-Cell Transcriptomics",
       "species": "Homo sapiens",
       "author": "Bandyopadhyay S, Ahn KJ, Duffy M, Qin L, Tan K",
       "source": "Bone marrow",
       "platform": "Illumina NovaSeq 6000",
       "accession": "GSE253355",
-      "description": "We simultaneously profiled enriched mesenchymal, HSPC, and unenriched RBC depleted cells from fresh, enzymatically digested femoral head human bone marrow from hematologically healthy patients undergoing total hip arthroplasties and subjected to paired-end single-cell RNA sequencing using 10X Genomics Single Cell 3’ v3.1 and libraries were sequenced using an Illumina Nova Seq 6000."
+      "description": "We simultaneously profiled enriched mesenchymal, HSPC, and unenriched RBC depleted cells from fresh, enzymatically digested femoral head human bone marrow from hematologically healthy patients undergoing total hip arthroplasties and subjected to paired-end single-cell RNA sequencing using 10X Genomics Single Cell 3\u2019 v3.1 and libraries were sequenced using an Illumina Nova Seq 6000."
     },
     {
-      "id": 14,
+      "id": 13,
       "title": "Single nucleus RNA-sequencing defines unexpected diversity of cholinergic neuron types in the adult mouse spinal cord",
       "species": "Mus musculus",
       "author": "Alkaslasi MR, Piccus ZE, Hareendran S, Silberberg H, Chen L, Zhang Y, Petros TJ, Le Pichon CE",
@@ -141,7 +131,7 @@
       "description": "Cholinergic nuclei were enriched by FACS sorting of GFP+ nuclei from nuclear reporter mice and barcoded using 10X Genomics Chromium Single Cell Processor. Samples were run on an Illumina HiSeq2500."
     },
     {
-      "id": 15,
+      "id": 14,
       "title": "Decoding Human Megakaryocyte Development",
       "species": "Homo sapiens",
       "author": "Wang H, He J, Xu C, Chen X, Yang H, Shi L, Liu B, Zhou J",
@@ -151,17 +141,17 @@
       "description": "Here, we performed droplet-based and mouth pipette picked scRNA-seq of over 50,000 cells to firstly construct a molecular landscape and dissecting the heterogeneity of MK in human embryos."
     },
     {
-      "id": 16,
+      "id": 15,
       "title": "Gene expression analysis of hESCs undergoing neuronal differentiation [scRNA-seq]",
       "species": "Homo sapiens",
-      "author": "Spildrejorde M, Samara A, Sharma A, Falck M, Leithaug M, Modafferi S, Bjørnstad PM, Gervin K, Lyle R, Eskeland R",
+      "author": "Spildrejorde M, Samara A, Sharma A, Falck M, Leithaug M, Modafferi S, Bj\u00f8rnstad PM, Gervin K, Lyle R, Eskeland R",
       "source": "HS360, day 0, hESCs undifferentiated",
       "platform": "Illumina NovaSeq 6000",
       "accession": "GSE192857",
       "description": "Genome wide gene expression profiling of (n= 19) samples from human embryonic stem cells (hESCs) at day 0 (n=5), and day 7(n = 6), 13 (n= 4) and 20 (n=4) of neuronal differentiation"
     },
     {
-      "id": 17,
+      "id": 16,
       "title": "An age specific platelet differentiation path from hematopoietic stem cells causes thrombocytosis and exacerbated thrombosis",
       "species": "Mus musculus",
       "author": "Poscablo D, Forsberg C, Medina P",
@@ -171,7 +161,7 @@
       "description": "Here we reveal a direct differentiation pathway from hematopoietic stem cells into platelets that is unique to aging. We used single cell RNA sequencing (scRNA-seq) to analyze age specific platelet pathway at the clonal level."
     },
     {
-      "id": 18,
+      "id": 17,
       "title": "Single-cell RNA sequencing of hematopoietic stem and progenitor cells from young and aged mice",
       "species": "Mus musculus",
       "author": "Cosgrove J, Perie L",
@@ -181,7 +171,7 @@
       "description": "Sca1+ cKit+ HSPCs were purified from the bone marrow of DRAG mice by fluorescence-acticated cell sorting (FACS) and cells were analysed using scRNAseq using the 10X genomics platform."
     },
     {
-      "id": 19,
+      "id": 18,
       "title": "External signals regulate continuous transcriptional states in hematopoietic stem cells",
       "species": "Mus musculus",
       "author": "Fast E",
@@ -191,7 +181,7 @@
       "description": "Five male and five female mice were used for each sample. For scATAC-Seq experiment and for HSC replicate 1 scRNA-Seq (HSC_Repl1) mice were left unperturbed. For stimulation scRNA-Seq experiment mice were treated with either 16,16-dimethyl Prostaglandin E2 (dmPGE2), Poly(I:C) (pIC), or G-CSF (GCSF), Indomethacin (indo), or only solvent DMSO as a control (ct). In this experiment HSCs and multipotent progenitors (MPPs) from the same condition (ct, dmPGE2, pIC, GCSF and indo) were extracted from the same mice. The MPP samples were also labeled with hashtag oligonucleotides (HTO) that are part of the Cellular Indexing of Transcriptomes and Epitopes by Sequencing (CITE-Seq) methodology. The two control HSC samples (HSC_Repl1 and HSC_ct = repl2) were treated as two independent biological replicates."
     },
     {
-      "id": 20,
+      "id": 19,
       "title": "Longitudinal single-cell transcriptomics analysis of mouse lung upon bleomycin-induced injury",
       "species": "Mus musculus",
       "author": "Simon LM, Schiller HB",
@@ -201,7 +191,7 @@
       "description": "Single-cell transcriptomics time-course experiment."
     },
     {
-      "id": 21,
+      "id": 20,
       "title": "Transcriptome analysis of single cells from the mouse dentate gyrus",
       "species": "Mus musculus",
       "author": "Hochgerner H, Zeisel A, Ernfors P, Linnarsson S",
@@ -211,8 +201,8 @@
       "description": "1129 single cells from postnatal day 12, 1440 from day 16, 1063 from day 24, and 1822 from day 35."
     },
     {
-      "id": 22,
-      "title": "Time series single-cell RNA sequencing of murine hematopoetic stem and progenitors (HSPCs) following in vivo IFNα treatment",
+      "id": 21,
+      "title": "Time series single-cell RNA sequencing of murine hematopoetic stem and progenitors (HSPCs) following in vivo IFN\u03b1 treatment",
       "species": "Mus musculus",
       "author": "Demerdash Y, Bouman BJ, Haghverdi L, Gertruda Essers MA",
       "source": "Bone Marrow",
@@ -221,7 +211,7 @@
       "description": "We performed a time course single-cell RNA sequencing experiment. Bone marrow (BM) cells were collected from four different mice for each timepoint (including four control mice injected with PBS). Using oligo-tagged antibodies, or hashtags, we labeled the cells from each biological replicate and timepoint to address inter-animal heterogeneity of the inflammatory stress response. Following cell hashing, BM cells from mice of the same treatment were pooled together. BM cells were then sorted by using the broad lineage negative (Lin-) and c-kit positive (c-Kit+) (LK) gating strategy to capture a wide spectrum of the HSPC transcriptional landscape. To guarantee sufficient numbers of HSCs for analysis, we additionally enriched the sorted populations with LKSLAMCD34-, since they are much less frequent than the other populations in the LK gate. The cells from all four experimental time points (control, 3h, 24h, and 72h) were sequenced simultaneously using the 10x Genomics platform."
     },
     {
-      "id": 23,
+      "id": 22,
       "title": "Characterization and generation of human definitive multipotent hematopoietic stem/progenitor cells",
       "species": "Homo sapiens",
       "author": "Zhu Y, Wang T, Gu J, Pan G",
@@ -231,7 +221,7 @@
       "description": "10X Single-cell RNASeq of FACS-sorted CD43+ hematopoietic cells differentiated from H1 hESCs at day 8 (hESCs-HPCs), as well as FACS-sorted Lin-CD34+CD38- HSPCs mobilized in human peripheral blood (PB-HSPCs)."
     },
     {
-      "id": 24,
+      "id": 23,
       "title": "Single-cell RNA seq of aging peripheral blood",
       "species": "Mus musculus",
       "author": "Yee Voan T, Hinthorn SJ, Webb AE, Nicola N",
@@ -241,7 +231,7 @@
       "description": "Blood samples from young and old mice."
     },
     {
-      "id": 25,
+      "id": 24,
       "title": "scRNAseq reveals mechanisms of Merkel cell carcinoma acquired immunotherapy resistance [1]",
       "species": "Homo sapiens",
       "author": "Paulson KG, Chapuis AG",
@@ -251,7 +241,7 @@
       "description": "Serial blood draws from four time points, serial tumor biopsies from two time points - single cell digests were viably preserved, comparisons were performed on a within tissue basis, discovery patient for associated manuscript."
     },
     {
-      "id": 26,
+      "id": 25,
       "title": "Single-cell RNA sequencing reveals compromised immune microenvironment in precursor stages of multiple myeloma",
       "species": "Homo sapiens",
       "author": "Ghobrial IM, Getz G",
@@ -261,7 +251,7 @@
       "description": "We employed single-cell RNA sequencing on 40.8K immune microenvironmental cells using 32 bone marrow samples from a cohort of 22 patients with varying stages of Multiple Myeloma progression and 9 healthy donors."
     },
     {
-      "id": 27,
+      "id": 26,
       "title": "Dissecting the transcriptomic landscape of the human intrahepatic cholangiocarcinoma by single cell RNA-sequencing",
       "species": "Homo sapiens",
       "author": "Zhang M, Yang H, Liu B, Yan X",
@@ -271,7 +261,7 @@
       "description": "To comprehensively elucidate the ICC heterogeneity, we employed single-cell RNA sequencing (scRNA-seq) to profile 31,302 cells of five ICC samples, as well as three paired adjacent non-tumor tissues. Our results identify 31 cell subtypes and the heterogeneous malignant subtype was highly patient-specific, which has differential proliferative, migratory and inflammation phenotype."
     },
     {
-      "id": 28,
+      "id": 27,
       "title": "Single cell RNAseq of human early stage lung adenocarcinoma with activating somatic KRAS mutations and associated normal lung tissues reveals alterations of key gene expression in alveolar type II pneumocytes",
       "species": "Homo sapiens",
       "author": "Yanagawa J, Fung E, Tran LM, Krysan K, Wallace WD, Fishbein GA, Prosper AE, Aberle D, Dubinett SM",
@@ -281,7 +271,7 @@
       "description": "All single-cell mRNA expression profiles were acquired from two patients diagnosed with lung adenocarcinoma (LUAD) carrying KRAS mutations. In brief, tumor lesion and associated distal normal lung tissues were collected from patients undergoing surgery without prior chemotherapy. Samples were dissociated into single cell suspension and subjected to single cell sequencing. Immune cells were filtered out from the results based on CD45 (PTPRC) expression utilizing in-silico sorting."
     },
     {
-      "id": 29,
+      "id": 28,
       "title": "Transcriptional heterogeneity in primary and metastatic gastric cancer revealed using single-cell RNA sequencing",
       "species": "Homo sapiens",
       "author": "Jiang H, Yu D, Yang P",
@@ -291,7 +281,7 @@
       "description": "We performed unbiased scRNA-seq analysis of 42,968 cells from 10 fresh human tissue samples from six patients. Primary tumor and adjacent non-tumoral samples and six metastases from different organs or tissues (liver, peritoneum, ovary, lymph node) were evaluated. Validation experiments were performed using histological assays and bulk transcriptomic datasets."
     },
     {
-      "id": 30,
+      "id": 29,
       "title": "Single-cell sequencing reveals cancer cell heterogeneity in a murine breast cancer lymph node metastasis model",
       "species": "Mus musculus",
       "author": "Lei P, Pereira ER, Beyaz S, Padera TP",
@@ -301,17 +291,17 @@
       "description": "Using a mouse model of breast cancer that develops spontaneous lymph node metastasis, we performed high-resolution single-cell RNA sequencing (scRNA-Seq) of the primary tumor and TDLN to measure how cancer cells adapt to the dynamic lymph node microenvironment. To understand the dynamic change of lymph node microenvironment after cancer cell invasion, we also compared the gene-expression alteration between naive lymph node and TDLN at single-cell level."
     },
     {
-      "id": 31,
+      "id": 30,
       "title": "Spatiotemporal transcriptional atlas of lung adenocarcinoma from adenocarcinoma in situ to invasive carcinoma [scRNA-seq]",
       "species": "Homo sapiens",
       "author": "Jiang T, Sun S, Fan Y, Zhu J",
       "source": "Lung adenocarcinoma",
       "platform": "Illumina NovaSeq 6000",
       "accession": "GSE189357",
-      "description": "Nine resected samples (TD1-9, three each from AIS, MIA and IAC cases) from nine treatment-naïve patients were collected for droplet-based scRNA-seq. In parallel, six paired samples were subjected to ST."
+      "description": "Nine resected samples (TD1-9, three each from AIS, MIA and IAC cases) from nine treatment-na\u00efve patients were collected for droplet-based scRNA-seq. In parallel, six paired samples were subjected to ST."
     },
     {
-      "id": 32,
+      "id": 31,
       "title": "Single-cell and spatial transcriptome analysis reveals the cellular heterogeneity of liver metastatic colorectal cancer",
       "species": "Homo sapiens",
       "author": "Wang F, Long J",
@@ -321,37 +311,37 @@
       "description": "For single-cell RNA sequencing, 6 CRC patients with liver metastasis were enrolled after written informed consent was obtained. Primary CC, CN (at least 2 cm from matched tumors), LM, LN (at least 2 cm from matched tumors) and PB of the enrolled patients were collected following resection. All the patients received preoperative chemotherapy and/or radiotherapy. For spatial transcriptome sequencing, formalin-fixed paraffin embedded (FFPE) tissues of 6 CRC patients were prepared."
     },
     {
-      "id": 33,
+      "id": 32,
       "title": "Single cell RNA sequencing of primary breast cancer",
       "species": "Homo sapiens",
       "author": "Han K, Joo E, Park W",
       "source": "primary breast cancer",
       "platform": "Illumina HiSeq 2500",
       "accession": "GSE228499",
-      "description": "Library preparation was performed using the Chromium Single cell 3’ gene expression system (version 2) and processed following the manufacturer’s protocol (10x Genomics, USA). The library was sequenced on a HiSeq 2500 system using 100-bp paired-end sequencing, and raw sequencing data were processed using Cell Ranger."
+      "description": "Library preparation was performed using the Chromium Single cell 3\u2019 gene expression system (version 2) and processed following the manufacturer\u2019s protocol (10x Genomics, USA). The library was sequenced on a HiSeq 2500 system using 100-bp paired-end sequencing, and raw sequencing data were processed using Cell Ranger."
     },
     {
-      "id": 34,
+      "id": 33,
       "title": "Multiomic analysis uncovers a continuous spectrum of differentiation and Wnt-MDK-driven immune evasion in hepatoblastoma [snRNA-seq]",
       "species": "Homo sapiens",
-      "author": "Münter D, de Faria FW, Richter M, Aranda-Pardos I, Hotfilder M, Walter C, Paga E, Inserte C, Albert TK, Roy R, Rahman S, Riedel NC, Müller V, Pascher A, Wiebe K, Schmid I, Vokuhl C, Winkler B, Jüttner E, Vieth S, Mücke U, Kluiver TA, Chuan Peng W, Rossig C, Schlué J, Madadi-Sanjani O, Sandmann S, Hartmann W, A-Gonzalez N, Soehnlein O, Kerl K",
+      "author": "M\u00fcnter D, de Faria FW, Richter M, Aranda-Pardos I, Hotfilder M, Walter C, Paga E, Inserte C, Albert TK, Roy R, Rahman S, Riedel NC, M\u00fcller V, Pascher A, Wiebe K, Schmid I, Vokuhl C, Winkler B, J\u00fcttner E, Vieth S, M\u00fccke U, Kluiver TA, Chuan Peng W, Rossig C, Schlu\u00e9 J, Madadi-Sanjani O, Sandmann S, Hartmann W, A-Gonzalez N, Soehnlein O, Kerl K",
       "source": "Formalin-fixed paraffin-embedded hepatoblastoma",
       "platform": "Illumina NovaSeq 6000",
       "accession": "GSE283205",
       "description": "Single-nuclei gene expression profiles of human hepatoblastoma were generated from formalin-fixed, paraffin-embedded tissue samples (n=5) using Chromium Single Cell Flex Gene Expression (10x Genomics)."
     },
     {
-      "id": 35,
+      "id": 34,
       "title": "Single cell characterization of arrested B-lymphoid differentiation and leukemic cell states in ETV6-RUNX1-positive pediatric leukemia",
       "species": "Homo sapiens",
-      "author": "Mehtonen J, Teppo S, Lahnalampi M, Kokko A, Kaukonen R, Oksa L, Laukkanen S, Bouvy-Liivrand M, Lönnberg T, Lohi O, Heinäniemi M",
+      "author": "Mehtonen J, Teppo S, Lahnalampi M, Kokko A, Kaukonen R, Oksa L, Laukkanen S, Bouvy-Liivrand M, L\u00f6nnberg T, Lohi O, Hein\u00e4niemi M",
       "source": "Primary pre-B-ALL BM",
       "platform": "Illumina HiSeq 3000",
       "accession": "GSE148218",
       "description": "Primary patient samples from diagnosis (N=6 BM samples, subtype ETV6-RUNX1, 4000-8000 cells per donor) with day 15 post-treatment sample collected from two cases. Cell line experiment in REH comparing two drugs targeting ETS-factors (TK216 ERG/FLI1 and XRP44X ELK3) at 72 h (N=1, 900-2500 cells per treatment)."
     },
     {
-      "id": 36,
+      "id": 35,
       "title": "Single-Cell RNA Sequencing Identifies Molecular Biomarkers Predicting Response to CDK4/6 Inhibition in Metastatic HR+/HER2- Breast Cancer",
       "species": "Homo sapiens",
       "author": "Li Z, Luo L",
@@ -361,7 +351,7 @@
       "description": "Metastatic tumor biopsies were obtained from HR+/HER2- BC patients pre-CDK4/6i treatment at baseline (BL) and/or at disease progression. BL samples were from CDK4/6i responders (n = 8, median progression-free survival [mPFS] = 17 months), while progressors were categorized as early-progressors (EP, n = 3, mPFS = 3 months) and late-progressors (LP, n = 8, mPFS = 10 months). Metastatic sites included liver (10), pleural effusions (6), ascites (2), and bone (1). InferCNV distinguished tumor cells, and functional analysis utilized the Molecular Signatures Database. Signature panel genes were validated in two independent cohorts (MDACC n = 89, Korean n = 61) with RNAseq data from baseline biopsies from HR+/HER2- mBC patients pre-CDK4/6i treatment."
     },
     {
-      "id": 37,
+      "id": 36,
       "title": "Single cell atlas identifies lipid-processing and immunomodulatory endothelial cells in healthy and malignant breast",
       "species": "Homo sapiens",
       "author": "Geldhof V, de Rooij LP, Sokol L, Amersfoort J, De Schepper M, Rohlenova K, Hoste G, Vanderstichele A, Delsupehe A, Isnaldi E, Dai N, Taverna F, Khan S, Truong AK, Teuwen L, Richard F, Treps L, Smeets A, Nevelsteen I, Weynand B, Vinckier S, Schoonjans L, Kalucka J, Desmedt C, Neven P, Mazzone M, Floris G, Punie K, Dewerchin M, Eelen G, Wildiers H, Li X, Luo Y, Carmeliet P",
@@ -371,7 +361,7 @@
       "description": "single-cell RNA-seq of human breast cancer patient-derived endothelial cells (CD31+CD102+"
     },
     {
-      "id": 38,
+      "id": 37,
       "title": "Clonal replacement of tumor-specific T cells following PD-1 blockade [single cells]",
       "species": "Homo sapiens",
       "author": "Yost KE, Satpathy AT, Wells DK, Qi Y, Kageyama R, Wang C, Sarin KY, Brown RA, Bucktrout SL, Davis MM, Chang AS, Chang HY",
@@ -381,7 +371,7 @@
       "description": "Dissociated tumor samples were sorted as either CD45+ CD3+ tumor-infiltrating T cells, other CD45+ CD3- tumor-infiltrating lymphocytes and CD45- CD3- tumor/stromal cells. Sorted cells were subjected to paired single cell RNA- and TCR-sequencing on the droplet based 10X Genomics platform."
     },
     {
-      "id": 39,
+      "id": 38,
       "title": "Single-Cell Map of Diverse Immune Phenotypes in the Metastatic Brain Tumor Microenvironment of Non Small Cell Lung Cancer and triple negative breast cancer",
       "species": "Homo sapiens",
       "author": "Wang L, Dai J, Han R, Jin W",
@@ -391,17 +381,17 @@
       "description": "Performed single cell RNA-seq on tens of thousands of dissociated metastatic brain tissue cells from 3 human non-small cell lung cancer patients and one triple negative breast cancer patient."
     },
     {
-      "id": 40,
+      "id": 39,
       "title": "The single cell transcriptional landscape of human lung adenocarcinoma (primary tumours and metastases)",
       "species": "Homo sapiens",
-      "author": "Laughney AM, Hu J, Campbell NR, Bakhoum SF, Setty M, Lavallée VP, Xie Y, Masilonis I, Carr AJ, Allaj V, Mattar M, Xavier J, Mazutis L, Poirier JT, Rudin CM, Pe'er D, Massagué J",
+      "author": "Laughney AM, Hu J, Campbell NR, Bakhoum SF, Setty M, Lavall\u00e9e VP, Xie Y, Masilonis I, Carr AJ, Allaj V, Mattar M, Xavier J, Mazutis L, Poirier JT, Rudin CM, Pe'er D, Massagu\u00e9 J",
       "source": "Patient primary lung adenocarcinoma",
       "platform": "Illumina HiSeq 2500",
       "accession": "GSE123902",
       "description": "Single-cell RNA sequencing was performed on 17 donors using the 10X Genomics protocol. For each donor, all viable cells (identified by forward and side scatter and DAPI exclusion) were assayed for trancriptome-wide RNA-sequence."
     },
     {
-      "id": 41,
+      "id": 40,
       "title": "Single-cell profiling and spatial transcriptome of primary tumors and paired metastatic lymph nodes in breast cancer patients",
       "species": "Homo sapiens",
       "author": "Liu Y, Ge J, Chen Y, Yu K",
@@ -411,7 +401,7 @@
       "description": "single-cell RNA and spatial transcriptome of 4 primary tumors and 4 paired metastatic lymph nodes in breast cancer."
     },
     {
-      "id": 42,
+      "id": 41,
       "title": "Single-cell network pharmacology predicts total therapies targeting multiple developmental clones in B-cell acute lymphoblastic leukemia",
       "species": "Homo sapiens",
       "author": "Yang J, Yu J, Huang X, Li Y",
@@ -421,7 +411,7 @@
       "description": "To check how the composition of B-cell development stage-like cells in B-ALL patients may indicate the drug response, we performed scMultiome profiling of two L-asparaginase sensitive (Ph-like_CRLF2, Near haploid) and two L-asparaginase resistant (KMT2A, Ph+) B-ALL cases. To further verify that L-asparaginase selectively kill the sensitive B cell population, we treated two L-asparaginase responsive B-ALL PDXs with L-asparaginase or vehicle ex vivo, followed by scMultiome analysis."
     },
     {
-      "id": 43,
+      "id": 42,
       "title": "Targeting tumor cells toward the antigenic specificity of bystander T cells in tumor microenvironment potentiates cancer immunotherapy",
       "species": "Mus musculus",
       "author": "Chen X, Li Z",
@@ -431,7 +421,7 @@
       "description": "To explore the molecular features of TBYS cells and how these cells respond to OV-BYTE therapy, C57BL/6 mice receving the transfer of congenically marked P14 CD8+ and SM CD4+ T cells recognizing two distinct LCMV glycoprotein (GP) epitopes were infected with LCMV Armstrong and engrafted with MC38 cells on day 60-post infection when LCMV immune memory was established. After 5 injections of PBS or NDV-WT or NDV-GP, MC38 tumor-infiltrating bystander P14 CD8+ and SM CD4+ T cells were FACS-sorted and analyzed using scRNA-seq. As controls, conventional memory SM CD4+ T cells were harvested from the spleens of C57BL/6 mice at day 60-post infection of LCMV Armstrong. To explore the changes of TCR repertoire in tumor-reactive CD8+ T cells, LCMV Armstrong-infected mice were engrafted with MC38 tumors and then intratumorally administrated with PBS or NDV-WT or NDV-GP. Then, CD45+ immune cells and CD45- non-immune cells from PBS- or NDV-WT- or NDV-GP-treated MC38 tumors were isolated and performed with scRNA-seq/scTCR-seq library construction. Furthermore, MC38 tumor-specific p15E tetramer+ CD8+ T cells were also isolated from PBS- or NDV-WT- or NDV-GP-treated MC38 tumors and performed with TCR-seq libarary construction."
     },
     {
-      "id": 44,
+      "id": 43,
       "title": "Landscape of infiltrating T cells in liver cancer revealed by single-cell sequencing",
       "species": "Homo sapiens",
       "author": "Zheng C, Zheng L, Yoo J, Guo H, Zhang Y, Guo X, Kang B, Hu R, Huang J, Zhang Q, Liu Z, Dong M, Hu X, Ouyang W, Peng J, Zhang Z",
@@ -441,7 +431,7 @@
       "description": "Systematic interrogation of tumor-infiltrating lymphocytes is key to the development of immunotherapies and the prediction of their clinical responses in cancers. Here, we perform deep single-cell RNA sequencing on single T cells isolated from peripheral blood, tumor and adjacent normal tissues from hepatocellular carcinoma patients."
     },
     {
-      "id": 45,
+      "id": 44,
       "title": "Nicotinamide enhances natural killer cell function and yields remissions in patients with non-Hodgkin lymphoma",
       "species": "Homo sapiens",
       "author": "Cichocki F, Day A",
@@ -451,7 +441,7 @@
       "description": "Peripheral blood was collected for the clinical trial testing NAM-expanded NK cells. From 3 donors, NK cells were sorted from apheresis products before ex vivo expansion. NK cells were also sorted from cells expanded with IL-15 and NAM prior to adoptive transfer. From 3 patients, donor and host NK cells were sorted using antibodies against HLA to distinguish doner and host. All cells were analyzed by single cell RNA-seq."
     },
     {
-      "id": 46,
+      "id": 45,
       "title": "Single-cell atlas of lineage states, tumor microenvironment and subtype specific expression programs in gastric cancer",
       "species": "Homo sapiens",
       "author": "Kumar V, Ramnarayanan K, Tan P",
@@ -461,20 +451,20 @@
       "description": "Gastric cancer (GC) heterogeneity between and within tumors represents a barrier to disease management. We generated a comprehensive single-cell atlas of GC comprising 31 primary gastric tumor samples representing clinical stages I-IV and histological subtypes. We identified 34 distinct cell-lineage states, related by developmental trajectories and previously unreported rare cell populations. Many lineage states exhibited a distinctive tumor-associated expression profile, each contributing individually to a combined tumor-wide molecular collage. We observed increased plasma cell proportions as a feature of diffuse-type tumors associated with epithelial-resident KLF2, and a stagewise accrual of novel cancer-associated fibroblast sub-populations marked by high INHBA and FAP co-expression. Our results provide a high-resolution molecular resource for GC translational studies, identifying intra- and inter-patient lineage-states across distinct GC subtypes."
     },
     {
-      "id": 47,
+      "id": 46,
       "title": "Single-cell analysis of childhood leukemia reveals a link between developmental states and ribosomal protein expression as a source of intra-individual heterogeneity",
       "species": "Homo sapiens",
       "author": "Caron M, St-Onge P, Sontag T, Wang YC, Richer C, Ragoussis I, Sinnett D, Bourque G",
       "source": "ETV6-RUNX1",
       "platform": "Illumina HiSeq 4000",
       "accession": "GSE132509",
-      "description": "10X Genomics 3’ single cell RNA-seq: Pre-B t(12"
+      "description": "10X Genomics 3\u2019 single cell RNA-seq: Pre-B t(12"
     },
     {
-      "id": 48,
+      "id": 47,
       "title": "Characterization of cell fate probabilities in single-cell data with Palantir",
       "species": "Homo sapiens",
-      "author": "Manu Setty, Vaidotas Kiseliovas, Jacob Levine, Adam Gayoso, Linas Mazutis & Dana Pe’er",
+      "author": "Manu Setty, Vaidotas Kiseliovas, Jacob Levine, Adam Gayoso, Linas Mazutis & Dana Pe\u2019er",
       "source": "CD34-positive, CD38-negative hematopoietic stem cell",
       "platform": "Human Cell Atlas data portal",
       "accession": "S-SUBS8",
