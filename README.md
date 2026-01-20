@@ -1,6 +1,11 @@
 
 # MCC: Momentum Contrastive Coupling
 
+[![GitHub Pages](https://img.shields.io/badge/Web%20Portal-Live-brightgreen)](https://peterponyu.github.io/MCCVAE/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+**Interactive Benchmarking Portal:** [https://peterponyu.github.io/MCCVAE/](https://peterponyu.github.io/MCCVAE/)
+
 MCC is a deep learning framework for single-cell genomics analysis. It combines a Momentum Contrastive (MoCo) module with an information-bottleneck coupling within a Variational Autoencoder (VAE) framework.
 
 ## Features
