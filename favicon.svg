@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-80 -66 160 132">
+  <circle cx="0" cy="0" r="58" fill="none" stroke="#64748b" stroke-width="10" stroke-linecap="round"/>
+  <path d="M-72-24C-52-24-36-52-12-52C14-52 36-24 72-24" fill="none" stroke="#64748b" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="-72" cy="-24" r="4.5" fill="#64748b"/>
+  <circle cx="72" cy="-24" r="4.5" fill="#64748b"/>
+  <text x="0" y="14" font-family="'JetBrains Mono','IBM Plex Mono',Menlo,Consolas,monospace" font-size="30" font-weight="600" fill="#64748b" text-anchor="middle" dominant-baseline="central">MC</text>
+</svg>
