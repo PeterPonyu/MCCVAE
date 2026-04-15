@@ -1,4 +1,10 @@
 
+<div align="center">
+  <a href="https://peterponyu.github.io/">
+    <img src="https://peterponyu.github.io/assets/badges/MCCVAE.svg" width="64" alt="ZF Lab · MCCVAE">
+  </a>
+</div>
+
 # MCC: Momentum Contrastive Coupling
 
 [![GitHub Pages](https://img.shields.io/badge/Web%20Portal-Live-brightgreen)](https://peterponyu.github.io/MCCVAE/)
