@@ -1,8 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
   <circle cx="64" cy="64" r="62" fill="#334155"/>
   <circle cx="64" cy="64" r="60" fill="none" stroke="#475569" stroke-width="2.5"/>
-  <path d="M18 48 C36 48, 48 26, 64 26 C80 26, 94 48, 110 48" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="3.5" stroke-linecap="round"/>
-  <circle cx="18" cy="48" r="4" fill="#94a3b8"/>
-  <circle cx="110" cy="48" r="4" fill="#94a3b8"/>
-  <text x="64" y="78" font-family="'JetBrains Mono','IBM Plex Mono',Menlo,monospace" font-size="44" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central">MC</text>
+  <path d="M18 46 C38 46, 50 22, 64 22 C78 22, 92 46, 110 46" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M18 22 C38 22, 50 46, 64 46 C78 46, 92 22, 110 22" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="3.5" stroke-linecap="round"/>
+  <circle cx="18" cy="46" r="3" fill="#94a3b8"/>
+  <circle cx="110" cy="46" r="3" fill="#94a3b8"/>
+  <circle cx="18" cy="22" r="3" fill="#94a3b8"/>
+  <circle cx="110" cy="22" r="3" fill="#94a3b8"/>
+  <text x="64" y="82" font-family="'JetBrains Mono','IBM Plex Mono',Menlo,monospace" font-size="44" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central">MC</text>
 </svg>
