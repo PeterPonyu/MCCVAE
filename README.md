@@ -12,6 +12,10 @@
 
 **Interactive Benchmarking Portal:** [https://peterponyu.github.io/MCCVAE/](https://peterponyu.github.io/MCCVAE/)
 
+**Publication status:** Published in *Biomedical Signal Processing and Control*.
+
+**Fu, Z.**, Chen, C., Zhang, K. (2026). Islands and bridges: Momentum contrastive coupling unifies discrete and continuous structure in single-cell omics. *Biomedical Signal Processing and Control*, 122, 110376. [DOI](https://doi.org/10.1016/j.bspc.2026.110376) · [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S1746809426009304)
+
 MCC is a deep learning framework for single-cell genomics analysis. It combines a Momentum Contrastive (MoCo) module with an information-bottleneck coupling within a Variational Autoencoder (VAE) framework.
 
 ## Features
@@ -107,6 +111,23 @@ L_MCC = L_NB + β·L_KLD + α·L_MoCo + γ·L_Cou
 - **L_KLD**: KL divergence regularization
 - **L_MoCo**: InfoNCE contrastive loss
 - **L_Cou**: Coupling reconstruction loss (z → l_e → l_d → reconstruction)
+
+
+## Citation
+
+If you use MCCVAE or the MCC benchmark portal, please cite:
+
+```bibtex
+@article{fu2026islands,
+  title = {Islands and bridges: Momentum contrastive coupling unifies discrete and continuous structure in single-cell omics},
+  author = {Fu, Zeyu and Chen, Chunlin and Zhang, Keyang},
+  journal = {Biomedical Signal Processing and Control},
+  volume = {122},
+  pages = {110376},
+  year = {2026},
+  doi = {10.1016/j.bspc.2026.110376}
+}
+```
 
 ## License
 
