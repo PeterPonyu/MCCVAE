@@ -19,7 +19,7 @@ const assert = (condition, message) => {
 
 const isWhitespace = (character) => /\s/.test(character);
 const isAsciiLetter = (character) => (character >= 'A' && character <= 'Z') || (character >= 'a' && character <= 'z');
-const isAttributeDelimiter = (character) => isWhitespace(character) || character === '=' || character === '>';
+const isAttributeDelimiter = (character) => isWhitespace(character) || character === '=' || character === '/' || character === '>';
 const localName = (name) => name.split(':').at(-1);
 
 const parseTag = (source) => {
@@ -259,6 +259,8 @@ const runSelfTest = () => {
     ['double-encoded-api-path', '<a href="&amp;#47;api/status">API</a>', 'operational path'],
     ['slash-before-href-with-space', '<a / href="/api/status">API</a>', 'ambiguous slash before attributes'],
     ['slash-before-href-without-space', '<a/href="/api/status">API</a>', 'ambiguous slash before attributes'],
+    ['slash-after-partial-attribute-href', '<a x/href="/api/status">API</a>', 'ambiguous slash before attributes'],
+    ['slash-after-partial-attribute-type', '<input x/type="file">', 'ambiguous slash before attributes'],
     ['unterminated-start-tag', '<a href="/api/status', 'unterminated start tag'],
     ['root-relative-upload-path', '<img src="/upload/model">', 'operational path'],
     ['root-relative-service-path', '<button action = "/service/run">Service</button>', 'operational path'],
@@ -273,6 +275,7 @@ const runSelfTest = () => {
   }
   expectPass('self-closing-tag', validHtml.replace('</body>', '<img src="/assets/icon.svg" /></body>'));
   expectPass('url-path-with-slashes', validHtml.replace('</body>', '<a href="/MCCVAE/docs/guide">Guide</a></body>'));
+  expectPass('quoted-custom-attribute-slash', validHtml.replace('</body>', '<div data-note="safe/value"></div></body>'));
   console.log('MCCVAE landing page self-test passed.');
 };
 
