@@ -17,7 +17,55 @@ const assert = (condition, message) => {
   if (!condition) throw new Error(message);
 };
 
-const tagName = (tag) => tag.match(/^<\s*([a-z][a-z0-9:-]*)\b/i)?.[1].toLowerCase() ?? null;
+const isWhitespace = (character) => /\s/.test(character);
+const isAttributeDelimiter = (character) => isWhitespace(character) || character === '=' || character === '/' || character === '>';
+const localName = (name) => name.split(':').at(-1);
+
+const parseTag = (source) => {
+  let index = 1;
+  while (isWhitespace(source[index] ?? '')) index += 1;
+  if (!/[a-z]/i.test(source[index] ?? '')) return null;
+
+  const nameStart = index;
+  while (/[a-z0-9:-]/i.test(source[index] ?? '')) index += 1;
+  const name = source.slice(nameStart, index).toLowerCase();
+  const attributes = new Map();
+
+  while (index < source.length - 1) {
+    while (isWhitespace(source[index] ?? '')) index += 1;
+    if (source[index] === '/' || source[index] === '>') break;
+
+    const attributeStart = index;
+    while (!isAttributeDelimiter(source[index] ?? '')) index += 1;
+    const attributeName = source.slice(attributeStart, index).toLowerCase();
+    if (!attributeName) return null;
+
+    while (isWhitespace(source[index] ?? '')) index += 1;
+    let value = '';
+    if (source[index] === '=') {
+      index += 1;
+      while (isWhitespace(source[index] ?? '')) index += 1;
+      const quote = source[index];
+      if (quote === '"' || quote === "'") {
+        index += 1;
+        const valueStart = index;
+        while (index < source.length && source[index] !== quote) index += 1;
+        if (source[index] !== quote) return null;
+        value = source.slice(valueStart, index);
+        index += 1;
+      } else {
+        const valueStart = index;
+        while (index < source.length && !isWhitespace(source[index] ?? '') && source[index] !== '>') index += 1;
+        value = source.slice(valueStart, index);
+      }
+    }
+    const values = attributes.get(attributeName) ?? [];
+    values.push(value);
+    attributes.set(attributeName, values);
+  }
+
+  return { name, attributes };
+};
 
 const tokenizeTags = (html) => {
   const matches = [];
@@ -30,8 +78,8 @@ const tokenizeTags = (html) => {
       } else if (character === '"' || character === "'") {
         quote = character;
       } else if (character === '>') {
-        const tag = html.slice(start, end + 1);
-        if (tagName(tag)) matches.push(tag);
+        const tag = parseTag(html.slice(start, end + 1));
+        if (tag) matches.push(tag);
         start = end;
         break;
       }
@@ -40,21 +88,19 @@ const tokenizeTags = (html) => {
   return matches;
 };
 
-const tags = (html, name) => tokenizeTags(html).filter((tag) => tagName(tag) === name.toLowerCase());
+const tags = (html, name) => tokenizeTags(html).filter((tag) => tag.name === name.toLowerCase());
 
-const attributeValue = (tag, name) => {
-  const match = tag.match(
-    new RegExp(`(?<![\\w:-])${name}\\s*=\\s*(?:"([^"]*)"|'([^']*)'|([^\\s"'=<>\\x60]+))`, 'i'),
-  );
-  return match?.[1] ?? match?.[2] ?? match?.[3] ?? null;
+const sensitiveAttributeValues = (tag, name) => {
+  const values = [...tag.attributes].flatMap(([attributeName, attributeValues]) => (localName(attributeName) === name ? attributeValues : []));
+  assert(values.length <= 1, `Landing tag has duplicate security-sensitive ${name} attributes.`);
+  return values;
 };
 
-const attributeValues = (html, names) =>
+const securityAttributeEntries = (html) =>
   tokenizeTags(html).flatMap((tag) =>
-    names.flatMap((name) => {
-      const value = attributeValue(tag, name);
-      return value === null ? [] : [{ name, value }];
-    }),
+    ['href', 'src', 'action', 'type'].flatMap((name) =>
+      sensitiveAttributeValues(tag, name).map((value) => ({ tag, name, value })),
+    ),
   );
 
 const namedEntities = new Map([
@@ -68,22 +114,27 @@ const namedEntities = new Map([
   ['sol', '/'],
 ]);
 
-const decodeSecurityUrl = (value) => {
+const decodeSecurityValue = (value) => {
   let decoded = value;
-  for (let pass = 0; pass < 8; pass += 1) {
-    if (!/&(?:#x[0-9a-f]+|#[0-9]+|[a-z][a-z0-9]+);/i.test(decoded)) break;
-    decoded = decoded.replace(/&(?:#x([0-9a-f]+)|#([0-9]+)|([a-z][a-z0-9]+));/gi, (reference, hex, decimal, named) => {
+  for (let pass = 0; pass < 4; pass += 1) {
+    const prior = decoded;
+    decoded = decoded.replace(/&#(?:x([0-9a-f]+)|([0-9]+));?/gi, (reference, hex, decimal) => {
       if (hex || decimal) {
         const codePoint = Number.parseInt(hex ?? decimal, hex ? 16 : 10);
         assert(Number.isInteger(codePoint) && codePoint >= 0 && codePoint <= 0x10ffff, `Landing URL has an invalid HTML entity: ${reference}.`);
         return String.fromCodePoint(codePoint);
       }
+      return reference;
+    });
+    decoded = decoded.replace(/&([a-z][a-z0-9]+);/gi, (reference, named) => {
       const replacement = namedEntities.get(named.toLowerCase());
       assert(replacement !== undefined, `Landing URL has an unsupported or ambiguous HTML entity: ${reference}.`);
       return replacement;
     });
+    if (decoded === prior) break;
   }
-  assert(!/&(?:#x[0-9a-f]+|#[0-9]+|[a-z][a-z0-9]+);/i.test(decoded), `Landing URL has an unsupported or ambiguous HTML entity: ${value}.`);
+  assert(!/&#(?:x[0-9a-f]*|[0-9]*)/i.test(decoded), `Landing URL has an unsupported or ambiguous HTML entity: ${value}.`);
+  assert(!/&[a-z][a-z0-9]*;?/i.test(decoded), `Landing URL has an unsupported or ambiguous HTML entity: ${value}.`);
   return decoded;
 };
 
@@ -122,26 +173,30 @@ const hasForbiddenPath = (url) =>
 const hasExplicitPort = (value, url) => url.port !== '' || /^https?:\/\/[^/?#]+:\d+(?:[/?#]|$)/i.test(value);
 
 export function validateLandingHtml(html) {
-  const canonical = tags(html, 'link').find((tag) => attributeValue(tag, 'rel')?.toLowerCase() === 'canonical');
-  assert(attributeValue(canonical ?? '', 'href') === canonicalUrl, `Landing canonical must be exactly ${canonicalUrl}.`);
+  const canonical = tags(html, 'link').find((tag) => tag.attributes.get('rel')?.length === 1 && tag.attributes.get('rel')[0].toLowerCase() === 'canonical');
+  assert(
+    canonical && decodeSecurityValue(sensitiveAttributeValues(canonical, 'href')[0] ?? '') === canonicalUrl,
+    `Landing canonical must be exactly ${canonicalUrl}.`,
+  );
 
-  const robots = tags(html, 'meta').find((tag) => attributeValue(tag, 'name')?.toLowerCase() === 'robots');
-  assert(attributeValue(robots ?? '', 'content')?.trim().toLowerCase() === 'noindex, follow', 'Landing robots metadata must be exactly "noindex, follow".');
+  const robots = tags(html, 'meta').find((tag) => tag.attributes.get('name')?.length === 1 && tag.attributes.get('name')[0].toLowerCase() === 'robots');
+  assert(robots?.attributes.get('content')?.length === 1 && robots.attributes.get('content')[0].trim().toLowerCase() === 'noindex, follow', 'Landing robots metadata must be exactly "noindex, follow".');
 
-  const urlAttributes = attributeValues(html, ['href', 'src', 'action']);
-  const hrefs = urlAttributes.filter(({ name }) => name === 'href').map(({ value }) => value);
+  const securityAttributes = securityAttributeEntries(html);
+  const urlAttributes = securityAttributes.filter(({ name }) => ['href', 'src', 'action'].includes(name));
+  const hrefs = urlAttributes.filter(({ name }) => name === 'href').map(({ value }) => decodeSecurityValue(value));
   for (const link of requiredLinks) {
     assert(hrefs.includes(link), `Landing must link to ${link}.`);
   }
 
-  assert(!/<form\b/i.test(html), 'Landing must not contain operational forms.');
+  assert(!tags(html, 'form').length, 'Landing must not contain operational forms.');
   assert(
-    !tags(html, 'input').some((tag) => attributeValue(tag, 'type')?.toLowerCase() === 'file'),
+    !tags(html, 'input').some((tag) => decodeSecurityValue(sensitiveAttributeValues(tag, 'type')[0] ?? '').toLowerCase() === 'file'),
     'Landing must not contain file-upload controls.',
   );
 
   for (const { name, value } of urlAttributes) {
-    const decodedValue = decodeSecurityUrl(value);
+    const decodedValue = decodeSecurityValue(value);
     const url = new URL(decodedValue, canonicalUrl);
     if (!['http:', 'https:'].includes(url.protocol)) continue;
     assert(!isForbiddenHost(url.hostname), `Landing ${name} must not target a backend or loopback host: ${value}.`);
@@ -172,7 +227,15 @@ const runSelfTest = () => {
     ['whitespace-file-control', '<input type = "file">', 'file-upload controls'],
     ['quoted-gt-before-api-path', '<a data-note=">" href="/api/status">API</a>', 'operational path'],
     ['quoted-gt-before-file-control', '<input data-note=">" type="file">', 'file-upload controls'],
+    ['fake-href-in-data-note', '<a data-note=\'href="https://peterponyu.github.io/"\' href="/api/status">API</a>', 'operational path'],
+    ['fake-type-in-data-note', '<input data-note=\'type="text"\' type="file">', 'file-upload controls'],
+    ['entity-encoded-file-type', '<input type="f&#105;le">', 'file-upload controls'],
     ['entity-encoded-api-path', '<a href="&#47;api/status">API</a>', 'operational path'],
+    ['semicolonless-decimal-api-path', '<a href="&#47api/status">API</a>', 'operational path'],
+    ['semicolonless-hex-api-path', '<a href="&#x2f/api/status">API</a>', 'backend or loopback host'],
+    ['namespaced-href-api-path', '<svg xlink:href="/api/status"></svg>', 'operational path'],
+    ['duplicate-href', '<a href="https://peterponyu.github.io/" href="/api/status">API</a>', 'duplicate security-sensitive href'],
+    ['double-encoded-api-path', '<a href="&amp;#47;api/status">API</a>', 'operational path'],
     ['root-relative-upload-path', '<img src="/upload/model">', 'operational path'],
     ['root-relative-service-path', '<button action = "/service/run">Service</button>', 'operational path'],
     ['localhost-endpoint', '<a href="http://localhost:3000/status">Local</a>', 'backend or loopback host'],
