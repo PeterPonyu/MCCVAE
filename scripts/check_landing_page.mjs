@@ -18,13 +18,14 @@ const assert = (condition, message) => {
 };
 
 const isWhitespace = (character) => /\s/.test(character);
-const isAttributeDelimiter = (character) => isWhitespace(character) || character === '=' || character === '/' || character === '>';
+const isAsciiLetter = (character) => (character >= 'A' && character <= 'Z') || (character >= 'a' && character <= 'z');
+const isAttributeDelimiter = (character) => isWhitespace(character) || character === '=' || character === '>';
 const localName = (name) => name.split(':').at(-1);
 
 const parseTag = (source) => {
   let index = 1;
   while (isWhitespace(source[index] ?? '')) index += 1;
-  if (!/[a-z]/i.test(source[index] ?? '')) return null;
+  if (!isAsciiLetter(source[index] ?? '')) return null;
 
   const nameStart = index;
   while (/[a-z0-9:-]/i.test(source[index] ?? '')) index += 1;
@@ -33,7 +34,13 @@ const parseTag = (source) => {
 
   while (index < source.length - 1) {
     while (isWhitespace(source[index] ?? '')) index += 1;
-    if (source[index] === '/' || source[index] === '>') break;
+    if (source[index] === '/') {
+      let remainder = index + 1;
+      while (isWhitespace(source[remainder] ?? '')) remainder += 1;
+      assert(source[remainder] === '>', 'Landing start tag has an ambiguous slash before attributes.');
+      break;
+    }
+    if (source[index] === '>') break;
 
     const attributeStart = index;
     while (!isAttributeDelimiter(source[index] ?? '')) index += 1;
@@ -70,7 +77,11 @@ const parseTag = (source) => {
 const tokenizeTags = (html) => {
   const matches = [];
   for (let start = html.indexOf('<'); start >= 0; start = html.indexOf('<', start + 1)) {
+    let nameIndex = start + 1;
+    while (isWhitespace(html[nameIndex] ?? '')) nameIndex += 1;
+    const startTagCandidate = isAsciiLetter(html[nameIndex] ?? '');
     let quote = null;
+    let closed = false;
     for (let end = start + 1; end < html.length; end += 1) {
       const character = html[end];
       if (quote) {
@@ -78,12 +89,17 @@ const tokenizeTags = (html) => {
       } else if (character === '"' || character === "'") {
         quote = character;
       } else if (character === '>') {
-        const tag = parseTag(html.slice(start, end + 1));
-        if (tag) matches.push(tag);
+        closed = true;
+        if (startTagCandidate) {
+          const tag = parseTag(html.slice(start, end + 1));
+          assert(tag, 'Landing contains a malformed start tag.');
+          matches.push(tag);
+        }
         start = end;
         break;
       }
     }
+    assert(!startTagCandidate || closed, 'Landing contains an unterminated start tag.');
   }
   return matches;
 };
@@ -216,6 +232,11 @@ const expectFailure = (name, html, expectedMessage) => {
   throw new Error(`${name} unexpectedly passed.`);
 };
 
+const expectPass = (name, html) => {
+  validateLandingHtml(html);
+  console.log(`PASS ${name}`);
+};
+
 const runSelfTest = () => {
   assert(fs.existsSync(landingPath), 'Landing artifact must contain out/index.html.');
   const validHtml = fs.readFileSync(landingPath, 'utf8');
@@ -236,6 +257,9 @@ const runSelfTest = () => {
     ['namespaced-href-api-path', '<svg xlink:href="/api/status"></svg>', 'operational path'],
     ['duplicate-href', '<a href="https://peterponyu.github.io/" href="/api/status">API</a>', 'duplicate security-sensitive href'],
     ['double-encoded-api-path', '<a href="&amp;#47;api/status">API</a>', 'operational path'],
+    ['slash-before-href-with-space', '<a / href="/api/status">API</a>', 'ambiguous slash before attributes'],
+    ['slash-before-href-without-space', '<a/href="/api/status">API</a>', 'ambiguous slash before attributes'],
+    ['unterminated-start-tag', '<a href="/api/status', 'unterminated start tag'],
     ['root-relative-upload-path', '<img src="/upload/model">', 'operational path'],
     ['root-relative-service-path', '<button action = "/service/run">Service</button>', 'operational path'],
     ['localhost-endpoint', '<a href="http://localhost:3000/status">Local</a>', 'backend or loopback host'],
@@ -247,6 +271,8 @@ const runSelfTest = () => {
   for (const [name, injection, expectedMessage] of cases) {
     expectFailure(name, validHtml.replace('</body>', `${injection}</body>`), expectedMessage);
   }
+  expectPass('self-closing-tag', validHtml.replace('</body>', '<img src="/assets/icon.svg" /></body>'));
+  expectPass('url-path-with-slashes', validHtml.replace('</body>', '<a href="/MCCVAE/docs/guide">Guide</a></body>'));
   console.log('MCCVAE landing page self-test passed.');
 };
 
