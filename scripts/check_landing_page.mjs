@@ -6,6 +6,8 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const landingPath = path.join(root, 'out', 'index.html');
+const robotsPath = path.join(root, 'out', 'robots.txt');
+const sitemapPath = path.join(root, 'out', 'sitemap.xml');
 const canonicalUrl = 'https://peterponyu.github.io/MCCVAE/';
 const requiredLinks = [
   'https://peterponyu.github.io/',
@@ -221,6 +223,15 @@ export function validateLandingHtml(html) {
   }
 }
 
+export function validateRootDocuments(robotsTxt, sitemapXml) {
+  assert(typeof robotsTxt === 'string', 'Landing artifact must contain out/robots.txt.');
+  assert(typeof sitemapXml === 'string', 'Landing artifact must contain out/sitemap.xml.');
+  const robotLines = robotsTxt.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+  assert(robotLines.length === 2 && robotLines[0] === 'User-agent: *' && robotLines[1] === 'Allow: /', 'Landing robots.txt must allow crawling for User-agent: *.');
+  assert(sitemapXml.includes('<?xml') && sitemapXml.includes('<urlset'), 'Landing sitemap.xml must be a valid XML sitemap document.');
+  assert(!sitemapXml.includes(canonicalUrl), `Landing sitemap.xml must exclude ${canonicalUrl}.`);
+}
+
 const expectFailure = (name, html, expectedMessage) => {
   try {
     validateLandingHtml(html);
@@ -237,11 +248,27 @@ const expectPass = (name, html) => {
   console.log(`PASS ${name}`);
 };
 
+const expectRootDocumentFailure = (name, robotsTxt, sitemapXml, expectedMessage) => {
+  try {
+    validateRootDocuments(robotsTxt, sitemapXml);
+  } catch (error) {
+    assert(error instanceof Error && error.message.includes(expectedMessage), `${name} failed for the wrong reason: ${error}`);
+    console.log(`PASS ${name}: ${expectedMessage}`);
+    return;
+  }
+  throw new Error(`${name} unexpectedly passed.`);
+};
+
 const runSelfTest = () => {
   assert(fs.existsSync(landingPath), 'Landing artifact must contain out/index.html.');
   const validHtml = fs.readFileSync(landingPath, 'utf8');
   validateLandingHtml(validHtml);
+  validateRootDocuments(fs.readFileSync(robotsPath, 'utf8'), fs.readFileSync(sitemapPath, 'utf8'));
   console.log('PASS valid-tracked-artifact');
+
+  expectRootDocumentFailure('missing robots document', undefined, '<?xml version="1.0"?><urlset></urlset>', 'out/robots.txt');
+  expectRootDocumentFailure('contradictory robots document', 'User-agent: *\nDisallow: /\n', '<?xml version="1.0"?><urlset></urlset>', 'must allow crawling');
+  expectRootDocumentFailure('visible canonical sitemap', 'User-agent: *\nAllow: /\n', `<?xml version="1.0"?><urlset><url><loc>${canonicalUrl}</loc></url></urlset>`, 'must exclude');
 
   const cases = [
     ['relative-api-path', '<a href = "/api/status">API</a>', 'operational path'],
@@ -284,5 +311,8 @@ if (process.argv.includes('--self-test')) {
 } else {
   assert(fs.existsSync(landingPath), 'Landing artifact must contain out/index.html.');
   validateLandingHtml(fs.readFileSync(landingPath, 'utf8'));
+  assert(fs.existsSync(robotsPath), 'Landing artifact must contain out/robots.txt.');
+  assert(fs.existsSync(sitemapPath), 'Landing artifact must contain out/sitemap.xml.');
+  validateRootDocuments(fs.readFileSync(robotsPath, 'utf8'), fs.readFileSync(sitemapPath, 'utf8'));
   console.log('MCCVAE landing page contract passed.');
 }
