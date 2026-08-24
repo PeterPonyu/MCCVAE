@@ -17,7 +17,30 @@ const assert = (condition, message) => {
   if (!condition) throw new Error(message);
 };
 
-const tags = (html, name) => html.match(new RegExp(`<${name}\\b[^>]*>`, 'gi')) ?? [];
+const tagName = (tag) => tag.match(/^<\s*([a-z][a-z0-9:-]*)\b/i)?.[1].toLowerCase() ?? null;
+
+const tokenizeTags = (html) => {
+  const matches = [];
+  for (let start = html.indexOf('<'); start >= 0; start = html.indexOf('<', start + 1)) {
+    let quote = null;
+    for (let end = start + 1; end < html.length; end += 1) {
+      const character = html[end];
+      if (quote) {
+        if (character === quote) quote = null;
+      } else if (character === '"' || character === "'") {
+        quote = character;
+      } else if (character === '>') {
+        const tag = html.slice(start, end + 1);
+        if (tagName(tag)) matches.push(tag);
+        start = end;
+        break;
+      }
+    }
+  }
+  return matches;
+};
+
+const tags = (html, name) => tokenizeTags(html).filter((tag) => tagName(tag) === name.toLowerCase());
 
 const attributeValue = (tag, name) => {
   const match = tag.match(
@@ -27,21 +50,64 @@ const attributeValue = (tag, name) => {
 };
 
 const attributeValues = (html, names) =>
-  tags(html, '[a-z][a-z0-9:-]*').flatMap((tag) =>
+  tokenizeTags(html).flatMap((tag) =>
     names.flatMap((name) => {
       const value = attributeValue(tag, name);
       return value === null ? [] : [{ name, value }];
     }),
   );
 
+const namedEntities = new Map([
+  ['amp', '&'],
+  ['apos', "'"],
+  ['colon', ':'],
+  ['gt', '>'],
+  ['lt', '<'],
+  ['period', '.'],
+  ['quot', '"'],
+  ['sol', '/'],
+]);
+
+const decodeSecurityUrl = (value) => {
+  let decoded = value;
+  for (let pass = 0; pass < 8; pass += 1) {
+    if (!/&(?:#x[0-9a-f]+|#[0-9]+|[a-z][a-z0-9]+);/i.test(decoded)) break;
+    decoded = decoded.replace(/&(?:#x([0-9a-f]+)|#([0-9]+)|([a-z][a-z0-9]+));/gi, (reference, hex, decimal, named) => {
+      if (hex || decimal) {
+        const codePoint = Number.parseInt(hex ?? decimal, hex ? 16 : 10);
+        assert(Number.isInteger(codePoint) && codePoint >= 0 && codePoint <= 0x10ffff, `Landing URL has an invalid HTML entity: ${reference}.`);
+        return String.fromCodePoint(codePoint);
+      }
+      const replacement = namedEntities.get(named.toLowerCase());
+      assert(replacement !== undefined, `Landing URL has an unsupported or ambiguous HTML entity: ${reference}.`);
+      return replacement;
+    });
+  }
+  assert(!/&(?:#x[0-9a-f]+|#[0-9]+|[a-z][a-z0-9]+);/i.test(decoded), `Landing URL has an unsupported or ambiguous HTML entity: ${value}.`);
+  return decoded;
+};
+
 const isForbiddenHost = (hostname) => {
-  const host = hostname.toLowerCase();
+  const host = hostname.toLowerCase().replace(/^\[|\]$/g, '');
+  const ipv4 = host.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/)?.slice(1).map(Number);
+  const privateIpv4 =
+    ipv4 &&
+    ipv4.every((segment) => Number.isInteger(segment) && segment >= 0 && segment <= 255) &&
+    (ipv4[0] === 0 ||
+      ipv4[0] === 10 ||
+      ipv4[0] === 127 ||
+      (ipv4[0] === 169 && ipv4[1] === 254) ||
+      (ipv4[0] === 172 && ipv4[1] >= 16 && ipv4[1] <= 31) ||
+      (ipv4[0] === 192 && ipv4[1] === 168));
   return (
     host === 'localhost' ||
     host.endsWith('.localhost') ||
-    host === '0.0.0.0' ||
     host === '::1' ||
-    host.startsWith('127.') ||
+    host === '::' ||
+    host.startsWith('::ffff:') ||
+    /^f[cd][0-9a-f:]*$/i.test(host) ||
+    /^fe[89ab][0-9a-f:]*$/i.test(host) ||
+    privateIpv4 ||
     /(^|\.)(?:api|backend|service)(?:\.|$)/.test(host)
   );
 };
@@ -75,10 +141,11 @@ export function validateLandingHtml(html) {
   );
 
   for (const { name, value } of urlAttributes) {
-    const url = new URL(value, canonicalUrl);
+    const decodedValue = decodeSecurityUrl(value);
+    const url = new URL(decodedValue, canonicalUrl);
     if (!['http:', 'https:'].includes(url.protocol)) continue;
     assert(!isForbiddenHost(url.hostname), `Landing ${name} must not target a backend or loopback host: ${value}.`);
-    assert(!hasExplicitPort(value, url), `Landing ${name} must not target an explicit service port: ${value}.`);
+    assert(!hasExplicitPort(decodedValue, url), `Landing ${name} must not target an explicit service port: ${value}.`);
     assert(!hasForbiddenPath(url), `Landing ${name} must not target an operational path: ${value}.`);
   }
 }
@@ -103,9 +170,14 @@ const runSelfTest = () => {
   const cases = [
     ['relative-api-path', '<a href = "/api/status">API</a>', 'operational path'],
     ['whitespace-file-control', '<input type = "file">', 'file-upload controls'],
+    ['quoted-gt-before-api-path', '<a data-note=">" href="/api/status">API</a>', 'operational path'],
+    ['quoted-gt-before-file-control', '<input data-note=">" type="file">', 'file-upload controls'],
+    ['entity-encoded-api-path', '<a href="&#47;api/status">API</a>', 'operational path'],
     ['root-relative-upload-path', '<img src="/upload/model">', 'operational path'],
     ['root-relative-service-path', '<button action = "/service/run">Service</button>', 'operational path'],
     ['localhost-endpoint', '<a href="http://localhost:3000/status">Local</a>', 'backend or loopback host'],
+    ['ipv6-loopback-endpoint', '<a href="http://[::1]/status">IPv6 loopback</a>', 'backend or loopback host'],
+    ['ipv4-mapped-loopback-endpoint', '<a href="http://[::ffff:127.0.0.1]/status">Mapped loopback</a>', 'backend or loopback host'],
     ['backend-host', '<a href="https://backend.example.com/status">Backend</a>', 'backend or loopback host'],
     ['explicit-port-endpoint', '<a href="https://example.com:8443/status">Port</a>', 'explicit service port'],
   ];
