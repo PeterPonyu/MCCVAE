@@ -201,6 +201,17 @@ cython_debug/
 .cursorignore
 .cursorindexingignore
 
+# Local workflow and agent state; out/ remains the tracked Pages artifact.
+.agents/
+.cache/
+.claude/
+.codex/
+.omc/
+.omx/
+.superpowers/
+.next/
+node_modules/
+
 # Marimo
 marimo/_static/
 marimo/_lsp/
