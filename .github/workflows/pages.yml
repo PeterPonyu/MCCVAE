@@ -1,0 +1,60 @@
+name: Deploy MCCVAE Pages
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/pages.yml'
+      - '.gitignore'
+      - 'out/**'
+      - 'scripts/check_landing_page.mjs'
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/pages.yml'
+      - '.gitignore'
+      - 'out/**'
+      - 'scripts/check_landing_page.mjs'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Run landing checker fixtures
+        run: node scripts/check_landing_page.mjs --self-test
+
+      - name: Verify landing artifact
+        run: node scripts/check_landing_page.mjs
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
