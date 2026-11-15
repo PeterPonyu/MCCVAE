@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the article in preferred-citation."
+title: "MCCVAE"
+type: software
+authors:
+  - family-names: "Fu"
+    given-names: "Zeyu"
+    orcid: "https://orcid.org/0009-0001-8329-0108"
+  - family-names: "Chen"
+    given-names: "Chunlin"
+  - family-names: "Zhang"
+    given-names: "Keyang"
+repository-code: "https://github.com/PeterPonyu/MCCVAE"
+license: MIT
+preferred-citation:
+  type: article
+  title: "Islands and bridges: Momentum contrastive coupling unifies discrete and continuous structure in single-cell omics"
+  authors:
+    - family-names: "Fu"
+      given-names: "Zeyu"
+      orcid: "https://orcid.org/0009-0001-8329-0108"
+    - family-names: "Chen"
+      given-names: "Chunlin"
+    - family-names: "Zhang"
+      given-names: "Keyang"
+  journal: "Biomedical Signal Processing and Control"
+  volume: "122"
+  start: "110376"
+  year: 2026
+  doi: "10.1016/j.bspc.2026.110376"
