@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mccvae"
+version = "0.0.1"
+description = "MCCVAE: momentum contrastive coupling unifies discrete and continuous structure in single-cell omics"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [{name = "Zeyu Fu"}]
+keywords = ["single-cell", "variational autoencoder", "contrastive learning", "scRNA-seq", "scATAC-seq"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+dependencies = [
+    "torch",
+    "torchdiffeq",
+    "geoopt",
+    "numpy",
+    "scipy",
+    "pandas",
+    "scikit-learn",
+    "anndata",
+    "scanpy",
+    "tqdm",
+]
+
+[project.optional-dependencies]
+metrics = ["scib", "python-igraph", "leidenalg"]
+baselines = ["torch-geometric"]
+all = ["scib", "python-igraph", "leidenalg", "torch-geometric"]
+
+[project.urls]
+Homepage = "https://github.com/PeterPonyu/MCCVAE"
+Repository = "https://github.com/PeterPonyu/MCCVAE"
+
+[tool.setuptools.packages.find]
+include = ["mccvae*"]

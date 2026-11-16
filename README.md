@@ -27,6 +27,16 @@ MCC is a deep learning framework for single-cell genomics analysis. It combines 
 
 ## Installation
 
+Install the package from PyPI:
+
+```bash
+pip install mccvae
+# benchmark metrics and graph baselines
+pip install "mccvae[all]"
+```
+
+To run the web interface, install from source:
+
 1.  **Clone the repository:**
     ```bash
     git clone https://github.com/PeterPonyu/MCCVAE.git
