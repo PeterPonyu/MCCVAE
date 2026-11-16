@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mccvae"
-version = "0.0.1"
+version = "0.0.2"
 description = "MCCVAE: momentum contrastive coupling unifies discrete and continuous structure in single-cell omics"
 readme = "README.md"
 requires-python = ">=3.9"

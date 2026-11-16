@@ -46,7 +46,7 @@ The main dependencies are:
 
 ```python
 import mccvae
-print(mccvae.__version__)  # Should print 0.0.1
+print(mccvae.__version__)  # Should print 0.0.2
 ```
 
 ---
