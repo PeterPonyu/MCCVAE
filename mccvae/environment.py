@@ -19,6 +19,7 @@ from .model import MCCVAE
 from .mixin import envMixin
 import numpy as np
 import torch
+from scipy.sparse import issparse
 from sklearn.cluster import KMeans
 from typing import Tuple, Optional, Union
 import anndata
@@ -343,7 +344,8 @@ class Env(MCCVAE, envMixin):
             Dimension of latent space (used for initial clustering)
         """
         # Extract single-cell expression data from specified layer
-        self.dataset = adata.layers[layer].toarray()
+        layer_data = adata.layers[layer]
+        self.dataset = layer_data.toarray() if issparse(layer_data) else np.asarray(layer_data)
         
         # Store dataset dimensions
         self.n_observations = adata.shape[0]  # Number of cells

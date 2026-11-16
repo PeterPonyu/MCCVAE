@@ -572,7 +572,10 @@ class envMixin:
         np.ndarray
             Cluster labels for each sample
         """
-        n_clusters = latent_representation.shape[1]
+        # Never request more clusters than samples (small batches); fall back to one cluster below two
+        n_clusters = min(latent_representation.shape[1], latent_representation.shape[0] - 1)
+        if n_clusters < 2:
+            return np.zeros(latent_representation.shape[0], dtype=int)
         cluster_labels = KMeans(n_clusters=n_clusters, random_state=42).fit_predict(latent_representation)
         
         return cluster_labels
@@ -653,9 +656,14 @@ class envMixin:
         nmi_score = normalized_mutual_info_score(true_labels, cluster_labels)
         
         # Cluster quality metrics
-        silhouette_avg = silhouette_score(latent_representation, cluster_labels)
-        calinski_harabasz = calinski_harabasz_score(latent_representation, cluster_labels)
-        davies_bouldin = davies_bouldin_score(latent_representation, cluster_labels)
+        # These scores need at least two clusters and more samples than clusters
+        n_unique_labels = len(np.unique(cluster_labels))
+        if latent_representation.shape[0] > n_unique_labels and n_unique_labels >= 2:
+            silhouette_avg = silhouette_score(latent_representation, cluster_labels)
+            calinski_harabasz = calinski_harabasz_score(latent_representation, cluster_labels)
+            davies_bouldin = davies_bouldin_score(latent_representation, cluster_labels)
+        else:
+            silhouette_avg = calinski_harabasz = davies_bouldin = 0.0
         
         # Disentanglement metric
         correlation_measure = self._calc_corr(latent_representation)
