@@ -40,6 +40,8 @@ all = ["scib", "python-igraph", "leidenalg", "torch-geometric"]
 [project.urls]
 Homepage = "https://github.com/PeterPonyu/MCCVAE"
 Repository = "https://github.com/PeterPonyu/MCCVAE"
+Paper = "https://doi.org/10.1016/j.bspc.2026.110376"
+Issues = "https://github.com/PeterPonyu/MCCVAE/issues"
 
 [tool.setuptools.packages.find]
 include = ["mccvae*"]

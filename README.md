@@ -7,10 +7,12 @@
 
 # MCC: Momentum Contrastive Coupling
 
-[![GitHub Pages](https://img.shields.io/badge/Web%20Portal-Live-brightgreen)](https://peterponyu.github.io/MCCVAE/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![PyPI](https://img.shields.io/pypi/v/mccvae.svg)](https://pypi.org/project/mccvae/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24268694.svg)](https://doi.org/10.5281/zenodo.24268694)
+[![Project page](https://img.shields.io/badge/Project%20page-GitHub%20Pages-blue)](https://peterponyu.github.io/MCCVAE/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/PeterPonyu/MCCVAE/blob/main/LICENSE)
 
-**Interactive Benchmarking Portal:** [https://peterponyu.github.io/MCCVAE/](https://peterponyu.github.io/MCCVAE/)
+**Project page:** [https://peterponyu.github.io/MCCVAE/](https://peterponyu.github.io/MCCVAE/)
 
 **Publication status:** Published in *Biomedical Signal Processing and Control*.
 
@@ -125,7 +127,7 @@ L_MCC = L_NB + β·L_KLD + α·L_MoCo + γ·L_Cou
 
 ## Citation
 
-If you use MCCVAE or the MCC benchmark portal, please cite:
+If you use MCCVAE, please cite:
 
 ```bibtex
 @article{fu2026islands,
